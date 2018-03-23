@@ -17,31 +17,8 @@
 	<context:component-scan base-package="com.oracle.ebp" />
 	<mvc:annotation-driven />   <!-- 必须放在此文件中 -->
 
-	<!-- 数据库配置信息 -->
-	<!--
-	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean"> 
-		<property name="jndiName"> <value>java:comp/env/jdbc/SoccerLeagueDS</value> 
-		</property> </bean> <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"> 
-		<property name="dataSource" ref="dataSource"/> <property name="typeAliasesPackage" 
-		value="com.oracle.soccerleague.domain"/> </bean>--> 
-		<!-- Mapper注入 -->
-		<!--
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.oracle.soccerleague.dao" />
-	</bean>
 
-	<bean id="leagueMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.oracle.soccerleague.dao.LeagueMapper" />
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
-	-->
-
-
-
-
-
-
-
+	<!-- 数据库交给mybatis -->
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
 			<value>java:comp/env/jdbc/ebp</value>
@@ -49,30 +26,13 @@
 	</bean>
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="typeAliasesPackage" value="com.oracle.ebp.domain" />
+		<property name="typeAliasesPackage" value="com.pentaKill.domain" />
 	</bean>
+	
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.oracle.ebp.dao" />
+		<property name="basePackage" value="com.pentaKill.dao" />
 	</bean>
-	<bean id="UserMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.oracle.ebp.dao.UserMapper" />
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
-	<bean id="AdminMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.oracle.ebp.dao.AdminMapper" />
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
-	<bean id="OrderMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.oracle.ebp.dao.OrderMapper" />
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
-	<bean id="OrderListMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.oracle.ebp.dao.OrderListMapper" />
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
-	<bean id="ShoppingCartMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="com.oracle.ebp.dao.ShoppingCartMapper" />
-		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
-	</bean>
+	
+	
 
 </beans>
