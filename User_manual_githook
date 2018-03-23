@@ -1,0 +1,3 @@
+Open the directory .git
+Find the directory hooks
+Rename every file(remove ".sample") 
