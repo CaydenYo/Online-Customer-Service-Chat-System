@@ -26,4 +26,14 @@ public class CustomerServiceService {
 		
 	}
 	
+	public int listTotalOperatingNum(int company_id){
+		int operatingNum = customerServiceMapper.getTotalOperatingNum(company_id);
+		return operatingNum;
+	}
+	
+	public int listTotalWaitingNum(int company_id){
+		int operatingNum = customerServiceMapper.getTotalWaitingNum(company_id);
+		return operatingNum;
+	}
+	
 }
