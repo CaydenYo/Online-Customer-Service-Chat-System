@@ -2,6 +2,7 @@ package com.pentaKill.dao;
 
 import java.util.List;
 
+import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceStatusBean;
 
 public interface CustomerServiceMapper {
