@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3.dtd">
+
+<mapper namespace="com.pentaKill.dao.CustomerServiceMapper">
+    
+    <select id="getCustomerServiceStatus" parameterType="int" resultType="customerServiceStatusBean">
+    			select cs_id,cs_workId,cs_name,cs_status,cs_operating_number,cs_img,cs_score
+    			from customerServiceInfo
+    			where company_id = #{0}
+    </select>
+    
+
+</mapper>

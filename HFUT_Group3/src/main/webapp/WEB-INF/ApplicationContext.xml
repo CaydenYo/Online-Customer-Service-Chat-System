@@ -14,14 +14,14 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<context:component-scan base-package="com.oracle.ebp" />
+	<context:component-scan base-package="com.pentaKill" />
 	<mvc:annotation-driven />   <!-- 必须放在此文件中 -->
 
 
 	<!-- 数据库交给mybatis -->
 	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
 		<property name="jndiName">
-			<value>java:comp/env/jdbc/ebp</value>
+			<value>java:comp/env/jdbc/ocssystem</value>
 		</property>
 	</bean>
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -32,7 +32,9 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="basePackage" value="com.pentaKill.dao" />
 	</bean>
-	
-	
+	<bean id="CustomerServiceMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.pentaKill.dao.CustomerServiceMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 
 </beans>
