@@ -5,6 +5,7 @@ DROP TABLE IF EXISTS `customerInfo`;
 CREATE TABLE `customerInfo` (
 `customer_id` int(11) PRIMARY KEY auto_increment,
 `customer_name` varchar(20) NOT NULL,
+`customer_status` int default 0,
 `customer_sex` int NOT NULL,		-- 0为女,1为男
 `customer_email`  varchar(255) DEFAULT NULL,
 `customer_pwd`  varchar(20) NOT NULL,
@@ -40,7 +41,9 @@ CREATE TABLE `customerServiceInfo` (
 `cs_id` int(20) PRIMARY KEY auto_increment,
 `cs_workId` varchar(20) NOT NULL,
 `cs_name` varchar(20) NOT NULL,
+`cs_register_status` int default 0,
 `cs_nickName` varchar(20) NOT NULL,
+`company_id` int(20) NOT NULL,
 `cs_pwd`  varchar(20) NOT NULL,
 `cs_email`  varchar(255) DEFAULT NULL,
 `cs_img`  varchar(255) DEFAULT NULL,
@@ -51,6 +54,11 @@ CREATE TABLE `customerServiceInfo` (
 `cs_waiting_number` int(2)  DEFAULT 3,
 `cs_score`  float
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+insert into customerServiceInfo values(1000,'2015214459','Ye Fei','1','Sherhom',1,'123456','846953477@qq.com',
+			'1.jpg',124,1,0,0,5.0);
+
+
 
 --5客服管理人员表
 DROP TABLE IF EXISTS `csManagerInfo`;

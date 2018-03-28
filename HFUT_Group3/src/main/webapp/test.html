@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+</head>
+<body>
+	<button id="button1" type="button"></button>
+</body>
+<script>
+	$("#button1").click(
+	function(){
+	    //var json = {"cs_id":1,"cs_workId": "1","cs_name":"sherhom","cs_nickName":"sherhom","cs_pwd":"11","cs_email":"a","cs_img":"s","cs_greetings":1,"cs_status":1,"cs_operating_number":1,"cs_waiting_number":1,"cs_score":0.2}
+	    var json = {"company_id":1}
+	    var post = {data:JSON.stringify(json)}
+	    alert("呵呵");
+	    $.post('http://localhost:8080/OCSSystem/listCsStatus',post);
+	}); 
+	/* 
+	$("#button1").click(function() {
+		alert("ass");
+		alert(JSON.stringify(GetJsonData()));
+	    $.ajax({
+	        type: "POST",
+	        url: "http://localhost:8080/OCSSystem/listCSInfo",
+	        contentType: "application/json; charset=utf-8",
+	        data: JSON.stringify(GetJsonData()),
+	        dataType: "json",
+	        success: function (message) {
+	            if (message > 0) {
+	                alert("请求已提交！我们会尽快与您取得联系");
+	            }
+	        },
+	        error: function (message) {
+	            $("#request-process-patent").html("提交数据失败！");
+	        }
+	    });
+	});
+
+	function GetJsonData() {
+	    var json = {
+	    		"cs_id":"1",
+	    		"cs_workId": "1",
+	    		"cs_name":"sherhom",
+	    		"cs_nickName":"sherhom",
+	    		"cs_pwd":"11",
+	    		"cs_email":"a",
+	    		"cs_img":"s",
+	    		"cs_greetings":1,
+	    		"cs_status":1,
+	    		"cs_operating_number":1,
+	    		"cs_waiting_number":1,
+	    		"cs_score":0.2
+	    };
+	    return json;
+	} */
+</script>
+</html>
