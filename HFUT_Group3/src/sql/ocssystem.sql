@@ -120,6 +120,8 @@ CREATE TABLE `cs_management_tool` (
 `operating_number` int(2)
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+insert into cs_management_tool values(1,5,6);
+
 --10知识库 机器人
 DROP TABLE IF EXISTS `knowledge`;
 CREATE TABLE `knowledge` (

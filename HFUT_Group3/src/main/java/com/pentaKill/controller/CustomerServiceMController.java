@@ -51,5 +51,33 @@ public class CustomerServiceMController {
 		System.out.println(str);
 		return str;
 	}
-
+	
+	@RequestMapping(value = "/listOperatingNum",produces = "text/json;charset=UTF-8",method = RequestMethod.POST)
+	@ResponseBody
+	public String listOperatingNum(HttpServletRequest request,HttpServletResponse response){
+		String data = request.getParameter("data");
+		JSONObject json = JSONObject.fromObject(data);
+		int company_id = json.getInt("company_id");
+		System.out.println(company_id);
+		Gson gson = new Gson();  
+		int operatingNum = customerServiceService.listTotalOperatingNum(company_id);
+		String str = gson.toJson(operatingNum);  
+		System.out.println(str);
+		return str;
+	}
+	
+	@RequestMapping(value = "/listWaitingNum",produces = "text/json;charset=UTF-8",method = RequestMethod.POST)
+	@ResponseBody
+	public String listWaitingNum(HttpServletRequest request,HttpServletResponse response){
+		String data = request.getParameter("data");
+		JSONObject json = JSONObject.fromObject(data);
+		int company_id = json.getInt("company_id");
+		System.out.println(company_id);
+		Gson gson = new Gson();  
+		int operatingNum = customerServiceService.listTotalWaitingNum(company_id);
+		String str = gson.toJson(operatingNum);  
+		System.out.println(str);
+		return str;
+	}
+	
 }
