@@ -40,34 +40,20 @@ public class CustomerServiceController {
 		String cs_pwd = json.getString("cs_pwd");
 		CustomerServiceLoginBean customerServiceLoginBean = new CustomerServiceLoginBean(cs_email, cs_pwd);
 		CustomerService customerService;
-		// JSONObject jsonObject=new JSONObject();
 		try {
 			customerService = customerSvcService.csLogin(customerServiceLoginBean);
 			if (customerService != null) {// 如果验证成功，则跳转进首页
 				if (customerService.getCs_status() == 0) {
 					System.out.println("yyy");
 					return gson.toJson("客服账号未激活");
-					// errors.reject("", "客服账号未激活");
-					// jsonObject.put("errcroe", "400");
-					// jsonObject.put("msg", "客服账号未激活");
 				} else {
-					// request.getRequestDispatcher("index.jsp").forward(request,
-					// response);
 					return gson.toJson("success");
 				}
-
-			} else {// 如果从数据库查询密码账号不匹配，则往json传字符串数据
-					// jsonObject.put("error", "400");
-					// jsonObject.put("msg", "用户名或者密码错误");
-					// response.sendRedirect("index.html");
+			} else {
 				return gson.toJson("用户名或者密码错误");
 			}
-
 		} catch (LoginException e) {
-			System.out.println(e.getMessage());
-			// errors.reject("", e.getMessage());
-			// jsonObject.put("error", "400");
-			// jsonObject.put("msg", "用户名或者密码错误");
+			//System.out.println(e.getMessage());
 			return gson.toJson("用户名或者密码错误");
 		}
 	}
