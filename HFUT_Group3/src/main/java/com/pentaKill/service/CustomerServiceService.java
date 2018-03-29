@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.pentaKill.dao.CustomerServiceMapper;
 import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceStatusBean;
-import com.pentaKill.domain.CustomerSvcLogin;
+import com.pentaKill.domain.CustomerServiceLoginBean;
 import com.pentaKill.exception.LoginException;
 
 @Service
@@ -21,17 +21,17 @@ public class CustomerServiceService {
 	@Resource
 	CustomerServiceMapper customerServiceMapper;
 
-	public CustomerService csLogin(CustomerSvcLogin customerSvcLogin) throws LoginException {
+	public CustomerService csLogin(CustomerServiceLoginBean customerSvcLoginBean) throws LoginException {
 		CustomerService customerService = new CustomerService();
-		customerService.setCs_email(customerSvcLogin.getCs_email());
-		customerService.setCs_pwd(customerSvcLogin.getCs_pwd());
+		customerService.setCs_email(customerSvcLoginBean.getCs_email());
+		customerService.setCs_pwd(customerSvcLoginBean.getCs_pwd());
 		try {
 			customerService = customerServiceMapper.selectBy(customerService);
 		} catch (Exception e) {
 			throw new LoginException(e);
 		}
 		if (customerService == null) {
-			throw new LoginException("用户名不存在或密码错误");
+			return null;
 		}
 		return customerService;
 	}
