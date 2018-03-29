@@ -36,5 +36,9 @@
 		<property name="mapperInterface" value="com.pentaKill.dao.CustomerServiceMapper" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
+	<bean id="RobotMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="com.pentaKill.dao.RobotMapper" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
 
 </beans>
