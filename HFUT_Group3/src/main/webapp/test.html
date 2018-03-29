@@ -12,10 +12,10 @@
 	$("#button1").click(
 	function(){
 	    //var json = {"cs_id":1,"cs_workId": "1","cs_name":"sherhom","cs_nickName":"sherhom","cs_pwd":"11","cs_email":"a","cs_img":"s","cs_greetings":1,"cs_status":1,"cs_operating_number":1,"cs_waiting_number":1,"cs_score":0.2}
-	    var json = {"company_id":1}
+	    var json = {"knowledge_id":2}
 	    var post = {data:JSON.stringify(json)}
 	    alert("呵呵");
-	    $.post('http://localhost:8080/OCSSystem/listOperatingNum',post);
+	    $.post('http://localhost:8080/OCSSystem/deleteKnowledge',post);
 	}); 
 	/* 
 	$("#button1").click(function() {

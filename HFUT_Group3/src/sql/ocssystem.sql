@@ -1,4 +1,4 @@
-create database scssystem;
+create database ocssystem;
 
 --1客户表
 DROP TABLE IF EXISTS `customerInfo`;
@@ -34,6 +34,7 @@ CREATE TABLE `companyInfo` (
 `robot_name`  varchar(20) NOT NULL
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+insert into companyInfo values(1,"CISCO",1,1,"XIAO AI");
 
 --4客服表
 DROP TABLE IF EXISTS `customerServiceInfo`;
