@@ -1,26 +1,35 @@
 package com.pentaKill.domain;
 
+import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.Range;
 
 public class CustomerService {
-	
+
 	private int cs_id;
+	private String company_id;
 	private String cs_workId;
+	@NotBlank(message = "用户名不能为空")
 	private String cs_name;
 	private String cs_nickName;
+	@NotBlank(message = "密码不能为空")
 	private String cs_pwd;
+	@NotBlank(message = "邮箱不能为空")
 	private String cs_email;
 	private String cs_img;
 	private int cs_greetings;
 	private int cs_status;
+	@Range(min = 0, max = 99, message = "请选择可同时接待人数")
 	private int cs_operating_number;
+	@Range(min = 0, max = 99, message = "请选择等待接待人数")
 	private int cs_waiting_number;
 	private float cs_score;
-	
-	public CustomerService(int cs_id, String cs_workId, String cs_name, String cs_nickName, String cs_pwd,
-			String cs_email, String cs_img, int cs_greetings, int cs_status, int cs_operating_number,
+
+	public CustomerService(int cs_id, String company_id, String cs_workId, String cs_name, String cs_nickName,
+			String cs_pwd, String cs_email, String cs_img, int cs_greetings, int cs_status, int cs_operating_number,
 			int cs_waiting_number, float cs_score) {
 		super();
 		this.cs_id = cs_id;
+		this.company_id = company_id;
 		this.cs_workId = cs_workId;
 		this.cs_name = cs_name;
 		this.cs_nickName = cs_nickName;
@@ -33,12 +42,12 @@ public class CustomerService {
 		this.cs_waiting_number = cs_waiting_number;
 		this.cs_score = cs_score;
 	}
-	
+
 	public CustomerService() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	@Override
 	public String toString() {
 		return "CustomerService [cs_id=" + cs_id + ", cs_workId=" + cs_workId + ", cs_name=" + cs_name
@@ -46,15 +55,23 @@ public class CustomerService {
 				+ cs_img + ", cs_greetings=" + cs_greetings + ", cs_status=" + cs_status + ", cs_operating_number="
 				+ cs_operating_number + ", cs_waiting_number=" + cs_waiting_number + ", cs_score=" + cs_score + "]";
 	}
-	
+
+	public String getCompany_id() {
+		return company_id;
+	}
+
+	public void setCompany_id(String company_id) {
+		this.company_id = company_id;
+	}
+
 	public int getCs_id() {
 		return cs_id;
 	}
-	
+
 	public void setCs_id(int cs_id) {
 		this.cs_id = cs_id;
 	}
-	
+
 	public String getCs_workId() {
 		return cs_workId;
 	}
@@ -142,7 +159,5 @@ public class CustomerService {
 	public void setCs_score(float cs_score) {
 		this.cs_score = cs_score;
 	}
-	
-	
-}
 
+}

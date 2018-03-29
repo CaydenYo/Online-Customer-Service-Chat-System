@@ -1,5 +1,10 @@
 Manifest-Version: 1.0
+<<<<<<< 66721554cec6f195530a349a92a40837369b0757
 Built-By: kang
 Build-Jdk: 1.8.0_121
+=======
+Built-By: dell
+Build-Jdk: 1.8.0_152
+>>>>>>> Modify the CustomerService.java in package domain and sql Ref#28
 Created-By: Maven Integration for Eclipse
 
