@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3.dtd">
+
+<mapper namespace="com.pentaKill.dao.CustomerLoginMapper">
+
+	<select id="customerLogin_mapper" parameterType="String"
+		resultType="CustomerInfoBean">
+		select * from customerInfo
+		where customer_name = #{0}
+	</select>
+</mapper>
