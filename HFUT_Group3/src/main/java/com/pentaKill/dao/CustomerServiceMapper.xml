@@ -5,6 +5,12 @@
 
 <mapper namespace="com.pentaKill.dao.CustomerServiceMapper">
 
+
+	<select id="selectBy" parameterType="customerService" resultType="customerService">
+		select * from customerServiceInfo where
+		cs_email=#{cs_email} and cs_pwd=#{cs_pwd};
+	</select>
+	
 	<select id="getCustomerServiceStatus" parameterType="int"
 		resultType="customerServiceStatusBean">
 		select cs_id,cs_workId,cs_name,cs_status,cs_operating_number,cs_img,cs_score
