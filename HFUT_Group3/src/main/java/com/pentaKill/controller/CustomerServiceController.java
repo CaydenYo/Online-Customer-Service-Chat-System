@@ -30,7 +30,7 @@ public class CustomerServiceController {
 
 	@RequestMapping(value = "/Login", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
 	@ResponseBody
-	public String csLogin(HttpServletRequest request, HttpServletResponse response, Errors errors, HttpSession session)
+	public String csLogin(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Gson gson = new Gson();
 
@@ -43,12 +43,10 @@ public class CustomerServiceController {
 		// JSONObject jsonObject=new JSONObject();
 		try {
 			customerService = customerSvcService.csLogin(customerServiceLoginBean);
-
 			if (customerService != null) {// 如果验证成功，则跳转进首页
-
 				if (customerService.getCs_status() == 0) {
 					System.out.println("yyy");
-					return "客服账号未激活";
+					return gson.toJson("客服账号未激活");
 					// errors.reject("", "客服账号未激活");
 					// jsonObject.put("errcroe", "400");
 					// jsonObject.put("msg", "客服账号未激活");
@@ -71,7 +69,6 @@ public class CustomerServiceController {
 			// jsonObject.put("error", "400");
 			// jsonObject.put("msg", "用户名或者密码错误");
 			return gson.toJson("用户名或者密码错误");
-
 		}
 	}
 
