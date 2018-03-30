@@ -13,6 +13,7 @@ import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceStatusBean;
 import com.pentaKill.domain.CustomerServiceLoginBean;
 import com.pentaKill.exception.LoginException;
+import com.pentaKill.exception.RegisterException;
 
 @Service
 @Scope
@@ -51,6 +52,19 @@ public class CustomerServiceService {
 	public int listTotalWaitingNum(int company_id) {
 		int operatingNum = customerServiceMapper.getTotalWaitingNum(company_id);
 		return operatingNum;
+	}
+	
+	public void csRegister(CustomerService customerService) throws RegisterException {
+		try {
+			customerService = customerServiceMapper.selectBy(customerService);
+			if (customerService == null)
+				customerServiceMapper.insert(customerService);
+			else
+				throw new RegisterException("用户名已存在");
+		} catch (Exception e) {
+			throw new RegisterException(e);
+		}
+
 	}
 
 }

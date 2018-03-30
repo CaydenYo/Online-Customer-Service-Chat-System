@@ -11,6 +11,12 @@
 		cs_email=#{cs_email} and cs_pwd=#{cs_pwd};
 	</select>
 	
+	<insert id="insert" parameterType="customerService" useGeneratedKeys="true"
+	keyProperty="cs_id">
+		insert into customerInfo(cs_workId,cs_name,cs_nickName,company_id,cs_pwd,cs_email,cs_img) 
+		values(#{cs_workId},#{cs_name},#{cs_nickName},#{company_id},#{cs_pwd},#{cs_email},#{cs_img})
+	</insert>
+	
 	<select id="getCustomerServiceStatus" parameterType="int"
 		resultType="customerServiceStatusBean">
 		select cs_id,cs_workId,cs_name,cs_status,cs_operating_number,cs_img,cs_score

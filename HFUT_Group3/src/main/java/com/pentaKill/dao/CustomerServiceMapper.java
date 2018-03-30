@@ -7,6 +7,8 @@ import com.pentaKill.domain.CustomerServiceStatusBean;
 
 public interface CustomerServiceMapper {
 
+	public void insert(CustomerService customerService);
+	
 	public CustomerService selectBy(CustomerService customerService);
 
 	public List<CustomerServiceStatusBean> getCustomerServiceStatus(int company_id);
