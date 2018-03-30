@@ -6,48 +6,39 @@ import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
-import com.pentaKill.domain.CustomerService;
-import com.pentaKill.domain.CustomerServiceLoginBean;
+import com.pentaKill.domain.CSManager;
+import com.pentaKill.domain.CSManagerLoginBean;
 import com.pentaKill.exception.LoginException;
-import com.pentaKill.service.CustomerServiceService;
+import com.pentaKill.service.CustomerServiceMService;
 
 import net.sf.json.JSONObject;
 
-@Controller
-@RequestMapping(value = "/customerService")
-public class CustomerServiceController {
+public class CustomerServiceMLoginController {
 	@Resource
-	private CustomerServiceService customerSvcService;
-
+	private CustomerServiceMService customerServiceMService;
+	
 	@RequestMapping(value = "/Login", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
 	@ResponseBody
-	public String csLogin(HttpServletRequest request, HttpServletResponse response)
+	public String csmLogin(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Gson gson = new Gson();
 
 		String data = request.getParameter("data");
 		JSONObject json = JSONObject.fromObject(data);
-		String cs_email = json.getString("cs_email");
-		String cs_pwd = json.getString("cs_pwd");
-		CustomerServiceLoginBean customerServiceLoginBean = new CustomerServiceLoginBean(cs_email, cs_pwd);
-		CustomerService customerService;
+		String csm_email = json.getString("csm_email");
+		String csm_pwd = json.getString("csm_pwd");
+		CSManagerLoginBean csManagerLoginBean = new CSManagerLoginBean(csm_email, csm_pwd);
+		CSManager csManager;
 		try {
-			customerService = customerSvcService.csLogin(customerServiceLoginBean);
-			if (customerService != null) {// 如果验证成功，则跳转进首页
-				if (customerService.getCs_status() == 0) {
-					return gson.toJson("客服账号未激活");
-				} else {
+			csManager = customerServiceMService.csmLogin(csManagerLoginBean);
+			if (csManager != null) {// 如果验证成功，则跳转进首页
 					return gson.toJson("success");
-				}
 			} else {
 				return gson.toJson("用户名或者密码错误");
 			}
@@ -56,5 +47,4 @@ public class CustomerServiceController {
 			return gson.toJson("用户名或者密码错误");
 		}
 	}
-
 }
