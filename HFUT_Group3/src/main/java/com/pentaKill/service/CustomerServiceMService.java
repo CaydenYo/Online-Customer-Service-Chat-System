@@ -7,6 +7,8 @@ import com.pentaKill.domain.CSManager;
 import com.pentaKill.domain.CSManagerLoginBean;
 
 import com.pentaKill.exception.LoginException;
+import com.pentaKill.exception.RegisterException;
+
 
 public class CustomerServiceMService {
 	@Resource
@@ -25,5 +27,18 @@ public class CustomerServiceMService {
 			return null;
 		}
 		return csManager;
+	}
+	
+	public void csmRegister(CSManager csManager) throws RegisterException {
+		try {
+			csManager = customerServiceMMapper.selectBy(csManager);
+			if (csManager == null)
+				customerServiceMMapper.insert(csManager);
+			else
+				throw new RegisterException("用户名已存在");
+		} catch (Exception e) {
+			throw new RegisterException(e);
+		}
+
 	}
 }

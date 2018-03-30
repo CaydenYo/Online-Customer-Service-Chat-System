@@ -6,7 +6,11 @@ import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -46,5 +50,20 @@ public class CustomerServiceMLoginController {
 			//System.out.println(e.getMessage());
 			return gson.toJson("用户名或者密码错误");
 		}
+	}
+	
+	
+	@RequestMapping(value="/Register", method=RequestMethod.POST)
+	public String cmResgister(@Valid @ModelAttribute("csManager")CSManager  csManager, 
+    		Errors errors, HttpSession session) {
+    	if (errors.hasFieldErrors()) return "register";
+    	try {
+    		customerServiceMService.csmRegister(csManager);
+    		return "success";
+    	} catch (Exception e) {
+    		errors.reject("", e.getMessage());
+            return "register";
+    	}
+
 	}
 }

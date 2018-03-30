@@ -41,19 +41,7 @@ public class CustomerServiceMController {
 		return null;
 	}
 	
-	@RequestMapping(value="/Register", method=RequestMethod.POST)
-	public String cmResgister(@Valid @ModelAttribute("csManager")CSManager  csManager, 
-    		Errors errors, HttpSession session) {
-    	if (errors.hasFieldErrors()) return "register";
-    	try {
-    		customerServiceService.csmRegister(csManager);
-    		return "success";
-    	} catch (Exception e) {
-    		errors.reject("", e.getMessage());
-            return "register";
-    	}
-
-	}
+	
 	
 	@RequestMapping(value = "/listCsStatus",produces = "text/json;charset=UTF-8",method = RequestMethod.POST)
 	@ResponseBody
