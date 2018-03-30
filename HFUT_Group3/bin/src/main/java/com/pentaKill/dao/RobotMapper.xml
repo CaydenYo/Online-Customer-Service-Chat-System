@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3.dtd">
+
+<mapper namespace="com.pentaKill.dao.RobotMapper">
+
+	<select id="getRobotId" parameterType="int" resultType="int">
+		select
+		robot_id
+		from companyInfo
+		where company_id = #{0}
+	</select>
+
+	<insert id="inserKnowledge" parameterType="robotKnowledge">
+		insert into
+		knowledge(robot_id,question,answer)
+		values
+		(#{robot_id},#{question},#{answer})
+	</insert>
+
+	<select id="getAllRobotKnowledge" parameterType="int"
+		resultType="robotKnowledge">
+		select *
+		from knowledge
+		where robot_id = #{0}
+	</select>
+
+	<update id="updateKnowledge" parameterType="updateKnowledgeBean">
+		update knowledge set question=#{question},answer = #{answer}
+		where knowledge_id=#{knowledge_id}
+	</update>
+	
+	<delete id="deleteKnowledge" parameterType="int">
+          delete from knowledge where knowledge_id=#{knowledge_id}
+     </delete>
+
+</mapper>
