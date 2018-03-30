@@ -26,11 +26,64 @@
             <el-button round @click="login" style="width:50%;">登录</el-button>
           </el-tab-pane>
           <el-tab-pane label="注册" name="second">
+            <label for="register_username">账号</label>
+            <el-input type="text" v-model="register_username" id="register_username" placeholder="请输入邮箱"
+            style="width:50%;"></el-input>
+            <br><br>
+            <label for="register_password">密码</label>
+            <el-input type="password" v-model="register_password" id="register_password" placeholder="请输入密码"
+            style="width:50%;"></el-input>
+            <br><br>
+            <label for="register_name">姓名</label>
+            <el-input type="text" v-model="register_name" id="register_name" placeholder="请输入姓名"
+            style="width:50%;"></el-input>
+            <br><br>
+            <label for="register_ID">身份证</label>
+            <el-input type="text" v-model="register_ID" id="register_ID" placeholder="15或18位身份证号码" pattern="\d{15}(\d\d[0-9xX])?"
+            style="width:50%;"></el-input>
+            <br><br>
+            <label for="register_tel">手机</label>
+            <el-input type="text" v-model="register_tel" id="register_tel" placeholder="由13、15、18开头" pattern="^((13[0-9])|(15[0-9])|(18[0,5-9]))\d{8}$"
+            style="width:50%;"></el-input>
+            <br><br>
+            <el-radio v-model="gender" label="1">男</el-radio>
+            <el-radio v-model="gender" label="2">女</el-radio>
+            <br><br>
+            <el-button round v-on:click="register" style="width:50%;">注册</el-button>
           </el-tab-pane>
         </el-tabs>
       </el-dialog>
-  </el-main>
-</el-container>
+      <el-dialog
+      :visible.sync="dialogRegisterVisible"
+      width="50%"
+      :before-close="handleClose">
+      <h1>账号注册</h1>
+      <label for="register_username">账号</label>
+      <el-input type="text" v-model="register_username" id="register_username" placeholder="请输入邮箱"
+      style="width:50%;"></el-input>
+      <br><br>
+      <label for="register_password">密码</label>
+      <el-input type="password" v-model="register_password" id="register_password" placeholder="请输入密码"
+      style="width:50%;"></el-input>
+      <br><br>
+      <label for="register_name">姓名</label>
+      <el-input type="text" v-model="register_name" id="register_name" placeholder="请输入姓名"
+      style="width:50%;"></el-input>
+      <br><br>
+      <label for="register_ID">身份证</label>
+      <el-input type="text" v-model="register_ID" id="register_ID" placeholder="15或18位身份证号码" pattern="\d{15}(\d\d[0-9xX])?"
+      style="width:50%;"></el-input>
+      <br><br>
+      <label for="register_tel">手机</label>
+      <el-input type="text" v-model="register_tel" id="register_tel" placeholder="由13、15、18开头" pattern="^((13[0-9])|(15[0-9])|(18[0,5-9]))\d{8}$"
+      style="width:50%;"></el-input>
+      <br><br>
+      <el-radio v-model="gender" label="1">男</el-radio>
+      <el-radio v-model="gender" label="2">女</el-radio>
+      <br><br>
+      <el-button round v-on:click="register" style="width:50%;">注册</el-button>
+    </el-main>
+  </el-container>
 </div>
 </template>
 
@@ -90,6 +143,46 @@ export default {
                 //   this.$message.success('系统错误！')
                 // }
               })
+            },
+            register :function(even){
+              var username = this.register_username;
+              var password = this.register_password;
+              var name = this.register_name;
+              var ID = this.register_ID;
+              var tel = this.register_tel;
+              var gender = this.gender;
+              if(username == '' || password == ''|| name == ''
+               || ID == '' || tel == ''){
+                this.$message({
+                  message : '信息不完全！',
+                  type : 'error'
+                })
+              return;
+            }
+            $.ajax({
+              url : 'register',
+              type : 'post',
+              data : {
+                username : register_username,
+                password : register_password,
+                name: register_name,
+                ID: register_ID,
+                tel: register_tel,
+                gender: gender
+              },
+              success : function(data) {
+                var result = data.result;
+                if(result == 'true' || result == true){
+                  alert("注册成功");
+                }else {
+                  alert("注册失败");
+                }
+              },
+              error : function(data) {
+                alert(data);
+              },
+              dataType : 'json',
+            })
           }
         }
       };
