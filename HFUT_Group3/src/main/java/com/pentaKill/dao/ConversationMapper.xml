@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3.dtd">
+<mapper namespace = "com.pentaKill.dao.ConversationMapper">
+	 <!-- 往数据库插入新会话 -->	
+	
+	<insert id="startConversation_mapper" parameterType="ConversationBean" useGeneratedKeys="true"
+	keyProperty="conversation_id">
+		insert into conversation(customer_id,cs_id) 
+		values(#{customer_id},#{cd_id})
+	</insert>
+	
+	<!-- 往数据库插入新聊天记录 -->	
+	<insert id="insertChatLog_mapper" parameterType="ChatLogBean" useGeneratedKeys="true"
+	keyProperty="chatLog_id">
+		insert into chatLog(conversation_id,receiver_id,sender_id,from_customer,content_type,content) 
+		values(#{conversation_id},#{receiver_id},#{sender_id},#{from_customer},#{content_type},#{content})
+	</insert>
+	
+	<!-- 寻找聊天记录的会话号 -->
+	<select id="findConversationId_mapper" parameterType="FindConversationBean"
+		resultType="int">
+		select conversation_id from conversation
+		where customer_id = #{customer_id} and cs_id=#{cs_id} and start_time = end_time
+	</select>
+</mapper>
