@@ -7,9 +7,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -55,6 +57,25 @@ public class CustomerServiceController {
 			//System.out.println(e.getMessage());
 			return gson.toJson("用户名或者密码错误");
 		}
+	}
+	
+	@RequestMapping(value="register.action", method=RequestMethod.POST)
+	public String cmResgister(@Valid @ModelAttribute("customerService")CustomerService  customerService, 
+    		Errors errors, HttpSession session) {
+    	if (errors.hasFieldErrors()) return "register";
+    	if(!customerService.getCs_pwd().equals(customerService.getCs_pwd())){
+    		errors.reject("", "两次输入的密码不一致");
+    		errors.reject("passwordagain", "两次输入的密码不一致");
+    		return "register";
+    	}
+    	try {
+    		customerSvcService.csRegister(customerService);
+    		return "success";
+    	} catch (Exception e) {
+    		errors.reject("", e.getMessage());
+            return "register";
+    	}
+
 	}
 
 }
