@@ -10,7 +10,6 @@ import kfgl from '@/components/KfManage'
 import yhgl from '@/components/CsManage'
 import settings from '@/components/Settings'
 import know from '@/components/Know'
-import UserChat from '@/components/UserChat'
 
 Vue.use(Router)
 

@@ -82,6 +82,7 @@
       <el-radio v-model="gender" label="2">女</el-radio>
       <br><br>
       <el-button round v-on:click="register" style="width:50%;">注册</el-button>
+    </el-dialog>
     </el-main>
   </el-container>
 </div>
