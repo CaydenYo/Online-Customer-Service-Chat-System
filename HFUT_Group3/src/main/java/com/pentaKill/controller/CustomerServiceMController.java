@@ -29,37 +29,42 @@ public class CustomerServiceMController {
 	@RequestMapping(value = "/listCSInfo",produces = "text/json;charset=UTF-8",method = RequestMethod.POST)
 	@ResponseBody
 	public String listCSInfo(HttpServletRequest request,HttpServletResponse response){
-		System.out.println(1);
+		//System.out.println(1);
 		String param = request.getParameter("data");
-		System.out.println(param);
+		//System.out.println(param);
 		Gson gson = new Gson();
 		CustomerService cs = gson.fromJson(param, CustomerService.class);
-		System.out.println(cs.getCs_name());
+		//System.out.println(cs.getCs_name());
 		return null;
 	}
 	
 	
-	@RequestMapping(value = "reg.do")  
-    public ModelAndView reg(ModelAndView mv, HttpServletRequest request) {  
-        CustomerServiceRegisterBean customerServiceRegisterBean = new CustomerServiceRegisterBean();  
-        customerServiceRegisterBean.setCs_email(request.getParameter("cs_email"));  
-        customerServiceRegisterBean.setCs_workId(request.getParameter("cs_workId")); 
+	@RequestMapping(value = "reg.do",produces = "text/json;charset=UTF-8",method = RequestMethod.POST)  
+    public String reg(ModelAndView mv, HttpServletRequest request) {  
+        CustomerServiceRegisterBean customerServiceRegisterBean = new CustomerServiceRegisterBean(); 
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        String cs_email = json.getString("cs_email");
+        String cs_workId = json.getString("cs_workId");
+        customerServiceRegisterBean.setCs_email(request.getParameter(cs_email));  
+        customerServiceRegisterBean.setCs_workId(request.getParameter(cs_workId)); 
+        Gson gson = new Gson();
         if (customerServiceService.reg(customerServiceRegisterBean)) {  
-            mv.setViewName("/userlogin");  
+            return gson.toJson("registersuccess");
         } else {  
-            mv.addObject("msg", "注册失败");  
-            mv.setViewName("/index");  
+            return gson.toJson("registerfail");
         }  
-        return mv;  
     }  
     
     
     @RequestMapping(value = "regconf.do")  
-    public ModelAndView regconf(ModelAndView mv, HttpServletRequest request) {  
-        String code = request.getParameter("cs_code");  
-        customerServiceService.regconf(code);  
-        mv.setViewName("/userlogin.jsp");  
-        return mv;  
+    public String regconf(ModelAndView mv, HttpServletRequest request) {  
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        String cs_code = json.getString("cs_code");
+        customerServiceService.regconf(cs_code);  
+        Gson gson = new Gson();
+        return gson.toJson("login");
     }
 	
 	
