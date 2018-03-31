@@ -4,7 +4,7 @@ public class CustomerServiceRegisterBean {
 	private String cs_email;
 	private String cs_workId;
 	private String company_id;
-	private int cs_status;
+	private int cs_register_status;
 	private String cs_code;
 	
 	
@@ -28,14 +28,13 @@ public class CustomerServiceRegisterBean {
 		this.company_id = company_id;
 	}
 	
-	
-	public int getCs_status() {
-		return cs_status;
-	}
-	public void setCs_status(int cs_status) {
-		this.cs_status = cs_status;
-	}
-	public String getCs_code() {
+	public int getCs_register_status() {
+        return cs_register_status;
+    }
+    public void setCs_register_status(int cs_register_status) {
+        this.cs_register_status = cs_register_status;
+    }
+    public String getCs_code() {
 		return cs_code;
 	}
 	public void setCs_code(String cs_code) {

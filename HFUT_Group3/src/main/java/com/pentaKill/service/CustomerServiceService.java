@@ -67,8 +67,8 @@ public class CustomerServiceService {
         customerService.setCs_email(email);
         customerService.setCs_workId("pentaKill_" + email);
         customerService.setCs_name("pentaKill_" + email);
-        customerService.setCs_name("pentaKill_" + email);
-        customerService.setCs_name("pentaKill_" + email);
+        customerService.setCs_nickName("pentaKill_" + email);
+        customerService.setCs_pwd("pentaKill_" + email);
         customerService.setCs_img("pentaKill_" + email);
         if (customerServiceMapper.selectByEmail(customerService) == null) {
             customerServiceMapper.create(customerService);
@@ -97,7 +97,7 @@ public class CustomerServiceService {
     public void regconf(String code) {
         // TODO Auto-generated method stub
         CustomerService customerService = customerServiceMapper.selectByCode(code);
-        customerService.setCs_status(1);
+        customerService.setCs_register_status(1);
         customerService.setCs_code(code);
         customerServiceMapper.modifyUser(customerService);
     }

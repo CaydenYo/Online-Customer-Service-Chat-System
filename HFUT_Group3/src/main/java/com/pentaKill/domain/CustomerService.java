@@ -23,35 +23,39 @@ public class CustomerService {
 	@Range(min = 0, max = 99, message = "请选择等待接待人数")
 	private int cs_waiting_number;
 	private float cs_score;
-	private int cs_register_id;
+	private int cs_register_status;
 	private String cs_code;
 
 	
 	
+	
+
+
+
 	public CustomerService(int cs_id, String company_id, String cs_workId, String cs_name, String cs_nickName,
-			String cs_pwd, String cs_email, String cs_img, int cs_greetings, int cs_status, int cs_operating_number,
-			int cs_waiting_number, float cs_score, int cs_register_id, String cs_code) {
-		super();
-		this.cs_id = cs_id;
-		this.company_id = company_id;
-		this.cs_workId = cs_workId;
-		this.cs_name = cs_name;
-		this.cs_nickName = cs_nickName;
-		this.cs_pwd = cs_pwd;
-		this.cs_email = cs_email;
-		this.cs_img = cs_img;
-		this.cs_greetings = cs_greetings;
-		this.cs_status = cs_status;
-		this.cs_operating_number = cs_operating_number;
-		this.cs_waiting_number = cs_waiting_number;
-		this.cs_score = cs_score;
-		this.cs_register_id = cs_register_id;
-		this.cs_code = cs_code;
-	}
+            String cs_pwd, String cs_email, String cs_img, int cs_greetings, int cs_status, int cs_operating_number,
+            int cs_waiting_number, float cs_score, int cs_register_status, String cs_code) {
+        super();
+        this.cs_id = cs_id;
+        this.company_id = company_id;
+        this.cs_workId = cs_workId;
+        this.cs_name = cs_name;
+        this.cs_nickName = cs_nickName;
+        this.cs_pwd = cs_pwd;
+        this.cs_email = cs_email;
+        this.cs_img = cs_img;
+        this.cs_greetings = cs_greetings;
+        this.cs_status = cs_status;
+        this.cs_operating_number = cs_operating_number;
+        this.cs_waiting_number = cs_waiting_number;
+        this.cs_score = cs_score;
+        this.cs_register_status = cs_register_status;
+        this.cs_code = cs_code;
+    }
 
 
 
-	public CustomerService() {
+    public CustomerService() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -64,24 +68,27 @@ public class CustomerService {
 				+ ", cs_name=" + cs_name + ", cs_nickName=" + cs_nickName + ", cs_pwd=" + cs_pwd + ", cs_email="
 				+ cs_email + ", cs_img=" + cs_img + ", cs_greetings=" + cs_greetings + ", cs_status=" + cs_status
 				+ ", cs_operating_number=" + cs_operating_number + ", cs_waiting_number=" + cs_waiting_number
-				+ ", cs_score=" + cs_score + ", cs_register_id=" + cs_register_id + ", cs_code=" + cs_code + "]";
+				+ ", cs_score=" + cs_score + ", cs_register_status=" + cs_register_status + ", cs_code=" + cs_code + "]";
 	}
 
 
 
-	public int getCs_register_id() {
-		return cs_register_id;
-	}
 
 
 
-	public void setCs_register_id(int cs_register_id) {
-		this.cs_register_id = cs_register_id;
-	}
+	public int getCs_register_status() {
+        return cs_register_status;
+    }
 
 
 
-	public String getCs_code() {
+    public void setCs_register_status(int cs_register_status) {
+        this.cs_register_status = cs_register_status;
+    }
+
+
+
+    public String getCs_code() {
 		return cs_code;
 	}
 
