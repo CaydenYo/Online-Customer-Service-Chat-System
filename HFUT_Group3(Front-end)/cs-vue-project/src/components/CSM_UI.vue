@@ -95,6 +95,7 @@ export default {
       url: '/customerService/Login',
       activeName: 'first',
       dialogLoginVisible: false,
+      dialogRegisterVisible: false,
       login_info:{
         cs_email:'',
         cs_pwd:''

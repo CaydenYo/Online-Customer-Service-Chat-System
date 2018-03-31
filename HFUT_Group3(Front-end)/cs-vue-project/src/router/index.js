@@ -20,11 +20,6 @@ export default new Router({
       component: CSM_UI
     },
     {
-      path: '/UserChat',
-      name: '聊天',
-      component: UserChat
-    },
-    {
       path: '/CsLogin',
       name: '客服登录',
       component: CsLogin
