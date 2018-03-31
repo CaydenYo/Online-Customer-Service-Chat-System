@@ -4,6 +4,7 @@ create database ocssystem;
 DROP TABLE IF EXISTS `customerInfo`;
 CREATE TABLE `customerInfo` (
 `customer_id` int(11) PRIMARY KEY auto_increment,
+、customer_nickname、 varchar(20),
 `customer_name` varchar(20) NOT NULL,
 `customer_status` int default 0,
 `customer_sex` int NOT NULL,		-- 0为女,1为男
@@ -112,7 +113,6 @@ CREATE TABLE `cs_shortcut_language` (
 FOREIGN KEY (`cs_id`) REFERENCES `customerServiceInfo` (`cs_id`)
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-
 --9客服管理人员查看总信息表
 DROP TABLE IF EXISTS `cs_management_tool`;
 CREATE TABLE `cs_management_tool` (
@@ -130,4 +130,12 @@ CREATE TABLE `knowledge` (
 `robot_id` int(20),
 `question`  varchar(255) NOT NULL,
 `answer`  varchar(255) NOT NULL
+)DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+--11等待客户表
+DROP TABLE IF EXISTS `customer_waiting_team`;
+CREATE TABLE `customer_waiting_team` (
+`cwt_id`   int(20) PRIMARY KEY auto_increment,
+`customer_id` int(11),
+`cs_id` int(20)
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
