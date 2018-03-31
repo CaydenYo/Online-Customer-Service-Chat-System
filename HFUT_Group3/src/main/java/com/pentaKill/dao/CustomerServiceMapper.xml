@@ -11,11 +11,50 @@
 		cs_email=#{cs_email} and cs_pwd=#{cs_pwd};
 	</select>
 	
-	<insert id="insert" parameterType="customerService" useGeneratedKeys="true"
+	<select id="selectByEmail" parameterType="customerService" resultType="customerService">
+		select * from customerServiceInfo where
+		cs_email=#{cs_email};
+	</select>
+	
+	<select id="selectByCode" parameterType="String" resultType="customerService">
+		select * from customerServiceInfo where
+		cs_code=#{0};
+	</select>
+	
+	<insert id="create" parameterType="customerService" useGeneratedKeys="true"
 	keyProperty="cs_id">
-		insert into customerInfo(cs_workId,cs_name,cs_nickName,company_id,cs_pwd,cs_email,cs_img) 
+		insert into customerServiceInfo(cs_workId,cs_name,cs_nickName,company_id,cs_pwd,cs_email,cs_img) 
 		values(#{cs_workId},#{cs_name},#{cs_nickName},#{company_id},#{cs_pwd},#{cs_email},#{cs_img})
 	</insert>
+	
+	<update id="modifyUser" parameterType="customerService">  
+        update customerServiceInfo  
+        <set>  
+            <if test="cs_workId!=null">  
+                cs_workId = #{cs_workId},  
+            </if>  
+            <if test="cs_name!=null">  
+                cs_name = #{cs_name},  
+            </if>  
+            <if test="cs_nickName!=null">  
+                cs_nickName = #{cs_nickName},  
+            </if>  
+            <if test="cs_pwd!=null">  
+                cs_pwd = #{cs_pwd},  
+            </if>  
+            <if test="cs_pwd!=null">  
+                cs_pwd = #{cs_pwd},  
+            </if>  
+            <if test="cs_img!=null">  
+                cs_img = #{cs_img},  
+            </if>  
+            <if test="code!=null">  
+                code = #{code}  
+            </if>  
+        </set>  
+        where cs_code=#{cs_code}  
+    </update>  
+	
 	
 	<select id="getCustomerServiceStatus" parameterType="int"
 		resultType="customerServiceStatusBean">

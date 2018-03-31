@@ -2,6 +2,7 @@ package com.pentaKill.service;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -12,8 +13,10 @@ import com.pentaKill.dao.CustomerServiceMapper;
 import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceStatusBean;
 import com.pentaKill.domain.CustomerServiceLoginBean;
+import com.pentaKill.domain.CustomerServiceRegisterBean;
 import com.pentaKill.exception.LoginException;
-import com.pentaKill.exception.RegisterException;
+import com.pentaKill.utils.EmailUtil;
+
 
 @Service
 @Scope
@@ -54,17 +57,52 @@ public class CustomerServiceService {
 		return operatingNum;
 	}
 	
-	public void csRegister(CustomerService customerService) throws RegisterException {
-		try {
-			customerService = customerServiceMapper.selectBy(customerService);
-			if (customerService == null)
-				customerServiceMapper.insert(customerService);
-			else
-				throw new RegisterException("用户名已存在");
-		} catch (Exception e) {
-			throw new RegisterException(e);
-		}
+	public boolean reg(CustomerServiceRegisterBean customerServiceRegisterBean) {  
+        // TODO Auto-generated method stub  
+        String code = UUID.randomUUID().toString() + UUID.randomUUID().toString();  
+        code = code.replaceAll("-", "");  
+        customerServiceRegisterBean.setCs_code(code);  
+        CustomerService customerService = new CustomerService();
+        String email = customerServiceRegisterBean.getCs_email();
+        customerService.setCompany_id(customerServiceRegisterBean.getCompany_id());
+        customerService.setCs_email(email);
+        customerService.setCs_workId("pentaKill_"+email);
+        customerService.setCs_name("pentaKill_"+email);
+        customerService.setCs_name("pentaKill_"+email);
+        customerService.setCs_name("pentaKill_"+email);
+        customerService.setCs_img("pentaKill_"+email);
+        if(customerServiceMapper.selectByEmail(customerService)==null){
+        	customerServiceMapper.create(customerService);
+        	try {  
+                
+        		StringBuffer sbd = new StringBuffer();
+                sbd.append( "<br/>欢迎！请确认此邮件地址以激活您的账号。<br/>");
+                sbd.append("<font color='red'><a href='http://localhost:8080/EBP_TEAM7/regconf.do?code="
+                        + customerServiceRegisterBean.getCs_code() + "' target='_blank'");
+                sbd.append(">立即激活</a></font><br/>");
+                sbd.append("或者点击下面链接:<br/>");
+                sbd.append("http://localhost:8080/EBP_TEAM7/regconf.do?code="
+                        + customerServiceRegisterBean.getCs_code() + "<br/>");
+                sbd.append("这是一封自动发送的邮件；如果您并未要求但收到这封信件，您不需要进行任何操作。");
 
-	}
+        		EmailUtil.sendTo(sbd.toString(),  
+        				customerServiceRegisterBean.getCs_email());  
+            } catch (Exception e) {  
+                // TODO Auto-generated catch block  
+                e.printStackTrace();  
+            }  
+            return true;  
+        }  
+        return false;  
+    }  
+	
+	
+	public void regconf(String code) {  
+        // TODO Auto-generated method stub  
+        CustomerService  customerService  = customerServiceMapper.selectByCode(code);  
+        customerService.setCs_status(1);  
+        customerService.setCs_code(code);  
+        customerServiceMapper.modifyUser(customerService);  
+    }  
 
 }
