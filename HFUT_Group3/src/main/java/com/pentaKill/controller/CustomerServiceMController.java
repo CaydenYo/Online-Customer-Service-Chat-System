@@ -5,19 +5,16 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.pentaKill.domain.CSManager;
 import com.pentaKill.domain.CustomerService;
+import com.pentaKill.domain.CustomerServiceRegisterBean;
 import com.pentaKill.domain.CustomerServiceStatusBean;
 import com.pentaKill.service.CustomerServiceService;
 
@@ -32,14 +29,43 @@ public class CustomerServiceMController {
 	@RequestMapping(value = "/listCSInfo",produces = "text/json;charset=UTF-8",method = RequestMethod.POST)
 	@ResponseBody
 	public String listCSInfo(HttpServletRequest request,HttpServletResponse response){
-		System.out.println(1);
+		//System.out.println(1);
 		String param = request.getParameter("data");
-		System.out.println(param);
+		//System.out.println(param);
 		Gson gson = new Gson();
 		CustomerService cs = gson.fromJson(param, CustomerService.class);
-		System.out.println(cs.getCs_name());
+		//System.out.println(cs.getCs_name());
 		return null;
 	}
+	
+	
+	@RequestMapping(value = "reg.do",produces = "text/json;charset=UTF-8",method = RequestMethod.POST)  
+    public String reg(ModelAndView mv, HttpServletRequest request) {  
+        CustomerServiceRegisterBean customerServiceRegisterBean = new CustomerServiceRegisterBean(); 
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        String cs_email = json.getString("cs_email");
+        String cs_workId = json.getString("cs_workId");
+        customerServiceRegisterBean.setCs_email(request.getParameter(cs_email));  
+        customerServiceRegisterBean.setCs_workId(request.getParameter(cs_workId)); 
+        Gson gson = new Gson();
+        if (customerServiceService.reg(customerServiceRegisterBean)) {  
+            return gson.toJson("registersuccess");
+        } else {  
+            return gson.toJson("registerfail");
+        }  
+    }  
+    
+    
+    @RequestMapping(value = "regconf.do")  
+    public String regconf(ModelAndView mv, HttpServletRequest request) {  
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        String cs_code = json.getString("cs_code");
+        customerServiceService.regconf(cs_code);  
+        Gson gson = new Gson();
+        return gson.toJson("login");
+    }
 	
 	
 	

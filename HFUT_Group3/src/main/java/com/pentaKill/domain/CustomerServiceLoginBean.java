@@ -24,6 +24,10 @@ public class CustomerServiceLoginBean {
 		this.cs_pwd = cs_pwd;
 	}
 
+	public CustomerServiceLoginBean() {
+		super();
+	}
+
 	public CustomerServiceLoginBean(String cs_email, String cs_pwd) {
 		super();
 		this.cs_email = cs_email;

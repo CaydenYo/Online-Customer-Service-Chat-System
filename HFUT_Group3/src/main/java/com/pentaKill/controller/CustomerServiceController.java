@@ -69,7 +69,7 @@ public class CustomerServiceController {
     		return "register";
     	}
     	try {
-    		customerSvcService.csRegister(customerService);
+    		//customerSvcService.csRegister(customerService);
     		return "success";
     	} catch (Exception e) {
     		errors.reject("", e.getMessage());
