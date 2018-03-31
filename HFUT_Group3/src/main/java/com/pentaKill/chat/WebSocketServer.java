@@ -47,14 +47,27 @@ public class WebSocketServer {
 		String receiver_id = json.getString("receiver_id");
 		String content=json.getString("content");
 		
-		if (firstTime) {
-			
+		if (firstTime){
+		    
 			//第一次打开窗口要发送用户名进来
 			
 			//第一次要开启会话，记录会话的开始时间(发送者是客服的时候)
 			if(Integer.parseInt(sender_id)<2000){
 				ConversationBean cb=new ConversationBean(Integer.parseInt(receiver_id),Integer.parseInt(sender_id),null,null,-1);
 				conversationService.insertConversation_service(cb);
+				
+				//功能1//customer_waiting_team中包含该cs_id和customer_id的记录remove掉
+				
+				
+			}else{
+			    //功能1//找到所有在线的客服
+			    
+			    //功能2//找到所有在线客服中未满排队上限数的客服
+			    
+			    //功能3//两种算法 （1）老顾客优先算法去conversation里面找 （2）空闲优先算法选择最多空闲的客服
+			    
+			    //功能4//将该客服的customer_id和被选择cs_id放进到客服等待列表customer_waiting_team中(已写service和mapper)
+			    
 			}
 			
 			userMap.put(session.getId(),nickname);
@@ -108,7 +121,7 @@ public class WebSocketServer {
 	}
 
 	@OnClose
-	public void onClose(String message, Session session) {
+	public void onClose(Session session) {
 		//怎么显示在页面上
 		// 在客户端关闭的时候发送receiver_id
 		/*
