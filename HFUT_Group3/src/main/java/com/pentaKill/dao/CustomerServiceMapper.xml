@@ -48,8 +48,8 @@
             <if test="cs_img!=null">  
                 cs_img = #{cs_img},  
             </if>  
-            <if test="code!=null">  
-                code = #{code}  
+            <if test="cs_code!=null">  
+                cs_code = #{cs_code}  
             </if>  
         </set>  
         where cs_code=#{cs_code}  

@@ -5,19 +5,16 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.pentaKill.domain.CSManager;
 import com.pentaKill.domain.CustomerService;
+import com.pentaKill.domain.CustomerServiceRegisterBean;
 import com.pentaKill.domain.CustomerServiceStatusBean;
 import com.pentaKill.service.CustomerServiceService;
 
@@ -40,6 +37,30 @@ public class CustomerServiceMController {
 		System.out.println(cs.getCs_name());
 		return null;
 	}
+	
+	
+	@RequestMapping(value = "reg.do")  
+    public ModelAndView reg(ModelAndView mv, HttpServletRequest request) {  
+        CustomerServiceRegisterBean customerServiceRegisterBean = new CustomerServiceRegisterBean();  
+        customerServiceRegisterBean.setCs_email(request.getParameter("cs_email"));  
+        customerServiceRegisterBean.setCs_workId(request.getParameter("cs_workId")); 
+        if (customerServiceService.reg(customerServiceRegisterBean)) {  
+            mv.setViewName("/userlogin");  
+        } else {  
+            mv.addObject("msg", "注册失败");  
+            mv.setViewName("/index");  
+        }  
+        return mv;  
+    }  
+    
+    
+    @RequestMapping(value = "regconf.do")  
+    public ModelAndView regconf(ModelAndView mv, HttpServletRequest request) {  
+        String code = request.getParameter("cs_code");  
+        customerServiceService.regconf(code);  
+        mv.setViewName("/userlogin.jsp");  
+        return mv;  
+    }
 	
 	
 	
