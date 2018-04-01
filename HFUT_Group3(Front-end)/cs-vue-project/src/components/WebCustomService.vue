@@ -2,14 +2,20 @@
   <div class="user_ui">
     <el-container>
       <transition name="el-zoom-in-top">
-        <el-aside width="30%" v-if="show_cs">
+        <el-aside width="40%" v-if="show_cs">
           <div style="float:left;width:100%;height:100%">
-            <div style="float:left;width:100%;height:10%">
+            <div style="float:left;width:100%;height:7%">
              <el-row>
               <el-button type="info" icon="el-icon-caret-left"circle
               style="float:left;margin-top:1%;margin-left:1%" 
               @click="show_cs=false"></el-button>
             </el-row>
+          </div>
+          <div style="float:left;width:100%;height:93%">
+            <Heads>
+            </Heads>
+            <ChatList>
+            </ChatList>
           </div>
         </div>
       </el-aside>
@@ -124,11 +130,11 @@
   </el-dialog>
 
   
-    <el-carousel :interval="5000" arrow="always">
-      <el-carousel-item v-for="item in his" :key="item">
-        <a href=""><img alt="" v-bind:src="item.message"/></a>
-      </el-carousel-item>
-    </el-carousel>
+  <el-carousel :interval="5000" arrow="always">
+    <el-carousel-item v-for="item in his" :key="item">
+      <a href=""><img alt="" v-bind:src="item.message"/></a>
+    </el-carousel-item>
+  </el-carousel>
   
 </el-main>
 </el-container>
@@ -137,6 +143,8 @@
 </template>
 
 <script>
+import Heads from './EmbededChat/Heads'
+import ChatList from './EmbededChat/ChatList'
 export default {
   data (){
     return{
@@ -153,12 +161,16 @@ export default {
       register_tel:'',
       gender:'',
       his:[
-        {message: require('../assets/logo.png')},
-        {message: require('../assets/logo.png')},
-        {message: require('../assets/logo.png')},
-        {message: require('../assets/logo.png') },
-      ]
+      {message: require('../assets/logo.png')},
+      {message: require('../assets/logo.png')},
+      {message: require('../assets/logo.png')},
+      {message: require('../assets/logo.png') },
+      ],
     };
+  },
+  components: {
+    Heads,
+    ChatList
   },
   methods: {
     handleClose(done) {
