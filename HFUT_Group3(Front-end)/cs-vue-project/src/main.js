@@ -3,18 +3,19 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import Vuex from 'vuex'
+import store from './vuex/store.js'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
-import Mint from 'mint-ui'
-import 'mint-ui/lib/style.css'
+import MintUI from 'mint-ui'
+import  'mint-ui/lib/style.css'
 import 'font-awesome/css/font-awesome.min.css'
 
-
-
+Vue.use(MintUI)
+Vue.use(Vuex)
 Vue.prototype.$ajax = axios
 Vue.use(ElementUI);
-Vue.use(Mint);
 Vue.config.productionTip = false
 Vue.prototype.rootUrl = '/HFUT_Group3'
 
@@ -22,6 +23,7 @@ Vue.prototype.rootUrl = '/HFUT_Group3'
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
