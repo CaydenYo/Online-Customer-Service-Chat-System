@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import com.pentaKill.service.CustomerServiceMService;
 
 import net.sf.json.JSONObject;
 
+@Controller
 public class CustomerServiceMLoginController {
 	@Resource
 	private CustomerServiceMService customerServiceMService;

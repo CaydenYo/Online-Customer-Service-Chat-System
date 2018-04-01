@@ -11,7 +11,9 @@ public interface CustomerServiceMapper {
 	
 	public CustomerService selectBy(CustomerService customerService);
 	
-	public CustomerService selectByEmail(CustomerService customerService);
+	public void setRegStatus(CustomerService customerService);
+	
+	public CustomerService selectByEmail(String cs_email);
 	
 	public CustomerService selectByCode(String code);
 	
