@@ -11,6 +11,8 @@ import yhgl from '@/components/CsManage'
 import settings from '@/components/Settings'
 import know from '@/components/Know'
 import WebCustomService from '@/components/WebCustomService'
+import UserHCM from '@/components/UserHoverChat/UserHCM'
+import UserHCM2 from '@/components/UserHoverChat2/UserHCM2'
 
 Vue.use(Router)
 
@@ -19,6 +21,16 @@ export default new Router({
       path: '/',
       name: 'WebCustomService',
       component: WebCustomService
+    },
+    {
+      path: '/UserHCM',
+      name: '悬浮聊天',
+      component: UserHCM
+    },
+    {
+      path: '/UserHCM2',
+      name: '悬浮聊天',
+      component: UserHCM2
     },
     {
       path: '/CsLogin',
