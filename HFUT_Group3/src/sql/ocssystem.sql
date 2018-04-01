@@ -7,6 +7,7 @@ CREATE TABLE `customerInfo` (
 、customer_nickname、 varchar(20),
 `customer_name` varchar(20) NOT NULL,
 `customer_status` int default 0,
+`customer_age` int default 0,
 `customer_sex` int NOT NULL,		-- 0为女,1为男
 `customer_email`  varchar(255) DEFAULT NULL,
 `customer_pwd`  varchar(20) NOT NULL,
@@ -32,6 +33,8 @@ CREATE TABLE `companyInfo` (
 `dstribution_type` int DEFAULT 0,
 ---不能自增
 `robot_id`  int(10) NOT NULL,
+`customer_info_flag` int DEFAULT 0,
+`mininum_operating_num` int DEFAULT 0,
 `robot_name`  varchar(20) NOT NULL
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
@@ -52,15 +55,16 @@ CREATE TABLE `customerServiceInfo` (
 --已接待人数
 `cs_greetings`  int DEFAULT 0,
 `cs_status` int DEFAULT 0,
-`cs_operating_number` int(2)  DEFAULT 3,
-`cs_waiting_number` int(2)  DEFAULT 3,
-`cs_score`  float
+`cs_operating_number` int(2)  DEFAULT 3,  --客服自己设置
+`cs_waiting_number` int(2)  DEFAULT 3,    --客服自己设置
+`cs_operated_number` int(2) DEFAULT 0,
+`cs_waited_number` int(2) DEFAULT 0,
+`cs_score`  float DEFAULT 0,
+`cs_code` varchar(255)
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 insert into customerServiceInfo values(1000,'2015214459','Ye Fei','1','Sherhom',1,'123456','846953477@qq.com',
-			'1.jpg',124,1,0,0,5.0);
-
-
+			'1.jpg',124,1,0,0,5.0,'aaabbb');
 
 --5客服管理人员表
 DROP TABLE IF EXISTS `csManagerInfo`;
@@ -78,7 +82,7 @@ CREATE TABLE `conversation` (
 `conversation_id` int(20) PRIMARY KEY auto_increment,
 `customer_id`int(20) NOT NULL,
 `cs_id` int(20) NOT NULL,
-`start_time`  timestamp NOT NULL,
+`start_time`  timestamp NOT NULL default CURRENT_TIMESTAMP,
 `end_time`  timestamp NOT NULL default CURRENT_TIMESTAMP,
 `score` int(20) DEFAULT NULL,
 UNIQUE KEY `conversation_id` (`conversation_id`),

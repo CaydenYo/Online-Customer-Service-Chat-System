@@ -18,10 +18,6 @@ public class CustomerWaitingService {
     @Resource
     private CustomerWaitingMapper customerWaitingMapper;
     
-    public void inserCustomerWaitingTeam(int customerId, int csId){
-        customerWaitingMapper.insertWaitingCustomer(customerId, csId);
-    }
-    
     public List<WaitingCustomerBean> selectCustomerByCsId(int csId){
         
         List<Integer> customerIdList= new LinkedList<Integer>();

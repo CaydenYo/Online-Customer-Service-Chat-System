@@ -5,23 +5,18 @@
 
 <mapper namespace="com.pentaKill.dao.CustomerWaitingMapper">
 	
-	<insert id="insertWaitingCustomer" parameterType="int">
-		insert into customer_waiting_team 
-		values(#{0},#{1})
-	</insert>
-	
 	<select id="selectCustomerIdByCsId" parameterType="int"
 		resultType="Integer">
 		select customer_id
 		from customer_waiting_team
-		where `cs_id` = #{0}
+		where cs_id = #{0}
 	</select>
 	
 	<select id="selectCustomerByCsId" parameterType="int"
 		resultType="WaitingCustomerBean">
 		select customer_id,customer_nickname,customer_img
 		from customerServiceInfo,customerInfo
-		where `customer_id` = #{0}
+		where customer_id = #{0}
 	</select>
 
 </mapper>

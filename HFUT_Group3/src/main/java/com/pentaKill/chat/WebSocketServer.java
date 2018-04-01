@@ -2,8 +2,11 @@ package com.pentaKill.chat;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.websocket.OnClose;
@@ -14,8 +17,10 @@ import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
 import com.pentaKill.domain.ChatLogBean;
+import com.pentaKill.domain.ChooseCustomerServiceBean;
 import com.pentaKill.domain.ConversationBean;
 import com.pentaKill.domain.FindConversationBean;
+import com.pentaKill.domain.LastCustomerServiceBean;
 import com.pentaKill.service.ConversationService;
 
 import net.sf.json.JSONObject;
@@ -46,6 +51,7 @@ public class WebSocketServer {
 		String sender_id = json.getString("sender_id");
 		String receiver_id = json.getString("receiver_id");
 		String content=json.getString("content");
+		String company_name = json.getString("company_name");
 		
 		if (firstTime){
 		    
@@ -60,13 +66,57 @@ public class WebSocketServer {
 				
 				
 			}else{
-			    //功能1//找到所有在线的客服
+			    int cs_id;
+			    boolean listEmpty = false;
+			    //可以继续添加客服的老顾客
+                List<ChooseCustomerServiceBean> properLastList = new LinkedList<ChooseCustomerServiceBean>();
+			    //新客服且有空列表
+			    List<ChooseCustomerServiceBean> csList = new LinkedList<ChooseCustomerServiceBean>();
+			    //先找上次老客服
+			    //老客服且有空列表
+			    List<LastCustomerServiceBean> lcsList = new LinkedList<LastCustomerServiceBean>();
+			    lcsList = conversationService.selectLastCustomerService(Integer.parseInt(sender_id));
+			    if(!lcsList.isEmpty()){
+                    for(LastCustomerServiceBean lcs:lcsList){
+                        ChooseCustomerServiceBean ccs = conversationService.selecLasttCustomerServiceInfo(lcs.getCs_id());
+                        if(ccs.getCs_status() == 1 && ccs.getCs_waiting_number() > ccs.getCs_waited_number()){
+                            properLastList.add(ccs);
+                        }
+                    }
+                    if(properLastList.isEmpty()){
+                        listEmpty = true;
+                    }
+			    }
 			    
-			    //功能2//找到所有在线客服中未满排队上限数的客服
+			    int distributionType = conversationService.getDistributionType(company_name);
 			    
-			    //功能3//两种算法 （1）老顾客优先算法去conversation里面找 （2）空闲优先算法选择最多空闲的客服
+			    if(listEmpty){
+			        //功能1//找到所有在线的客服，找到所有在线客服中未满排队上限数的客服
+                    csList = conversationService.selectCustomerServiceByStatus();
+                    //功能2//两种算法 （1）老顾客优先算法去conversation里面找 （2）空闲优先算法选择最多空闲的客服
+                    //2.1 负载分配
+                    ChooseCustomerServiceBean temp = csList.get(0);
+                    if(distributionType == 0){
+                        for(ChooseCustomerServiceBean ccsb: csList){
+                            if((ccsb.getCs_waiting_number()-ccsb.getCs_waited_number())>(temp.getCs_waiting_number()-temp.getCs_waited_number())){
+                                temp = ccsb;
+                            }
+                        }
+                    }else{
+                      //2.2轮流分配
+                    
+                    
+                    
+                    }
+                    cs_id = temp.getCs_id();
+    			}else{
+    			    cs_id = properLastList.get(properLastList.size()-1).getCs_id();
+			    }
+			    //功能3//将该客服的customer_id和被选择cs_id放进到客服等待列表customer_waiting_team中(已写service和mapper)
+			    conversationService.inserCustomerWaitingTeam(Integer.parseInt(sender_id), cs_id);
+			    //功能4 //客服管理人员查看等待人数要+1
+			    conversationService.increaseCsManageToolWaitingPeople();
 			    
-			    //功能4//将该客服的customer_id和被选择cs_id放进到客服等待列表customer_waiting_team中(已写service和mapper)
 			    
 			}
 			
