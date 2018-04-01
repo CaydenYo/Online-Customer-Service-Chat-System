@@ -10,14 +10,15 @@ import kfgl from '@/components/KfManage'
 import yhgl from '@/components/CsManage'
 import settings from '@/components/Settings'
 import know from '@/components/Know'
+import WebCustomService from '@/components/WebCustomService'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [{
       path: '/',
-      name: 'CSM_UI',
-      component: CSM_UI
+      name: 'WebCustomService',
+      component: WebCustomService
     },
     {
       path: '/CsLogin',
