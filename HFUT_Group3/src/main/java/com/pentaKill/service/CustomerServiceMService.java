@@ -2,6 +2,8 @@ package com.pentaKill.service;
 
 import javax.annotation.Resource;
 
+import org.springframework.stereotype.Service;
+
 import com.pentaKill.dao.CustomerServiceMMapper;
 import com.pentaKill.domain.CSManager;
 import com.pentaKill.domain.CSManagerLoginBean;
@@ -9,7 +11,7 @@ import com.pentaKill.domain.CSManagerLoginBean;
 import com.pentaKill.exception.LoginException;
 import com.pentaKill.exception.RegisterException;
 
-
+@Service
 public class CustomerServiceMService {
 	@Resource
 	CustomerServiceMMapper customerServiceMMapper;

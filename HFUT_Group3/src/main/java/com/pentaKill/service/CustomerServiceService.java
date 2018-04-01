@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Resource;
+import javax.swing.text.DefaultEditorKit.CutAction;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -70,7 +71,7 @@ public class CustomerServiceService {
         customerService.setCs_nickName("pentaKill_" + email);
         customerService.setCs_pwd("pentaKill_" + email);
         customerService.setCs_img("pentaKill_" + email);
-        if (customerServiceMapper.selectByEmail(customerService) == null) {
+        if (customerServiceMapper.selectByEmail(email) == null) {
             customerServiceMapper.create(customerService);
             try {
 
@@ -99,6 +100,28 @@ public class CustomerServiceService {
         CustomerService customerService = customerServiceMapper.selectByCode(code);
         customerService.setCs_register_status(1);
         customerService.setCs_code(code);
+        customerServiceMapper.setRegStatus(customerService);
+    }
+    
+    public CustomerService selectByEmail(String cs_email){
+        return customerServiceMapper.selectByEmail(cs_email);
+    }
+
+    public void setStatus(int cs_status, CustomerService customerService) {
+        customerService.setCs_status(cs_status);
+        customerServiceMapper.modifyUser(customerService);
+    }
+
+    public void setNumber(int cs_operating_number, int cs_waiting_number, CustomerService customerService) {
+        customerService.setCs_waiting_number(cs_waiting_number);
+        customerService.setCs_operating_number(cs_operating_number);
+        customerServiceMapper.modifyUser(customerService);
+    }
+    
+    public void setProfile(String cs_pwd, String cs_img,String cs_nickName , CustomerService customerService) {
+        customerService.setCs_pwd(cs_pwd);
+        customerService.setCs_img(cs_img);
+        customerService.setCs_nickName(cs_nickName);
         customerServiceMapper.modifyUser(customerService);
     }
 
