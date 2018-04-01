@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.pentaKill.dao.CustomerServiceMapper;
+import com.pentaKill.domain.ChooseCustomerServiceBean;
 import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceStatusBean;
 import com.pentaKill.domain.CustomerServiceLoginBean;
@@ -124,5 +125,6 @@ public class CustomerServiceService {
         customerService.setCs_nickName(cs_nickName);
         customerServiceMapper.modifyUser(customerService);
     }
+    
 
 }

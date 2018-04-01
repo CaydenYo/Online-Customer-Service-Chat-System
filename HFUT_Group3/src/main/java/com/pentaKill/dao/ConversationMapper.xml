@@ -24,4 +24,46 @@
 		select conversation_id from conversation
 		where customer_id = #{customer_id} and cs_id=#{cs_id} and start_time = end_time
 	</select>
+	
+	<!-- 寻找上一次的老顾客 -->
+	<select id="selectLastCustomer" parameterType="int"
+		resultType="lastCustomerServiceBean">
+		select cs_id,start_time
+		from conversation
+		where customer_id = #{0} 
+		order by start_time desc
+	</select>
+	
+	<!-- 根据客服id寻找对应单个客服 -->
+	<select id="selectLastCustomerServiceBean" parameterType="int"
+		resultType="chooseCustomerServiceBean">
+		select cs_id,cs_status,cs_workId,cs_operating_number,cs_waiting_number,cs_operated_number,cs_waited_number
+		from customerServiceInfo
+		where cs_id = #{0}
+	</select>
+	
+	<!-- 寻找对应的在线且排队不满的客服 -->
+	<select id="selectCustomerServiceByStatus"
+		resultType="chooseCustomerServiceBean">
+		select cs_id,cs_status,cs_workId,cs_operating_number,cs_waiting_number,cs_operated_number,cs_waited_number
+		from customerServiceInfo
+		where cs_status = 1 and cs_waiting_number > cs_waited_number
+	</select>
+	
+	<!-- 寻找公司名称找到排队方式算法 -->
+	<select id="getDistributionType" parameterType="String"
+		resultType="int">
+		select dstribution_type
+		from companyInfo
+		where company_name = #{0}
+	</select>
+	
+	<insert id="insertWaitingCustomer" parameterType="int">
+		insert into customer_waiting_team 
+		values(#{0},#{1})
+	</insert>
+	  
+	<update id="increaseCsManageToolWaitingPeople">
+		update cs_management_tool set waiting_number = waiting_number + 1
+	</update>
 </mapper>
