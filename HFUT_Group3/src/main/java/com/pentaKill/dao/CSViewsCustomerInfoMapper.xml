@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3.dtd">
+<mapper namespace = "com.pentaKill.dao.CSViewsCustomerInfoMapper">
+
+	<!-- 寻找客服是否能够查看用户信息的标志 -->
+	<select id="searchCustomerInfoFlag_mapper" parameterType="int"
+		resultType="int">
+		select customer_info_flag from companyInfo
+		where company_id = #{0}
+	</select>
+
+
+	<!-- 寻找客服所在公司 -->
+	<select id="searchCompanyId_mapper" parameterType="int"
+		resultType="int">
+		select company_id from customerServiceInfo
+		where cs_id = #{0}
+	</select>
+	
+	
+	<!-- 寻找客服信息 -->
+	<select id="searchCustomerInfo_mapper" parameterType="int"
+		resultType="CSViewsCustomerInfoBean">
+		select * from customerInfo
+		where customer_id = #{0}
+	</select>
+</mapper>
