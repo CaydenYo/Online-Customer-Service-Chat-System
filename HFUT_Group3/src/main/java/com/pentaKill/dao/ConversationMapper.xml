@@ -66,4 +66,26 @@
 	<update id="increaseCsManageToolWaitingPeople">
 		update cs_management_tool set waiting_number = waiting_number + 1
 	</update>
+	
+	<update id="decreaseCsManageToolWaitingPeople">
+		update cs_management_tool set waiting_number = waiting_number - 1
+	</update>
+	
+	<delete id="deleteCustomerWaitingTeam" parameterType="int">
+          delete from customer_waiting_team where cs_id=#{0} and customer_id=#{1}
+     </delete>
+     
+     <select id="getCsNicknameByCsId" parameterType="int"
+		resultType="String">
+		select cs_nickName
+		from customerServiceInfo
+		where cs_id = #{0}
+	</select>
+	
+	<select id="getCustomerNicknameByCustomerId" parameterType="int"
+		resultType="String">
+		select customer_nickname
+		from customerInfo
+		where customer_id = #{0}
+	</select>
 </mapper>
