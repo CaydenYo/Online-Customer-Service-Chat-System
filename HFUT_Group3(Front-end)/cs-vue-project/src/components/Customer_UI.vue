@@ -48,6 +48,7 @@
           <template slot="title">账户</template>
           <el-menu-item index="4-1">登录</el-menu-item>
           <el-menu-item index="4-2">注册</el-menu-item>
+          <el-menu-item index="4-3">个人信息</el-menu-item>
         </el-submenu>
       </el-menu>
     </el-header>
@@ -60,38 +61,36 @@
       <el-tabs v-model="activeName" @tab-click="handleClick"> 
         <el-tab-pane label="登录" name="first">
           <label for="login_username">账号</label>
-          <el-input type="text" v-model="login_username" id="login_username" placeholder="请输入邮箱"
+          <el-input type="text" v-model="login_info.customer_email" id="login_username" placeholder="请输入邮箱"
           style="width:50%;"></el-input>
           <br><br>
           <label for="login_password">密码</label>
-          <el-input type="password" v-model="login_password" id="login_password" placeholder="请输入密码"
+          <el-input type="password" v-model="login_info.customer_pwd" id="login_password" placeholder="请输入密码"
           style="width:50%;"></el-input>
           <br><br>
           <el-button round v-on:click="login" style="width:50%;">登录</el-button>
         </el-tab-pane>
         <el-tab-pane label="注册" name="second">
-          <label for="register_username">账号</label>
-          <el-input type="text" v-model="register_username" id="register_username" placeholder="请输入邮箱"
+          <label for="register_username">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</label>
+          <el-input type="text" v-model="register_info.customer_email" id="register_username" placeholder="请输入邮箱"
           style="width:50%;"></el-input>
           <br><br>
-          <label for="register_password">密码</label>
-          <el-input type="password" v-model="register_password" id="register_password" placeholder="请输入密码"
+          <label for="register_password">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+          <el-input type="password" v-model="register_info.customer_pwd" id="register_password" placeholder="请输入密码"
           style="width:50%;"></el-input>
           <br><br>
-          <label for="register_name">姓名</label>
-          <el-input type="text" v-model="register_name" id="register_name" placeholder="请输入姓名"
+          <label for="register_name">确认密码</label>
+          <el-input type="text" v-model="register_info.customer_repwd" id="register_repassword" placeholder="请输入密码"
           style="width:50%;"></el-input>
           <br><br>
-          <label for="register_ID">身份证</label>
-          <el-input type="text" v-model="register_ID" id="register_ID" placeholder="15或18位身份证号码" pattern="\d{15}(\d\d[0-9xX])?"
-          style="width:50%;"></el-input>
+          <label for="register_ID">家庭地址</label>
+          <el-input type="text" v-model="register_info.customer_address" id="register_address" placeholder="请输入地址" style="width:50%;"></el-input>
           <br><br>
-          <label for="register_tel">手机</label>
-          <el-input type="text" v-model="register_tel" id="register_tel" placeholder="由13、15、18开头" pattern="^((13[0-9])|(15[0-9])|(18[0,5-9]))\d{8}$"
-          style="width:50%;"></el-input>
+          <label for="register_nickname">昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</label>
+          <el-input type="text" v-model="register_info.customer_nickname" id="register_nickname" placeholder="由13、15、18开头" style="width:50%;"></el-input>
           <br><br>
-          <el-radio v-model="gender" label="1">男</el-radio>
-          <el-radio v-model="gender" label="2">女</el-radio>
+          <el-radio v-model="register_info.customer_gender" label="1">男</el-radio>
+          <el-radio v-model="register_info.customer_gender" label="2">女</el-radio>
           <br><br>
           <el-button round v-on:click="register" style="width:50%;">注册</el-button>
         </el-tab-pane>
@@ -103,28 +102,26 @@
     width="50%"
     :before-close="handleClose">
     <h1>账号注册</h1>
-    <label for="register_username">账号</label>
-    <el-input type="text" v-model="register_username" id="register_username" placeholder="请输入邮箱"
+    <label for="register_username">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</label>
+    <el-input type="text" v-model="register_info.customer_email" id="register_username" placeholder="请输入邮箱"
     style="width:50%;"></el-input>
     <br><br>
-    <label for="register_password">密码</label>
-    <el-input type="password" v-model="register_password" id="register_password" placeholder="请输入密码"
+    <label for="register_password">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
+    <el-input type="password" v-model="register_info.customer_pwd" id="register_password" placeholder="请输入密码"
     style="width:50%;"></el-input>
     <br><br>
-    <label for="register_name">姓名</label>
-    <el-input type="text" v-model="register_name" id="register_name" placeholder="请输入姓名"
+    <label for="register_name">确认密码</label>
+    <el-input type="text" v-model="register_info.customer_repwd" id="register_repassword" placeholder="请输入密码"
     style="width:50%;"></el-input>
     <br><br>
-    <label for="register_ID">身份证</label>
-    <el-input type="text" v-model="register_ID" id="register_ID" placeholder="15或18位身份证号码" pattern="\d{15}(\d\d[0-9xX])?"
-    style="width:50%;"></el-input>
+    <label for="register_ID">家庭地址</label>
+    <el-input type="text" v-model="register_info.customer_address" id="register_address" placeholder="请输入地址" style="width:50%;"></el-input>
     <br><br>
-    <label for="register_tel">手机</label>
-    <el-input type="text" v-model="register_tel" id="register_tel" placeholder="由13、15、18开头" pattern="^((13[0-9])|(15[0-9])|(18[0,5-9]))\d{8}$"
-    style="width:50%;"></el-input>
+    <label for="register_nickname">昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</label>
+    <el-input type="text" v-model="register_info.customer_nickname" id="register_nickname" placeholder="由13、15、18开头" style="width:50%;"></el-input>
     <br><br>
-    <el-radio v-model="gender" label="1">男</el-radio>
-    <el-radio v-model="gender" label="2">女</el-radio>
+    <el-radio v-model="register_info.customer_gender" label="1">男</el-radio>
+    <el-radio v-model="register_info.customer_gender" label="2">女</el-radio>
     <br><br>
     <el-button round v-on:click="register" style="width:50%;">注册</el-button>
   </el-dialog>
@@ -148,18 +145,24 @@ import ChatList from './EmbededChat/ChatList'
 export default {
   data (){
     return{
+      login_url:'/login.action',
+      register_url:'/register.action',
       show_cs: false,
       activeName: 'first',
       dialogLoginVisible:false,
       dialogRegisterVisible:false,
-      login_username:'',
-      login_password:'',
-      register_username:'',
-      register_password:'',
-      register_name:'',
-      register_ID:'',
-      register_tel:'',
-      gender:'',
+      login_info:{
+        customer_email:'',
+        customer_pwd:''
+      },
+      register_info:{
+        customer_email:'',
+        customer_pwd:'',
+        customer_repwd:'',
+        customer_address:'',
+        customer_nickname:'',
+        customer_gender:''
+      },
       his:[
       {message: require('../assets/logo.png')},
       {message: require('../assets/logo.png')},
@@ -195,8 +198,8 @@ export default {
     },
     login : function(event){
               //获取值
-              var username = this.login_username;
-              var password = this.login_password;
+              var username = this.login_info.customer_email;
+              var password = this.login_info.customer_pwd;
               if(username == '' || password == ''){
                 this.$message({
                   message : '账号或密码为空！',
@@ -204,66 +207,64 @@ export default {
                 })
                 return;
               }
-              $.ajax({
-                url : 'login',
-                type : 'post',
-                data : {
-                  username : login_username,
-                  password : login_password
-                },
-                success : function(data) {
-                  var result = data.result;
-                  if(result == 'true' || result == true){
-                    alert("登录成功");
-                  }else {
-                    alert("登录失败");
-                  }
-                },
-                error : function(data) {
-                  alert(data);
-                },
-                dataType : 'json',
+              let _this = this
+              var params = new URLSearchParams();
+              params.append('data',JSON.stringify(this.login_info));
+              this.$axios({
+                method: 'post',
+                url:this.rootUrl + _this.login_url,
+                data: params
+              }).then((res)=>{
+                if(res.data === "success"){
+                  alert("success")
+                  this.$router.push({path: '/success'})
+                }else{
+                  this.$message({
+                    message:JSON.stringify(res.data),
+                    type:'error'
+                  })
+                }
               })
             },
             register :function(even){
-              var username = this.register_username;
-              var password = this.register_password;
-              var name = this.register_name;
-              var ID = this.register_ID;
-              var tel = this.register_tel;
-              var gender = this.gender;
-              if(username == '' || password == ''|| name == ''
-               || ID == '' || tel == ''){
+              var username = this.register_info.customer_email;
+              var password = this.register_info.customer_pwd;
+              var repassword = this.register_info.customer_repwd;
+              var address = this.register_info.customer_address;
+              var nickname = this.register_info.customer_nickname;
+              var gender = this.register_info.customer_gender;
+              if(username == '' || password == ''|| repassword == ''
+               || address == '' || nickname == ''){
                 this.$message({
                   message : '信息不完全！',
                   type : 'error'
                 })
               return;
+            }else if(repassword != password){
+              this.$message({
+                message : '两次密码不一致！',
+                type : 'error'
+              })
+              return
             }
-            $.ajax({
-              url : 'register',
-              type : 'post',
-              data : {
-                username : register_username,
-                password : register_password,
-                name: register_name,
-                ID: register_ID,
-                tel: register_tel,
-                gender: gender
-              },
-              success : function(data) {
-                var result = data.result;
-                if(result == 'true' || result == true){
-                  alert("注册成功");
-                }else {
-                  alert("注册失败");
+            let _this = this
+            var params = new URLSearchParams();
+              params.append('data',JSON.stringify(this.register_info));
+              this.$axios({
+                method: 'post',
+                url:this.rootUrl + _this.register_url,
+                data: params
+              }).then((res)=>{
+                if(res.data === "success"){
+                  alert("success")
+                  this.$router.push({path: '/success'})
+                }else{
+                  this.$message({
+                    message:JSON.stringify(res.data),
+                    type:'error'
+                  })
                 }
-              },
-              error : function(data) {
-                alert(data);
-              },
-              dataType : 'json',
-            })
+              })
           }
         }
 

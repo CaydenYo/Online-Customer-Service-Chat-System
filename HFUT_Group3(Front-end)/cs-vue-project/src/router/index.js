@@ -10,7 +10,7 @@ import kfgl from '@/components/KfManage'
 import yhgl from '@/components/CsManage'
 import settings from '@/components/Settings'
 import know from '@/components/Know'
-import WebCustomService from '@/components/WebCustomService'
+import Customer_UI from '@/components/Customer_UI'
 import UserHCM from '@/components/UserHoverChat/UserHCM'
 import UserHCM2 from '@/components/UserHoverChat2/UserHCM2'
 
@@ -19,8 +19,8 @@ Vue.use(Router)
 export default new Router({
   routes: [{
       path: '/',
-      name: 'CSM_UI',
-      component: CSM_UI
+      name: 'Customer_UI',
+      component: Customer_UI
     },
     {
       path: '/UserHCM',
