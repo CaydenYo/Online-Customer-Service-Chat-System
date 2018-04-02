@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.pentaKill.dao.CustomerServiceMapper;
+import com.pentaKill.domain.Company;
 import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceLoginBean;
 import com.pentaKill.exception.LoginException;
+import com.pentaKill.service.CompanyService;
 import com.pentaKill.service.CustomerServiceService;
 
 import net.sf.json.JSONObject;
@@ -31,6 +33,9 @@ public class CustomerServiceController {
 	@Resource
 	private CustomerServiceService customerSvcService;
 
+	@Resource
+	private CompanyService companyService;
+	
 	@RequestMapping(value = "/Login", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
 	@ResponseBody
 	public String csLogin(HttpServletRequest request, HttpServletResponse response)
@@ -90,7 +95,16 @@ public class CustomerServiceController {
         JSONObject json = JSONObject.fromObject(data);
         int cs_waiting_number = json.getInt("cs_waiting_number");
         int cs_operating_number = json.getInt("cs_operating_number");
+        int company_id = json.getInt("company_id");
         String cs_email = json.getString("cs_email");
+        
+        Company company = companyService.findCompany(company_id);
+        int minimum = company.getMininum_operating_num();
+        //设置的人数小于公司最小人数
+        if(cs_operating_number < minimum){
+            String str = gson.toJson(minimum);
+            return str;
+        }
         
         CustomerService customerService = new CustomerService();
         //要先拿出来，其他数据不能动

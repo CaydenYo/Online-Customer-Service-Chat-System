@@ -20,6 +20,7 @@ import com.google.gson.Gson;
 import com.pentaKill.domain.CSManager;
 import com.pentaKill.domain.CSManagerLoginBean;
 import com.pentaKill.exception.LoginException;
+import com.pentaKill.exception.RegisterException;
 import com.pentaKill.service.CustomerServiceMService;
 
 import net.sf.json.JSONObject;
@@ -56,16 +57,15 @@ public class CustomerServiceMLoginController {
 	
 	
 	@RequestMapping(value="/Register", method=RequestMethod.POST)
-	public String cmResgister(@Valid @ModelAttribute("csManager")CSManager  csManager, 
-    		Errors errors, HttpSession session) {
-    	if (errors.hasFieldErrors()) return "register";
-    	try {
-    		customerServiceMService.csmRegister(csManager);
-    		return "success";
-    	} catch (Exception e) {
-    		errors.reject("", e.getMessage());
-            return "register";
-    	}
-
+	public String cmResgister(HttpServletRequest request, HttpServletResponse response) throws RegisterException {
+	    Gson gson = new Gson();
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        String csm_email = json.getString("csm_email");
+        String csm_pwd = json.getString("csm_pwd");
+        int company_id = Integer.valueOf(json.getString("company_id"));
+	    CSManager csm = new CSManager(csm_email,csm_pwd,company_id);
+	    customerServiceMService.csmRegister(csm);
+	    return gson.toJson("success");
 	}
 }

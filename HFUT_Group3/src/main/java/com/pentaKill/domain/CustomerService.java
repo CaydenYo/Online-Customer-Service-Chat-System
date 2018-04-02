@@ -6,7 +6,7 @@ import org.hibernate.validator.constraints.Range;
 public class CustomerService {
 
 	private int cs_id;
-	private String company_id;
+	private int company_id;
 	private String cs_workId;
 	@NotBlank(message = "用户名不能为空")
 	private String cs_name;
@@ -32,7 +32,7 @@ public class CustomerService {
 
 
 
-	public CustomerService(int cs_id, String company_id, String cs_workId, String cs_name, String cs_nickName,
+	public CustomerService(int cs_id, int company_id, String cs_workId, String cs_name, String cs_nickName,
             String cs_pwd, String cs_email, String cs_img, int cs_greetings, int cs_status, int cs_operating_number,
             int cs_waiting_number, float cs_score, int cs_register_status, String cs_code) {
         super();
@@ -100,11 +100,11 @@ public class CustomerService {
 
 
 
-	public String getCompany_id() {
+	public int getCompany_id() {
 		return company_id;
 	}
 
-	public void setCompany_id(String company_id) {
+	public void setCompany_id(int company_id) {
 		this.company_id = company_id;
 	}
 

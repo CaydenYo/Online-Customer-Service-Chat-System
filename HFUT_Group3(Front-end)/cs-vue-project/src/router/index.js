@@ -19,8 +19,8 @@ Vue.use(Router)
 export default new Router({
   routes: [{
       path: '/',
-      name: 'WebCustomService',
-      component: WebCustomService
+      name: 'CSM_UI',
+      component: CSM_UI
     },
     {
       path: '/UserHCM',
@@ -54,7 +54,7 @@ export default new Router({
       }]
     },
     {
-      path: '/',
+      path: '/success',
       name: '客服管理',
       component: AdminHome,
       children: [{
