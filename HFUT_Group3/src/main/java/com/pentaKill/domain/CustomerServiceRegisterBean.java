@@ -3,7 +3,7 @@ package com.pentaKill.domain;
 public class CustomerServiceRegisterBean {
 	private String cs_email;
 	private String cs_workId;
-	private String company_id;
+	private int company_id;
 	private int cs_register_status;
 	private String cs_code;
 	
@@ -21,10 +21,10 @@ public class CustomerServiceRegisterBean {
 	public void setCs_email(String cs_email) {
 		this.cs_email = cs_email;
 	}
-	public String getCompany_id() {
+	public int getCompany_id() {
 		return company_id;
 	}
-	public void setCompany_id(String company_id) {
+	public void setCompany_id(int company_id) {
 		this.company_id = company_id;
 	}
 	

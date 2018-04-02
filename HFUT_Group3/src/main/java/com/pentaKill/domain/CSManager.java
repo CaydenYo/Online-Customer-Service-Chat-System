@@ -5,7 +5,7 @@ public class CSManager {
 	private int csm_id;
 	private String csm_email;
 	private String csm_pwd;
-	private String company_id;
+	private int company_id;
 	public int getCsm_id() {
 		return csm_id;
 	}
@@ -24,10 +24,10 @@ public class CSManager {
 	public void setCsm_pwd(String csm_pwd) {
 		this.csm_pwd = csm_pwd;
 	}
-	public String getCompany_id() {
+	public int getCompany_id() {
 		return company_id;
 	}
-	public void setCompany_id(String company_id) {
+	public void setCompany_id(int company_id) {
 		this.company_id = company_id;
 	}
 	
