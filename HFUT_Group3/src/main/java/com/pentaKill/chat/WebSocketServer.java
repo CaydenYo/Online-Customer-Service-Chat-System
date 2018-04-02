@@ -63,7 +63,9 @@ public class WebSocketServer {
 				conversationService.insertConversation_service(cb);
 				
 				//功能1//customer_waiting_team中包含该cs_id和customer_id的记录remove掉
-				
+				conversationService.deleteCustomerWaitingTeam(Integer.parseInt(sender_id), Integer.valueOf(receiver_id));
+				//功能2//客服管理人员查看等待人数要-1
+				conversationService.decreaseCsManageToolWaitingPeople();
 				
 			}else{
 			    int cs_id;
@@ -104,7 +106,7 @@ public class WebSocketServer {
                         }
                     }else{
                       //2.2轮流分配
-                    
+                      
                     
                     
                     }
@@ -131,14 +133,20 @@ public class WebSocketServer {
 			int conversation_id=-1;
 			int content_type=0;
 			
+			String reciver_nickname;
+			
 			//判断发送者是客服还是用户
 			if(Integer.parseInt(sender_id)<2000){
 				from_customer=1;
 				cs_id=Integer.parseInt(sender_id);
 				customer_id=Integer.parseInt(receiver_id);
+				//nickname为客户的nickname
+				reciver_nickname = conversationService.getCustomerNicknameByCustomerId(Integer.valueOf(receiver_id));
 			}else{
 				customer_id=Integer.parseInt(sender_id);
 				cs_id=Integer.parseInt(receiver_id);
+				//nickname为客服的nickname
+				reciver_nickname = conversationService.getCsNicknameByCsId(Integer.valueOf(receiver_id));
 			}
 			
 			FindConversationBean fcb=new FindConversationBean(customer_id,cs_id);
@@ -157,8 +165,8 @@ public class WebSocketServer {
 					synchronized (webSocketServer) {
 						webSocketServer.session.getAsyncRemote().sendText(json.toString());
 					}
-
-				} else if (key.equals(receiver_id)) {
+				//还要根据receiver_id找到对应的nickname
+				} else if (key.equals(reciver_nickname)) {
 					json.put("isSelf", false);
 					synchronized (webSocketServer) {
 						webSocketServer.session.getAsyncRemote().sendText(json.toString());

@@ -65,4 +65,20 @@ public class ConversationService {
     public void increaseCsManageToolWaitingPeople(){
         conversationMapper.increaseCsManageToolWaitingPeople();
     }
+    
+    public void deleteCustomerWaitingTeam(int csId, int customerId){
+        conversationMapper.deleteCustomerWaitingTeam(csId, customerId);
+    }
+    
+    public void decreaseCsManageToolWaitingPeople(){
+        conversationMapper.decreaseCsManageToolWaitingPeople();
+    }
+    
+    public String getCsNicknameByCsId(int cs_id){
+        return conversationMapper.getCsNicknameByCsId(cs_id);
+    }
+    
+    public String getCustomerNicknameByCustomerId(int customer_id){
+        return conversationMapper.getCustomerNicknameByCustomerId(customer_id);
+    }
 }
