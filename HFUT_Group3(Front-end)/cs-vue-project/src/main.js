@@ -10,11 +10,11 @@ import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import MintUI from 'mint-ui'
 import  'mint-ui/lib/style.css'
-import 'font-awesome/css/font-awesome.min.css'
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 Vue.use(MintUI)
 Vue.use(Vuex)
-Vue.prototype.$ajax = axios
+Vue.prototype.$axios = axios
 Vue.use(ElementUI);
 Vue.config.productionTip = false
 Vue.prototype.rootUrl = '/HFUT_Group3'
