@@ -26,8 +26,8 @@ public class CSViewsCustomerInfoController {
 
         String data = req.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        int cs_id = Integer.parseInt("cs_id");
-        int customer_id = Integer.parseInt("customer_id");
+        int cs_id = Integer.parseInt(json.getString("cs_id"));
+        int customer_id = Integer.parseInt(json.getString("customer_id"));
 
         // 查询客服对应的公司
         int company_id = csViewsCustomerInfoService.searchCompanyId_service(cs_id);
