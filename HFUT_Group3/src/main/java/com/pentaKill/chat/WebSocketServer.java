@@ -16,11 +16,14 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 
+import com.google.gson.Gson;
 import com.pentaKill.domain.ChatLogBean;
 import com.pentaKill.domain.ChooseCustomerServiceBean;
 import com.pentaKill.domain.ConversationBean;
 import com.pentaKill.domain.FindConversationBean;
 import com.pentaKill.domain.LastCustomerServiceBean;
+import com.pentaKill.domain.NewChatLogBean;
+import com.pentaKill.service.CSViewsHistoryMessageService;
 import com.pentaKill.service.ConversationService;
 
 import net.sf.json.JSONObject;
@@ -29,6 +32,9 @@ import net.sf.json.JSONObject;
 public class WebSocketServer {
 	@Resource 
 	ConversationService conversationService;
+	@Resource
+	CSViewsHistoryMessageService csViewsHistoryMessageService;
+	
 	
 	private boolean firstTime = true;
 	private String nickName;
@@ -125,7 +131,31 @@ public class WebSocketServer {
 			userMap.put(session.getId(),nickname);
 			
 			firstTime = false;
-		} else {
+		} else if(content.equals("csViewsHistoryMessage.action")){
+		    //当客服点击查看历史信息时，就会发送这个信息"csViewsHistoryMessage.action"
+		    //从后台取出所有客服与这个客户的聊天记录，然后发送到前台
+		    List<NewChatLogBean> ans = csViewsHistoryMessageService.getChatlog_service(Integer.parseInt(receiver_id),Integer.parseInt(sender_id));
+		    
+		    Gson gson=new Gson();
+		    
+		    //需要一个新的js函数来接收
+		    String temp=gson.toJson(ans);
+		    
+		   //聊天记录消息只发给自己
+		    for (String key : userMap.keySet()) {
+                webSocketServer = (WebSocketServer) connectedUser.get(key);
+                if (nickname.equalsIgnoreCase(userMap.get(key))) {
+                    //json.put("isSelf", true);
+                    //判断是不是客服发的直接用from_customer属性判断     
+                    synchronized (webSocketServer) {
+                        webSocketServer.session.getAsyncRemote().sendText(temp);
+                    }
+                //还要根据receiver_id找到对应的nickname
+                }
+		    }
+		    
+		    
+		}else {
 			//每次会话都要存入数据库
 			int customer_id=-1;
 			int cs_id=-1;

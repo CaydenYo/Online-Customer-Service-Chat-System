@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3.dtd">
+<mapper namespace="com.pentaKill.dao.CSViewsHistoryMessageMapper">
+	
+	<!-- 寻找会话记录id -->
+	<select id="getCLConversationId_mapper" parameterType="int"
+		resultType="GetCoversationIdBean">
+		select * from conversation
+		where customer_id = #{0}
+	</select> 
+	
+	<!-- 寻找顾客信息 -->
+	<select id="getCustomerCLInfo_mapper" parameterType="int"
+		resultType="CustomerCLBean">
+		select * from customerInfo
+		where customer_id = #{0}
+	</select>
+	
+	<!-- 寻找客服信息-->
+	<select id="getCSCLInfo_mapper" parameterType="int"
+		resultType="CSCLBean">
+		select * from customerServiceInfo
+		where cs_id = #{0}
+	</select> 
+	
+	<!-- 寻找聊天记录 -->
+	<select id="getChatLog_mapper" parameterType="int"
+		resultType="NewChatLogBean">
+		
+		select * from chatLog
+		where conversation_id = #{0}
+	</select>
+</mapper>
