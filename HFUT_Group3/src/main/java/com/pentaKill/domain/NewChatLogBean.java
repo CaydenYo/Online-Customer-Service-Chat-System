@@ -2,7 +2,7 @@ package com.pentaKill.domain;
 
 import java.sql.Timestamp;
 
-public class NewChatLogBean implements Comparable<NewChatLogBean>{
+public class NewChatLogBean implements Comparable<NewChatLogBean> {
     private int conversation_id;
     private int receiver_id;
     private int sender_id;
@@ -10,11 +10,11 @@ public class NewChatLogBean implements Comparable<NewChatLogBean>{
     private Timestamp time;
     private int content_type;
     private String content;
-    //仅记录发送者的昵称和头像
+    // 仅记录发送者的昵称和头像
     private String sender_nickname;
     private String sender_img;
-   
-  //按照时间对chatlog进行排序
+
+    // 按照时间对chatlog进行排序
     @Override
     public int compareTo(NewChatLogBean o) {
         int flag = this.time.compareTo(o.time);
@@ -118,6 +118,5 @@ public class NewChatLogBean implements Comparable<NewChatLogBean>{
     public void setSender_img(String sender_img) {
         this.sender_img = sender_img;
     }
-    
-   
+
 }

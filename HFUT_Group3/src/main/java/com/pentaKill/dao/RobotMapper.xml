@@ -27,12 +27,14 @@
 	</select>
 
 	<update id="updateKnowledge" parameterType="updateKnowledgeBean">
-		update knowledge set question=#{question},answer = #{answer}
-		where knowledge_id=#{knowledge_id}
+		update knowledge set
+		question=#{question},answer = #{answer}
+		where
+		knowledge_id=#{knowledge_id}
 	</update>
-	
+
 	<delete id="deleteKnowledge" parameterType="int">
-          delete from knowledge where knowledge_id=#{knowledge_id}
-     </delete>
+		delete from knowledge where knowledge_id=#{knowledge_id}
+	</delete>
 
 </mapper>

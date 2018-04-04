@@ -2,11 +2,12 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3.dtd">
-<mapper namespace = "com.pentaKill.dao.CustomerRegisterMapper">
-	 <!-- 用户注册 -->	
-	<insert id="customerRegister_mapper" parameterType="CustomerRegisterBean" useGeneratedKeys="true"
-	keyProperty="customer_id">
-		insert into customerInfo(customer_name,customer_sex,customer_email,customer_pwd,customer_address) 
+<mapper namespace="com.pentaKill.dao.CustomerRegisterMapper">
+	<!-- 用户注册 -->
+	<insert id="customerRegister_mapper" parameterType="CustomerRegisterBean"
+		useGeneratedKeys="true" keyProperty="customer_id">
+		insert into
+		customerInfo(customer_name,customer_sex,customer_email,customer_pwd,customer_address)
 		values(#{customer_name},#{customer_sex},#{customer_email},#{customer_pwd},#{customer_address})
 	</insert>
 </mapper>

@@ -7,14 +7,14 @@ import com.pentaKill.domain.UpdateKnowledgeBean;
 
 public interface RobotMapper {
 
-	public int getRobotId(int company_id);
+    public int getRobotId(int company_id);
 
-	public void inserKnowledge(RobotKnowledge robotKnowledge);
+    public void inserKnowledge(RobotKnowledge robotKnowledge);
 
-	public List<RobotKnowledge> getAllRobotKnowledge(int robot_id);
+    public List<RobotKnowledge> getAllRobotKnowledge(int robot_id);
 
-	public void updateKnowledge(UpdateKnowledgeBean updateKnowledgeBean);
-	
-	public void deleteKnowledge(int knowledge_id);
-	
+    public void updateKnowledge(UpdateKnowledgeBean updateKnowledgeBean);
+
+    public void deleteKnowledge(int knowledge_id);
+
 }

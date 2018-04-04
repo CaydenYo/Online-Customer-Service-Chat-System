@@ -52,7 +52,8 @@ public class CustomerServiceMController {
         int company_id = json.getInt("company_id");
         customerServiceRegisterBean.setCs_email(request.getParameter(cs_email));
         customerServiceRegisterBean.setCs_workId(request.getParameter(cs_workId));
-        customerServiceRegisterBean.setCompany_id(company_id);;
+        customerServiceRegisterBean.setCompany_id(company_id);
+        ;
         Gson gson = new Gson();
         if (customerServiceService.reg(customerServiceRegisterBean)) {
             return gson.toJson("registersuccess");
@@ -112,27 +113,26 @@ public class CustomerServiceMController {
         System.out.println(str);
         return str;
     }
-    
+
     @RequestMapping(value = "/setCompanyInfo", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String setCompanyInfo(HttpServletRequest request, HttpServletResponse response){
+    public String setCompanyInfo(HttpServletRequest request, HttpServletResponse response) {
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
         int company_id = json.getInt("company_id");
         int dstribution_type = json.getInt("dstribution_type");
-        
+
         int customer_info_flag = json.getInt("customer_info_flag");
         int min_num = json.getInt("mininum_operating_num");
         Company company = companyService.findCompany(company_id);
         companyService.update(company, dstribution_type, customer_info_flag, min_num);
-        
-        //小于min_num的客服进行刷新
+
+        // 小于min_num的客服进行刷新
         CustomerService customerService = companyService.selectCustomerService(company);
         companyService.updateCustomerService(customerService, min_num);
         Gson gson = new Gson();
         return gson.toJson("UpdateSuccess");
-        
+
     }
-    
 
 }

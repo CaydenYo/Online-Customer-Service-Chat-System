@@ -8,12 +8,13 @@
 
 	<select id="selectBy" parameterType="csManager" resultType="csManager">
 		select * from customerServiceInfo where
-		csm_email=#{csm_email} and csm_pwd=#{csm_pwd};
+		csm_email=#{csm_email} and
+		csm_pwd=#{csm_pwd};
 	</select>
-	
+
 	<insert id="insert" parameterType="csManager" useGeneratedKeys="true"
-	keyProperty="csm_id">
-		insert into csManagerInfo(csm_email,csm_pwd,company_id) 
+		keyProperty="csm_id">
+		insert into csManagerInfo(csm_email,csm_pwd,company_id)
 		values(#{csm_email},#{csm_pwd},#{company_id});
 	</insert>
 </mapper>

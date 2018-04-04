@@ -14,21 +14,20 @@ import com.pentaKill.domain.WaitingCustomerBean;
 @Service
 @Scope
 public class CustomerWaitingService {
-    
+
     @Resource
     private CustomerWaitingMapper customerWaitingMapper;
-    
-    public List<WaitingCustomerBean> selectCustomerByCsId(int csId){
-        
-        List<Integer> customerIdList= new LinkedList<Integer>();
+
+    public List<WaitingCustomerBean> selectCustomerByCsId(int csId) {
+
+        List<Integer> customerIdList = new LinkedList<Integer>();
         customerIdList = customerWaitingMapper.selectCustomerIdByCsId(csId);
         List<WaitingCustomerBean> list = new LinkedList<WaitingCustomerBean>();
-        for(Integer i : customerIdList){
+        for (Integer i : customerIdList) {
             WaitingCustomerBean wcb = customerWaitingMapper.selectCustomerByCsId(i.intValue());
             list.add(wcb);
         }
         return list;
     }
-    
-    
+
 }
