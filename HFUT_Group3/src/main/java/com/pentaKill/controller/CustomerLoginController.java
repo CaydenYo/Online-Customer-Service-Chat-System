@@ -12,22 +12,22 @@ import com.pentaKill.service.CustomerLoginService;
 
 @Controller
 public class CustomerLoginController {
-	@Resource
-	 HttpServletRequest req;
-	@Resource
-	CustomerLoginService customerLoginService;
-	
-	@RequestMapping(value = "/login.action", method = RequestMethod.POST)
-	public String login() {
-		String customer_name=req.getParameter("customer_name");
-		String customer_pwd=req.getParameter("customer_pwd");
-		
-		CustomerInfoBean clb=customerLoginService.customerLogin_service(customer_name);
-		if(clb!=null&&clb.getCustomer_pwd().equals(customer_pwd)){
-			return "index";
-		}else{
-			return "login";
-		}
-		
-	}
+    @Resource
+    HttpServletRequest req;
+    @Resource
+    CustomerLoginService customerLoginService;
+
+    @RequestMapping(value = "/login.action", method = RequestMethod.POST)
+    public String login() {
+        String customer_name = req.getParameter("customer_name");
+        String customer_pwd = req.getParameter("customer_pwd");
+
+        CustomerInfoBean clb = customerLoginService.customerLogin_service(customer_name);
+        if (clb != null && clb.getCustomer_pwd().equals(customer_pwd)) {
+            return "index";
+        } else {
+            return "login";
+        }
+
+    }
 }

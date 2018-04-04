@@ -13,20 +13,20 @@ import com.pentaKill.domain.CSViewsCustomerInfoBean;
 public class CSViewsCustomerInfoService {
     @Resource
     CSViewsCustomerInfoMapper csViewsCustomerInfoMapper;
- 
-    public int searchCustomerInfoFlag_service(int company_id){
-        int flag=csViewsCustomerInfoMapper.searchCustomerInfoFlag_mapper(company_id);
+
+    public int searchCustomerInfoFlag_service(int company_id) {
+        int flag = csViewsCustomerInfoMapper.searchCustomerInfoFlag_mapper(company_id);
         return flag;
     }
-    
-    public int searchCompanyId_service(int cs_id){
-        int company_id=csViewsCustomerInfoMapper.searchCompanyId_mapper(cs_id);
+
+    public int searchCompanyId_service(int cs_id) {
+        int company_id = csViewsCustomerInfoMapper.searchCompanyId_mapper(cs_id);
         return company_id;
     }
-    
-    public CSViewsCustomerInfoBean searchCustomerInfo_service(int customer_id){
+
+    public CSViewsCustomerInfoBean searchCustomerInfo_service(int customer_id) {
         CSViewsCustomerInfoBean temp = csViewsCustomerInfoMapper.searchCustomerInfo_mapper(customer_id);
         return temp;
     }
-    
+
 }

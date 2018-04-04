@@ -1,7 +1,7 @@
 package com.pentaKill.domain;
 
 public class CSViewsCustomerInfoBean {
-  
+
     private String customer_name;
     private int customer_age;
     private String customer_address;

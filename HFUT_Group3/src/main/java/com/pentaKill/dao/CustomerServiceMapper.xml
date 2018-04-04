@@ -6,74 +6,77 @@
 <mapper namespace="com.pentaKill.dao.CustomerServiceMapper">
 
 
-	<select id="selectBy" parameterType="customerService" resultType="customerService">
+	<select id="selectBy" parameterType="customerService"
+		resultType="customerService">
 		select * from customerServiceInfo where
 		cs_email=#{cs_email} and cs_pwd=#{cs_pwd};
 	</select>
-	
+
 	<select id="selectByEmail" parameterType="String" resultType="customerService">
 		select * from customerServiceInfo where
 		cs_email=#{0};
 	</select>
-	
+
 	<select id="selectByCode" parameterType="String" resultType="customerService">
 		select * from customerServiceInfo where
 		cs_code=#{0};
 	</select>
-	
-	<insert id="create" parameterType="customerService" useGeneratedKeys="true"
-	keyProperty="cs_id">
-		insert into customerServiceInfo(cs_workId,cs_name,cs_nickName,company_id,cs_pwd,cs_email,cs_img) 
+
+	<insert id="create" parameterType="customerService"
+		useGeneratedKeys="true" keyProperty="cs_id">
+		insert into
+		customerServiceInfo(cs_workId,cs_name,cs_nickName,company_id,cs_pwd,cs_email,cs_img)
 		values(#{cs_workId},#{cs_name},#{cs_nickName},#{company_id},#{cs_pwd},#{cs_email},#{cs_img})
 	</insert>
-	
-	<update id="setRegStatus" parameterType="customerService">  
-        update customerServiceInfo  
-        <set>  
-            <if test="cs_register_status!=null">  
-                cs_register_status = #{cs_register_status}
-            </if>   
-        </set>  
-        where cs_code=#{cs_code}  
-    </update>  
-	
-	
-	
-	<update id="modifyUser" parameterType="customerService">  
-        update customerServiceInfo  
-        <set>  
-            <if test="cs_name!=null">  
-                cs_name = #{cs_name},  
-            </if>  
-            <if test="cs_nickName!=null">  
-                cs_nickName = #{cs_nickName},  
-            </if>  
-            <if test="cs_pwd!=null">  
-                cs_pwd = #{cs_pwd},  
-            </if>  
-            <if test="cs_status!=null">  
-                cs_status = #{cs_status},  
-            </if>  
-            <if test="cs_img!=null">  
-                cs_img = #{cs_img},  
-            </if>  
-            <if test="cs_code!=null">  
-                cs_code = #{cs_code}  
-            </if>  
-            <if test="cs_operating_number!=null">  
-                cs_operating_number = #{cs_operating_number}  
-            </if>  
-            <if test="cs_operating_number!=null">  
-                cs_waiting_number = #{cs_waiting_number}  
-            </if>  
-        </set>  
-        where cs_email=#{cs_email}  
-    </update>  
-	
-	
+
+	<update id="setRegStatus" parameterType="customerService">
+		update customerServiceInfo
+		<set>
+			<if test="cs_register_status!=null">
+				cs_register_status = #{cs_register_status}
+			</if>
+		</set>
+		where cs_code=#{cs_code}
+	</update>
+
+
+
+	<update id="modifyUser" parameterType="customerService">
+		update customerServiceInfo
+		<set>
+			<if test="cs_name!=null">
+				cs_name = #{cs_name},
+			</if>
+			<if test="cs_nickName!=null">
+				cs_nickName = #{cs_nickName},
+			</if>
+			<if test="cs_pwd!=null">
+				cs_pwd = #{cs_pwd},
+			</if>
+			<if test="cs_status!=null">
+				cs_status = #{cs_status},
+			</if>
+			<if test="cs_img!=null">
+				cs_img = #{cs_img},
+			</if>
+			<if test="cs_code!=null">
+				cs_code = #{cs_code}
+			</if>
+			<if test="cs_operating_number!=null">
+				cs_operating_number = #{cs_operating_number}
+			</if>
+			<if test="cs_operating_number!=null">
+				cs_waiting_number = #{cs_waiting_number}
+			</if>
+		</set>
+		where cs_email=#{cs_email}
+	</update>
+
+
 	<select id="getCustomerServiceStatus" parameterType="int"
 		resultType="customerServiceStatusBean">
-		select cs_id,cs_workId,cs_name,cs_status,cs_operating_number,cs_img,cs_score
+		select
+		cs_id,cs_workId,cs_name,cs_status,cs_operating_number,cs_img,cs_score
 		from customerServiceInfo
 		where company_id = #{0}
 	</select>
@@ -82,11 +85,11 @@
 		resultType="int">
 		select operating_number
 		from cs_management_tool
-		where company_id = #{0}
+		where
+		company_id = #{0}
 	</select>
-	
-	<select id="getTotalWaitingNum" parameterType="int"
-		resultType="int">
+
+	<select id="getTotalWaitingNum" parameterType="int" resultType="int">
 		select waiting_number
 		from cs_management_tool
 		where company_id = #{0}

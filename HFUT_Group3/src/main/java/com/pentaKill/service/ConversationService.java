@@ -18,67 +18,67 @@ import com.pentaKill.domain.LastCustomerServiceBean;
 @Service
 @Scope
 public class ConversationService {
-	@Resource
-	ConversationMapper conversationMapper;
-	
-	public void insertConversation_service(ConversationBean cb){
-		conversationMapper.startConversation_mapper(cb);
-	}
-	
-	public void insertChatLog_service(ChatLogBean clb){
-		conversationMapper.insertChatLog_mapper(clb);
-	}
-	
-	public int findConversationId(FindConversationBean fcb){
-		int conversation_id=conversationMapper.findConversationId_mapper(fcb);
-		return conversation_id;
-	}
-	
-    public List<ChooseCustomerServiceBean> selectCustomerServiceByStatus(){
+    @Resource
+    ConversationMapper conversationMapper;
+
+    public void insertConversation_service(ConversationBean cb) {
+        conversationMapper.startConversation_mapper(cb);
+    }
+
+    public void insertChatLog_service(ChatLogBean clb) {
+        conversationMapper.insertChatLog_mapper(clb);
+    }
+
+    public int findConversationId(FindConversationBean fcb) {
+        int conversation_id = conversationMapper.findConversationId_mapper(fcb);
+        return conversation_id;
+    }
+
+    public List<ChooseCustomerServiceBean> selectCustomerServiceByStatus() {
         List<ChooseCustomerServiceBean> list = new LinkedList<ChooseCustomerServiceBean>();
         list = conversationMapper.selectCustomerServiceByStatus();
         return list;
     }
-    
-    public List<LastCustomerServiceBean> selectLastCustomerService(int customer_id){
+
+    public List<LastCustomerServiceBean> selectLastCustomerService(int customer_id) {
         List<LastCustomerServiceBean> list = new LinkedList<LastCustomerServiceBean>();
         list = conversationMapper.selectLastCustomer(customer_id);
         return list;
     }
-    
-    public ChooseCustomerServiceBean selecLasttCustomerServiceInfo(int cs_id){
+
+    public ChooseCustomerServiceBean selecLasttCustomerServiceInfo(int cs_id) {
         ChooseCustomerServiceBean ccs = new ChooseCustomerServiceBean();
         ccs = conversationMapper.selectLastCustomerServiceBean(cs_id);
         return ccs;
     }
-    
-    public int getDistributionType(String company_name){
+
+    public int getDistributionType(String company_name) {
         int distributionType;
         distributionType = conversationMapper.getDistributionType(company_name);
         return distributionType;
     }
-     
-    public void inserCustomerWaitingTeam(int customerId, int csId){
+
+    public void inserCustomerWaitingTeam(int customerId, int csId) {
         conversationMapper.insertWaitingCustomer(customerId, csId);
     }
-    
-    public void increaseCsManageToolWaitingPeople(){
+
+    public void increaseCsManageToolWaitingPeople() {
         conversationMapper.increaseCsManageToolWaitingPeople();
     }
-    
-    public void deleteCustomerWaitingTeam(int csId, int customerId){
+
+    public void deleteCustomerWaitingTeam(int csId, int customerId) {
         conversationMapper.deleteCustomerWaitingTeam(csId, customerId);
     }
-    
-    public void decreaseCsManageToolWaitingPeople(){
+
+    public void decreaseCsManageToolWaitingPeople() {
         conversationMapper.decreaseCsManageToolWaitingPeople();
     }
-    
-    public String getCsNicknameByCsId(int cs_id){
+
+    public String getCsNicknameByCsId(int cs_id) {
         return conversationMapper.getCsNicknameByCsId(cs_id);
     }
-    
-    public String getCustomerNicknameByCustomerId(int customer_id){
+
+    public String getCustomerNicknameByCustomerId(int customer_id) {
         return conversationMapper.getCustomerNicknameByCustomerId(customer_id);
     }
 }

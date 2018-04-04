@@ -1,7 +1,7 @@
 package com.pentaKill.domain;
 
 public class FastReplyBean {
-    
+
     private int cs_id;
     private String content;
 

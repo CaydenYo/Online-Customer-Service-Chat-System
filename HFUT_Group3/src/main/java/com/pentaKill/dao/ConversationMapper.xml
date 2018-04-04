@@ -2,90 +2,100 @@
 <!DOCTYPE mapper
     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3.dtd">
-<mapper namespace = "com.pentaKill.dao.ConversationMapper">
-	 <!-- 往数据库插入新会话 -->	
-	
-	<insert id="startConversation_mapper" parameterType="ConversationBean" useGeneratedKeys="true"
-	keyProperty="conversation_id">
-		insert into conversation(customer_id,cs_id) 
+<mapper namespace="com.pentaKill.dao.ConversationMapper">
+	<!-- 往数据库插入新会话 -->
+
+	<insert id="startConversation_mapper" parameterType="ConversationBean"
+		useGeneratedKeys="true" keyProperty="conversation_id">
+		insert into
+		conversation(customer_id,cs_id)
 		values(#{customer_id},#{cd_id})
 	</insert>
-	
-	<!-- 往数据库插入新聊天记录 -->	
-	<insert id="insertChatLog_mapper" parameterType="ChatLogBean" useGeneratedKeys="true"
-	keyProperty="chatLog_id">
-		insert into chatLog(conversation_id,receiver_id,sender_id,from_customer,content_type,content) 
+
+	<!-- 往数据库插入新聊天记录 -->
+	<insert id="insertChatLog_mapper" parameterType="ChatLogBean"
+		useGeneratedKeys="true" keyProperty="chatLog_id">
+		insert into
+		chatLog(conversation_id,receiver_id,sender_id,from_customer,content_type,content)
 		values(#{conversation_id},#{receiver_id},#{sender_id},#{from_customer},#{content_type},#{content})
 	</insert>
-	
+
 	<!-- 寻找聊天记录的会话号 -->
 	<select id="findConversationId_mapper" parameterType="FindConversationBean"
 		resultType="int">
 		select conversation_id from conversation
-		where customer_id = #{customer_id} and cs_id=#{cs_id} and start_time = end_time
+		where customer_id =
+		#{customer_id} and cs_id=#{cs_id} and start_time = end_time
 	</select>
-	
+
 	<!-- 寻找上一次的老顾客 -->
 	<select id="selectLastCustomer" parameterType="int"
 		resultType="lastCustomerServiceBean">
 		select cs_id,start_time
 		from conversation
-		where customer_id = #{0} 
+		where customer_id =
+		#{0}
 		order by start_time desc
 	</select>
-	
+
 	<!-- 根据客服id寻找对应单个客服 -->
 	<select id="selectLastCustomerServiceBean" parameterType="int"
 		resultType="chooseCustomerServiceBean">
-		select cs_id,cs_status,cs_workId,cs_operating_number,cs_waiting_number,cs_operated_number,cs_waited_number
+		select
+		cs_id,cs_status,cs_workId,cs_operating_number,cs_waiting_number,cs_operated_number,cs_waited_number
 		from customerServiceInfo
 		where cs_id = #{0}
 	</select>
-	
+
 	<!-- 寻找对应的在线且排队不满的客服 -->
-	<select id="selectCustomerServiceByStatus"
-		resultType="chooseCustomerServiceBean">
-		select cs_id,cs_status,cs_workId,cs_operating_number,cs_waiting_number,cs_operated_number,cs_waited_number
+	<select id="selectCustomerServiceByStatus" resultType="chooseCustomerServiceBean">
+		select
+		cs_id,cs_status,cs_workId,cs_operating_number,cs_waiting_number,cs_operated_number,cs_waited_number
 		from customerServiceInfo
-		where cs_status = 1 and cs_waiting_number > cs_waited_number
+		where cs_status = 1 and cs_waiting_number >
+		cs_waited_number
 	</select>
-	
+
 	<!-- 寻找公司名称找到排队方式算法 -->
 	<select id="getDistributionType" parameterType="String"
 		resultType="int">
 		select dstribution_type
 		from companyInfo
-		where company_name = #{0}
+		where company_name =
+		#{0}
 	</select>
-	
+
 	<insert id="insertWaitingCustomer" parameterType="int">
-		insert into customer_waiting_team 
+		insert into
+		customer_waiting_team
 		values(#{0},#{1})
 	</insert>
-	  
+
 	<update id="increaseCsManageToolWaitingPeople">
-		update cs_management_tool set waiting_number = waiting_number + 1
+		update cs_management_tool set waiting_number =
+		waiting_number + 1
 	</update>
-	
+
 	<update id="decreaseCsManageToolWaitingPeople">
-		update cs_management_tool set waiting_number = waiting_number - 1
+		update cs_management_tool set waiting_number =
+		waiting_number - 1
 	</update>
-	
+
 	<delete id="deleteCustomerWaitingTeam" parameterType="int">
-          delete from customer_waiting_team where cs_id=#{0} and customer_id=#{1}
-     </delete>
-     
-     <select id="getCsNicknameByCsId" parameterType="int"
-		resultType="String">
+		delete from customer_waiting_team where cs_id=#{0} and customer_id=#{1}
+	</delete>
+
+	<select id="getCsNicknameByCsId" parameterType="int" resultType="String">
 		select cs_nickName
 		from customerServiceInfo
 		where cs_id = #{0}
 	</select>
-	
+
 	<select id="getCustomerNicknameByCustomerId" parameterType="int"
 		resultType="String">
 		select customer_nickname
 		from customerInfo
-		where customer_id = #{0}
+		where customer_id
+		= #{0}
 	</select>
 </mapper>

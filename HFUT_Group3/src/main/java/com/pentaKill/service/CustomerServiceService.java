@@ -103,8 +103,8 @@ public class CustomerServiceService {
         customerService.setCs_code(code);
         customerServiceMapper.setRegStatus(customerService);
     }
-    
-    public CustomerService selectByEmail(String cs_email){
+
+    public CustomerService selectByEmail(String cs_email) {
         return customerServiceMapper.selectByEmail(cs_email);
     }
 
@@ -118,13 +118,12 @@ public class CustomerServiceService {
         customerService.setCs_operating_number(cs_operating_number);
         customerServiceMapper.modifyUser(customerService);
     }
-    
-    public void setProfile(String cs_pwd, String cs_img,String cs_nickName , CustomerService customerService) {
+
+    public void setProfile(String cs_pwd, String cs_img, String cs_nickName, CustomerService customerService) {
         customerService.setCs_pwd(cs_pwd);
         customerService.setCs_img(cs_img);
         customerService.setCs_nickName(cs_nickName);
         customerServiceMapper.modifyUser(customerService);
     }
-    
 
 }
