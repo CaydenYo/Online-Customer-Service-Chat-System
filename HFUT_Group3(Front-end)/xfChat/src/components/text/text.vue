@@ -1,7 +1,7 @@
 <!-- 文本输入框 -->
 <template>
     <div class="text">
-        <div class="emoji" style="background-color:yellow;">
+        <div class="emoji" >
             <i class="icon iconfont icon-look" @click="showEmoji=!showEmoji">emoji</i>
             <transition name="showbox">
                 <div class="emojiBox" v-show="showEmoji">
@@ -11,8 +11,8 @@
                 </div>
             </transition>
         </div>
-        <textarea ref="text" v-model="content" @keyup="onKeyup" @click="showEmoji=false" style="background-color:CadetBlue;"></textarea>
-        <div class="send" @click="send" style="background-color:Khaki;">
+        <textarea ref="text" v-model="content" @keyup="onKeyup" @click="showEmoji=false"></textarea>
+        <div class="send" @click="send" >
             <span>发送(ent)</span>
         </div>
         <transition name="appear">
