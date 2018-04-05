@@ -1,7 +1,7 @@
 <template>
-  <el-container>
-    <el-header>
-      <el-menu class='el-menu-demo' mode="horizontal">
+  <el-container  style="height: 100%">
+    <el-header class="top">
+      <el-menu class='el-menu-demo' mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
         <el-submenu index="1" style="float:right;">
           <template slot="title">运维人员</template>
           <router-link to="/CsLogin">
@@ -12,9 +12,9 @@
         </el-submenu>
       </el-menu>
     </el-header>
-    <el-container>
-      <el-aside>
-        <el-menu default-active="index" :router="true">
+    <el-container style="height: 100%">
+      <el-aside class="side">
+        <el-menu default-active="index" :router="true" background-color="#304156" text-color="#fff" active-text-color="#ffd04b">
           <el-menu-item index="index">
             <span slot="title">概览</span>
             <!-- 
@@ -71,4 +71,14 @@ export default {
   }
 }
 </script>
+
+<style>
+.top {
+  background-color: #545c64;
+}
+.side{
+  background-color: #304156;
+}
+</style>
+
 
