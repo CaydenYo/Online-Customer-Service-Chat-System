@@ -22,7 +22,7 @@ public class CustomerLoginController {
         String customer_name = req.getParameter("customer_name");
         String customer_pwd = req.getParameter("customer_pwd");
 
-        CustomerInfoBean clb = customerLoginService.customerLogin_service(customer_name);
+        CustomerInfoBean clb = customerLoginService.customerLoginService(customer_name);
         if (clb != null && clb.getCustomer_pwd().equals(customer_pwd)) {
             return "index";
         } else {

@@ -31,7 +31,7 @@ public class CSViewsHistoryMessageController {
         JSONObject json = JSONObject.fromObject(data);
         // 传入顾客的id
         int customer_id = Integer.parseInt(json.getString("customer_id"));
-        boolean flag = csViewsHistoryMessageService.historyMessageFlag_service(customer_id);
+        boolean flag = csViewsHistoryMessageService.historyMessageFlagService(customer_id);
 
         Gson gson = new Gson();
         if (flag) {

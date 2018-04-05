@@ -23,9 +23,12 @@ import com.pentaKill.domain.ConversationBean;
 import com.pentaKill.domain.FindConversationBean;
 import com.pentaKill.domain.LastCustomerServiceBean;
 import com.pentaKill.domain.NewChatLogBean;
+import com.pentaKill.domain.RobotQuestionBean;
 import com.pentaKill.service.CSViewsHistoryMessageService;
 import com.pentaKill.service.ConversationService;
+import com.pentaKill.service.RobotChatService;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @ServerEndpoint("/serve")
@@ -34,7 +37,10 @@ public class WebSocketServer {
     ConversationService conversationService;
     @Resource
     CSViewsHistoryMessageService csViewsHistoryMessageService;
+    @Resource
+    RobotChatService robotChatService;
 
+    private final int initvalue = 0;
     private boolean firstTime = true;
     private String nickName;
     private static HashMap<String, Object> connectedUser = new HashMap<String, Object>();
@@ -52,13 +58,49 @@ public class WebSocketServer {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         WebSocketServer webSocketServer = null;
         JSONObject json = JSONObject.fromObject(message);
+        // 每次都要发送这些东西进来
         String nickname = json.getString("nickname");
         String sender_id = json.getString("sender_id");
         String receiver_id = json.getString("receiver_id");
         String content = json.getString("content");
         String company_name = json.getString("company_name");
+        String company_id = json.getString("company_id");
 
         if (firstTime) {
+
+            // 当用户连接时，首先查询机器人是否开启
+            // 如果开启，则加载相应的问题，发送到前端
+            // 用户回复数字，查询对应问题的答案，发送回前端
+            if (Integer.parseInt(sender_id) >= 2000) {
+                int robotFlag = robotChatService.getRobotFlagService(Integer.parseInt(company_id));
+                if (robotFlag == 1) {
+                    // 查询本公司机器人对应的全部问题
+                    List<RobotQuestionBean> rqb = robotChatService
+                            .getRobotQuestionService(Integer.parseInt(company_id));
+
+                    for (String key : userMap.keySet()) {
+                        webSocketServer = (WebSocketServer) connectedUser.get(key);
+                        if (nickname.equalsIgnoreCase(userMap.get(key))) {
+                            // 新建一个json对象返回
+                            // 不清楚list这样放是否正确
+                            JSONObject joTemp = new JSONObject();
+                            joTemp.put("nickname", company_name);
+                            joTemp.put("date", df.format(new Date()));
+                            joTemp.put("isSelf", false);
+                            JSONArray jsonArray = new JSONArray();
+                            String contentOfRqb = jsonArray.fromObject(rqb).toString();
+                            joTemp.put("content", contentOfRqb);
+                            synchronized (webSocketServer) {
+                                webSocketServer.session.getAsyncRemote().sendText(joTemp.toString());
+                            }
+
+                        }
+                    }
+                } else {
+                    // 机器人未开启，将其加入等待队列
+
+                }
+            }
 
             // 第一次打开窗口要发送用户名进来
 
@@ -66,7 +108,7 @@ public class WebSocketServer {
             if (Integer.parseInt(sender_id) < 2000) {
                 ConversationBean cb = new ConversationBean(Integer.parseInt(receiver_id), Integer.parseInt(sender_id),
                         null, null, -1);
-                conversationService.insertConversation_service(cb);
+                conversationService.insertConversationService(cb);
 
                 // 功能1//customer_waiting_team中包含该cs_id和customer_id的记录remove掉
                 conversationService.deleteCustomerWaitingTeam(Integer.parseInt(sender_id),
@@ -135,7 +177,7 @@ public class WebSocketServer {
         } else if (content.equals("csViewsHistoryMessage.action")) {
             // 当客服点击查看历史信息时，就会发送这个信息"csViewsHistoryMessage.action"
             // 从后台取出所有客服与这个客户的聊天记录，然后发送到前台
-            List<NewChatLogBean> ans = csViewsHistoryMessageService.getChatlog_service(Integer.parseInt(receiver_id),
+            List<NewChatLogBean> ans = csViewsHistoryMessageService.getChatlogService(Integer.parseInt(receiver_id),
                     Integer.parseInt(sender_id));
 
             Gson gson = new Gson();
@@ -156,13 +198,35 @@ public class WebSocketServer {
                 }
             }
 
+        } else if (content.startsWith("robotAnwser") && Integer.parseInt(sender_id) >= 2000) {
+            // 约定前端发进来这个，表示用户想知道机器人问题的答案
+            int ansNum = Integer.parseInt(content.substring(11));
+            List<RobotQuestionBean> rqb = robotChatService.getRobotQuestionService(Integer.parseInt(company_id));
+            String ans = rqb.get(ansNum - 1).getAnwser();
+
+            for (String key : userMap.keySet()) {
+                webSocketServer = (WebSocketServer) connectedUser.get(key);
+                if (nickname.equalsIgnoreCase(userMap.get(key))) {
+                    // 新建一个json对象返回答案
+                    JSONObject joTemp = new JSONObject();
+                    joTemp.put("nickname", company_name);
+                    joTemp.put("date", df.format(new Date()));
+                    joTemp.put("isSelf", false);
+                    joTemp.put("content", ans);
+                    synchronized (webSocketServer) {
+                        webSocketServer.session.getAsyncRemote().sendText(joTemp.toString());
+                    }
+
+                }
+            }
+
         } else {
             // 每次会话都要存入数据库
-            int customer_id = -1;
-            int cs_id = -1;
-            int from_customer = 0;
-            int conversation_id = -1;
-            int content_type = 0;
+            int customer_id = initvalue;
+            int cs_id = initvalue;
+            int from_customer = initvalue;
+            int conversation_id = initvalue;
+            int content_type = initvalue;
 
             String reciver_nickname;
 
@@ -181,11 +245,11 @@ public class WebSocketServer {
             }
 
             FindConversationBean fcb = new FindConversationBean(customer_id, cs_id);
-            conversation_id = conversationService.findConversationId(fcb);
+            conversation_id = conversationService.findConversationIdService(fcb);
 
             ChatLogBean clb = new ChatLogBean(conversation_id, Integer.parseInt(receiver_id),
                     Integer.parseInt(sender_id), from_customer, null, content_type, content);
-            conversationService.insertChatLog_service(clb);
+            conversationService.insertChatLogService(clb);
 
             json.put("date", df.format(new Date()));
 
