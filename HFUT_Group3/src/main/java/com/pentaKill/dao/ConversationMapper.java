@@ -9,11 +9,11 @@ import com.pentaKill.domain.FindConversationBean;
 import com.pentaKill.domain.LastCustomerServiceBean;
 
 public interface ConversationMapper {
-    public void startConversation_mapper(ConversationBean cb);
+    public void startConversationMapper(ConversationBean cb);
 
-    public void insertChatLog_mapper(ChatLogBean clb);
+    public void insertChatLogMapper(ChatLogBean clb);
 
-    public int findConversationId_mapper(FindConversationBean fcb);
+    public int findConversationIdMapper(FindConversationBean fcb);
 
     public List<ChooseCustomerServiceBean> selectCustomerServiceByStatus();
 

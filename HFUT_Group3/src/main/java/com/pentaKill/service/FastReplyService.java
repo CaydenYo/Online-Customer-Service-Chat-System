@@ -16,20 +16,20 @@ public class FastReplyService {
     @Resource
     FastReplyMapper fastReplyMapper;
 
-    public List<FastReplyBean> showFastReply_service(int cs_id) {
-        List<FastReplyBean> temp = fastReplyMapper.showFastReply_mapper(cs_id);
+    public List<FastReplyBean> showFastReplyService(int cs_id) {
+        List<FastReplyBean> temp = fastReplyMapper.showFastReplyMapper(cs_id);
         return temp;
     }
 
-    public void addFastReply_service(FastReplyBean frb) {
-        fastReplyMapper.addFastReply_mapper(frb);
+    public void addFastReplyService(FastReplyBean frb) {
+        fastReplyMapper.addFastReplyMapper(frb);
     }
 
-    public void deleteFastReply_service(FastReplyBean frb) {
-        fastReplyMapper.deleteFastReply_mapper(frb);
+    public void deleteFastReplyService(FastReplyBean frb) {
+        fastReplyMapper.deleteFastReplyMapper(frb);
     }
 
-    public void modifyFastReply_service(FastReplyBean frb) {
-        fastReplyMapper.modifyFastReply_mapper(frb);
+    public void modifyFastReplyService(FastReplyBean frb) {
+        fastReplyMapper.modifyFastReplyMapper(frb);
     }
 }

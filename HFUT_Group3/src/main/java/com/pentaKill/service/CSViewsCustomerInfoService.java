@@ -14,18 +14,18 @@ public class CSViewsCustomerInfoService {
     @Resource
     CSViewsCustomerInfoMapper csViewsCustomerInfoMapper;
 
-    public int searchCustomerInfoFlag_service(int company_id) {
-        int flag = csViewsCustomerInfoMapper.searchCustomerInfoFlag_mapper(company_id);
+    public int searchCustomerInfoFlagService(int company_id) {
+        int flag = csViewsCustomerInfoMapper.searchCustomerInfoFlagMapper(company_id);
         return flag;
     }
 
-    public int searchCompanyId_service(int cs_id) {
-        int company_id = csViewsCustomerInfoMapper.searchCompanyId_mapper(cs_id);
+    public int searchCompanyIdService(int cs_id) {
+        int company_id = csViewsCustomerInfoMapper.searchCompanyIdMapper(cs_id);
         return company_id;
     }
 
-    public CSViewsCustomerInfoBean searchCustomerInfo_service(int customer_id) {
-        CSViewsCustomerInfoBean temp = csViewsCustomerInfoMapper.searchCustomerInfo_mapper(customer_id);
+    public CSViewsCustomerInfoBean searchCustomerInfoService(int customer_id) {
+        CSViewsCustomerInfoBean temp = csViewsCustomerInfoMapper.searchCustomerInfoMapper(customer_id);
         return temp;
     }
 

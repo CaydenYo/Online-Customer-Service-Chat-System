@@ -21,16 +21,16 @@ public class ConversationService {
     @Resource
     ConversationMapper conversationMapper;
 
-    public void insertConversation_service(ConversationBean cb) {
-        conversationMapper.startConversation_mapper(cb);
+    public void insertConversationService(ConversationBean cb) {
+        conversationMapper.startConversationMapper(cb);
     }
 
-    public void insertChatLog_service(ChatLogBean clb) {
-        conversationMapper.insertChatLog_mapper(clb);
+    public void insertChatLogService(ChatLogBean clb) {
+        conversationMapper.insertChatLogMapper(clb);
     }
 
-    public int findConversationId(FindConversationBean fcb) {
-        int conversation_id = conversationMapper.findConversationId_mapper(fcb);
+    public int findConversationIdService(FindConversationBean fcb) {
+        int conversation_id = conversationMapper.findConversationIdMapper(fcb);
         return conversation_id;
     }
 

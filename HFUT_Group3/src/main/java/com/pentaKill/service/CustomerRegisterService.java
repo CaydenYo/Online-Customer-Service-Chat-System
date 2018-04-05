@@ -14,7 +14,7 @@ public class CustomerRegisterService {
     @Resource
     CustomerRegisterMapper customerRegisterMapper;
 
-    public void customerRegister_service(CustomerRegisterBean crb) {
-        customerRegisterMapper.customerRegister_mapper(crb);
+    public void customerRegisterService(CustomerRegisterBean crb) {
+        customerRegisterMapper.customerRegisterMapper(crb);
     }
 }

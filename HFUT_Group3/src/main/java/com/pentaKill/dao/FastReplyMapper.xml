@@ -4,14 +4,14 @@
     "http://mybatis.org/dtd/mybatis-3.dtd">
 <mapper namespace="com.pentaKill.dao.FastReplyMapper">
 	<!-- 显示某个客服的快捷回复列表 -->
-	<select id="showFastReply_mapper" parameterType="int"
+	<select id="showFastReplyMapper" parameterType="int"
 		resultType="FastReplyBean">
 		select * from cs_shortcut_language
 		where cs_id=#{0}
 	</select>
 
 	<!-- 增加快捷回复 -->
-	<insert id="addFastReply_mapper" parameterType="FastReplyBean"
+	<insert id="addFastReplyMapper" parameterType="FastReplyBean"
 		useGeneratedKeys="true" keyProperty="shortcut_language_id">
 		insert into
 		cs_shortcut_language(cs_id,content)
@@ -19,13 +19,13 @@
 	</insert>
 
 	<!-- 删除快捷回复 -->
-	<delete id="deleteFastReply_mapper" parameterType="FastReplyBean">
+	<delete id="deleteFastReplyMapper" parameterType="FastReplyBean">
 		delete from
 		cs_shortcut_language where cs_id = #{cs_id} and content = #{content}
 	</delete>
 
 	<!-- 修改快捷回复 -->
-	<update id="modifyFastReply_mapper" parameterType="FastReplyBean">
+	<update id="modifyFastReplyMapper" parameterType="FastReplyBean">
 		update cs_shortcut_language set content = #{content}
 		where cs_id = #{cs_id}
 	</update>

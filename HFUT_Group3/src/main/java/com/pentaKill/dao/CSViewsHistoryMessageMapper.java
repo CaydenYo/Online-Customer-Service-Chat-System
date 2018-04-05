@@ -8,11 +8,11 @@ import com.pentaKill.domain.GetCoversationIdBean;
 import com.pentaKill.domain.NewChatLogBean;
 
 public interface CSViewsHistoryMessageMapper {
-    public List<GetCoversationIdBean> getCLConversationId_mapper(int customer_id);
+    public List<GetCoversationIdBean> getCLConversationIdMapper(int customer_id);
 
-    public CustomerCLBean getCustomerCLInfo_mapper(int customer_id);
+    public CustomerCLBean getCustomerCLInfoMapper(int customer_id);
 
-    public CSCLBean getCSCLInfo_mapper(int cs_id);
+    public CSCLBean getCSCLInfoMapper(int cs_id);
 
-    public List<NewChatLogBean> getChatLog_mapper(int conversation_id);
+    public List<NewChatLogBean> getChatLogMapper(int conversation_id);
 }

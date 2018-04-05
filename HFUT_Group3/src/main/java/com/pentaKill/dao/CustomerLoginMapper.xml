@@ -5,7 +5,7 @@
 
 <mapper namespace="com.pentaKill.dao.CustomerLoginMapper">
 
-	<select id="customerLogin_mapper" parameterType="String"
+	<select id="customerLoginMapper" parameterType="String"
 		resultType="CustomerInfoBean">
 		select * from customerInfo
 		where customer_name = #{0}

@@ -21,8 +21,8 @@ public class CSViewsHistoryMessageService {
     @Resource
     CSViewsHistoryMessageMapper csViewsHistoryMessageMapper;
 
-    public boolean historyMessageFlag_service(int customer_id) {
-        List<GetCoversationIdBean> temp = csViewsHistoryMessageMapper.getCLConversationId_mapper(customer_id);
+    public boolean historyMessageFlagService(int customer_id) {
+        List<GetCoversationIdBean> temp = csViewsHistoryMessageMapper.getCLConversationIdMapper(customer_id);
         if (temp == null) {
             return false;
         } else {
@@ -31,10 +31,10 @@ public class CSViewsHistoryMessageService {
 
     }
 
-    public List<NewChatLogBean> getChatlog_service(int customer_id, int cs_id) {
+    public List<NewChatLogBean> getChatlogService(int customer_id, int cs_id) {
         List<NewChatLogBean> ans = new ArrayList<NewChatLogBean>();
         List<GetCoversationIdBean> conversation_list = csViewsHistoryMessageMapper
-                .getCLConversationId_mapper(customer_id);
+                .getCLConversationIdMapper(customer_id);
         for (int i = 0; i < conversation_list.size(); i++) {
             GetCoversationIdBean gcib = conversation_list.get(i);
             String customer_nickname = null;
@@ -42,8 +42,8 @@ public class CSViewsHistoryMessageService {
             String cs_nickName = null;
             String cs_img = null;
             // 查找这一段会话中，客服与客户的头像昵称
-            CustomerCLBean cclb = csViewsHistoryMessageMapper.getCustomerCLInfo_mapper(gcib.getCustomer_id());
-            CSCLBean csclb = csViewsHistoryMessageMapper.getCSCLInfo_mapper(gcib.getCs_id());
+            CustomerCLBean cclb = csViewsHistoryMessageMapper.getCustomerCLInfoMapper(gcib.getCustomer_id());
+            CSCLBean csclb = csViewsHistoryMessageMapper.getCSCLInfoMapper(gcib.getCs_id());
 
             customer_nickname = cclb.getCustomer_nickname();
             customer_img = cclb.getCustomer_img();
@@ -52,7 +52,7 @@ public class CSViewsHistoryMessageService {
 
             // 把这些信息写入相关的聊天记录中
             int conversation_id = conversation_list.get(i).getConversation_id();
-            List<NewChatLogBean> temp = csViewsHistoryMessageMapper.getChatLog_mapper(conversation_id);
+            List<NewChatLogBean> temp = csViewsHistoryMessageMapper.getChatLogMapper(conversation_id);
 
             for (int j = 0; j < temp.size(); j++) {
                 // 将发送者的昵称和头像写入其中

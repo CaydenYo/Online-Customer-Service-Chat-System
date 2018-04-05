@@ -15,8 +15,8 @@ public class CustomerLoginService {
     @Resource
     CustomerLoginMapper customerLoginMapper;
 
-    public CustomerInfoBean customerLogin_service(String customer_name) {
-        CustomerInfoBean clb = customerLoginMapper.customerLogin_mapper(customer_name);
+    public CustomerInfoBean customerLoginService(String customer_name) {
+        CustomerInfoBean clb = customerLoginMapper.customerLoginMapper(customer_name);
         return clb;
     }
 

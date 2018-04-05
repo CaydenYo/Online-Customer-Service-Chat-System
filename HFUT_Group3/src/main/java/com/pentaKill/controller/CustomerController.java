@@ -39,7 +39,7 @@ public class CustomerController {
         String customer_address = req.getParameter("customer_address");
         CustomerRegisterBean crb = new CustomerRegisterBean(customer_name, customer_sex, customer_email, customer_pwd,
                 customer_address);
-        customerRegisterService.customerRegister_service(crb);
+        customerRegisterService.customerRegisterService(crb);
         // 返回User的主页
 
         return "index";
