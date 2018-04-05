@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="height:100px;overflow:auto;">
+    <div>
       <ul class="messages" v-chat-scroll>
         <li v-for="todo in todos">
       {{ todo.text }}

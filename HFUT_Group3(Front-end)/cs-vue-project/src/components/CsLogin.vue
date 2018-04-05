@@ -24,7 +24,52 @@
   </el-row>
 </template>
 
-
+<script>
+export default {
+  data() {
+    return {
+      login_url: '/customerService/Login',
+      csLoginForm: {
+        cs_email: '',
+        cs_pwd: ''
+      }
+    }
+  },
+  methods: {
+    submitForm(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          alert(JSON.stringify(this.csLoginForm))
+          var params = new URLSearchParams()
+          let _this = this
+          params.append('data', JSON.stringify(this.csLoginForm))
+          this.$axios({
+            method: 'post',
+            url: this.rootUrl + _this.login_url,
+            data: params
+          }).then(res => {
+            if (res.data === 'success') {
+              alert('success')
+              this.$router.push({ path: '/index' })
+            } else {
+              this.$message({
+                message: JSON.stringify(res.data),
+                type: 'error'
+              })
+            }
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
+    }
+  }
+}
+</script>
 
 <style>
 .subbtn {

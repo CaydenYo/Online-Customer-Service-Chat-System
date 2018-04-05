@@ -45,7 +45,49 @@
   </div>
 </template>
 
-
+<script>
+export default {
+  data() {
+    return {
+      company_id: 1,
+      value1: true,
+      value2: true,
+      form3_url: '/setCompanyInfo',
+      form3: {
+        company_id: 1,
+        dstribution_type: 1,
+        customer_info_flag: 1,
+        mininum_operating_num: 1
+      }
+    }
+  },
+  methods: {
+    handleChange(value) {
+      console.log(value)
+    },
+    submitForm(formName) {
+      alert(JSON.stringify(this.form3))
+      var params = new URLSearchParams()
+      let _this = this
+      params.append('data', JSON.stringify(this.form3))
+      this.$axios({
+        method: 'post',
+        url: this.rootUrl + _this.form3_url,
+        data: params
+      }).then(res => {
+        if (res.data === 'success') {
+          alert('success')
+        } else {
+          this.$message({
+            message: JSON.stringify(res.data),
+            type: 'error'
+          })
+        }
+      })
+    }
+  }
+}
+</script>
 
 <style>
 .btn-c {

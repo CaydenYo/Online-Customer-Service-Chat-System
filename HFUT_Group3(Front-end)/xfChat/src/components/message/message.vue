@@ -3,7 +3,7 @@
         <header class="header">
             <div class="friendname">客服MM</div>
         </header>
-        <div class="message-wrapper" ref="list" style="background-color:pink;">
+        <div class="message-wrapper" ref="list">
             <ul v-if="selectedChat">
                 <li v-for="item in selectedChat.messages" class="message-item">
                     <div class="time">
