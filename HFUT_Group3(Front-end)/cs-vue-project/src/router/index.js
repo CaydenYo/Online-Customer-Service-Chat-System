@@ -12,13 +12,86 @@ import settings from '@/components/Settings'
 import know from '@/components/Know'
 import Customer_UI from '@/components/Customer_UI'
 
+import UserHCM from '@/components/UserHoverChat/UserHCM'
+import UserHCM2 from '@/components/UserHoverChat2/UserHCM2'
+import Embedded_Chat from '@/components/Embedded_Chat'
+import CS_UI from '@/components/CS_UI'
+import cs_dialogue from '@/components/CS_index/cs_dialogue'
+import cs_statics from '@/components/CS_index/cs_statics'
+import cs_settings from '@/components/CS_index/cs_settings'
+import common_language from '@/components/CS_index/common_language'
+import customer_information from '@/components/CS_index/customer_information'
+
+
 Vue.use(Router)
 
 export default new Router({
   routes: [{
+
       path: '/Customer_UI',
       name: 'Customer_UI',
       component: Customer_UI
+
+      path: '/',
+      name: 'CS_UI',
+      component: CS_UI
+    },
+    {
+      path: '/show_embedded_cs',
+      name: 'Embedded_Chat',
+      component: Embedded_Chat
+    },
+    {
+      path: '/',
+      name: 'CS_UI',
+      redirect: '/cs_dialogue',
+      component: CS_UI,
+      children: [{
+        path: '/cs_dialogue',
+        component: cs_dialogue,
+        name: 'cs_dialogue'
+      }]
+    },
+    {
+      path: '/',
+      name: 'CS_UI',
+      component: CS_UI,
+      children: [{
+        path: '/cs_statics',
+        component: cs_statics,
+        name: 'cs_statics'
+      }]
+    },
+    {
+      path: '/',
+      name: 'CS_UI',
+      component: CS_UI,
+      children: [{
+        path: '/cs_settings',
+        component: cs_settings,
+        name: 'cs_settings'
+      }]
+    },
+    {
+      path: '/',
+      name: 'CS_UI',
+      component: CS_UI,
+      children: [{
+        path: '/common_language',
+        component: common_language,
+        name: 'common_language'
+      }]
+    },
+    {
+      path: '/',
+      name: 'CS_UI',
+      component: CS_UI,
+      children: [{
+        path: '/customer_information',
+        component: customer_information,
+        name: 'customer_information'
+      }]
+
     },
     {
       path: '/CsLogin',

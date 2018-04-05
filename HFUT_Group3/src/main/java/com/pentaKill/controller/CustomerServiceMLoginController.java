@@ -35,7 +35,7 @@ public class CustomerServiceMLoginController {
     public String csmLogin(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Gson gson = new Gson();
-
+        System.out.println("进来了");
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
         String csm_email = json.getString("csm_email");
