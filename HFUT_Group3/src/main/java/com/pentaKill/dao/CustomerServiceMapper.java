@@ -3,6 +3,7 @@ package com.pentaKill.dao;
 import java.util.List;
 
 import com.pentaKill.domain.ChooseCustomerServiceBean;
+import com.pentaKill.domain.CsEvaluateBean;
 import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceStatusBean;
 
@@ -26,4 +27,5 @@ public interface CustomerServiceMapper {
 
     public int getTotalWaitingNum(int company_id);
 
+    public void insertNewEvaluateMapper(CsEvaluateBean ceb);
 }

@@ -95,5 +95,10 @@
 		where company_id = #{0}
 	</select>
 
-
+	<!-- 插入评价信息 -->
+	<insert id="insertNewEvaluateMapper" parameterType="CsEvaluateBean"
+		useGeneratedKeys="true" keyProperty="cse_id">
+		insert into cs_evaluate
+		values(#{cs_id},#{evaluate_time},#{cs_score},#{content})
+	</insert>
 </mapper>
