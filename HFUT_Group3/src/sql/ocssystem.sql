@@ -143,3 +143,14 @@ CREATE TABLE `customer_waiting_team` (
 `customer_id` int(11),
 `cs_id` int(20)
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+--12客服评价表
+DROP TABLE IF EXISTS `cs_evaluate`;
+CREATE TABLE `cs_evaluate` (
+`cse_id`   int(20) PRIMARY KEY auto_increment,
+`cs_id` int(11),
+`evaluate_time` timestamp NOT NULL default CURRENT_TIMESTAMP,
+`cs_score`  float DEFAULT 0,
+`content`  varchar(255)
+
+)DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;

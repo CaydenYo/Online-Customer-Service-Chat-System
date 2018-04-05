@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.pentaKill.dao.CustomerServiceMapper;
 import com.pentaKill.domain.ChooseCustomerServiceBean;
+import com.pentaKill.domain.CsEvaluateBean;
 import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceStatusBean;
 import com.pentaKill.domain.CustomerServiceLoginBean;
@@ -126,4 +127,7 @@ public class CustomerServiceService {
         customerServiceMapper.modifyUser(customerService);
     }
 
+    public void insertNewEvaluateService(CsEvaluateBean csb) {
+        customerServiceMapper.insertNewEvaluateMapper(csb);
+    }
 }
