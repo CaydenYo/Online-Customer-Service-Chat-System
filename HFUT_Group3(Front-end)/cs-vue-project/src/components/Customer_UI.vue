@@ -1,6 +1,7 @@
 <template>
   <div class="user_ui">
     <el-container>
+      <!--
       <transition name="el-zoom-in-top">
         <el-aside width="40%" v-if="show_cs">
           <div style="float:left;width:100%;height:100%">
@@ -20,6 +21,7 @@
         </div>
       </el-aside>
     </transition>
+  -->
     <el-container>
       <el-header style="background-color:#545c64">
         <div class="line"></div>
@@ -140,14 +142,11 @@
 </template>
 
 <script>
-import Heads from './EmbededChat/Heads'
-import ChatList from './EmbededChat/ChatList'
 export default {
   data (){
     return{
       login_url:'/login.action',
       register_url:'/register.action',
-      show_cs: false,
       activeName: 'first',
       dialogLoginVisible:false,
       dialogRegisterVisible:false,
@@ -171,10 +170,6 @@ export default {
       ],
     };
   },
-  components: {
-    Heads,
-    ChatList
-  },
   methods: {
     handleClose(done) {
       this.$confirm('确认关闭？')
@@ -188,7 +183,7 @@ export default {
     },
     handleSelect(key,keypath){
       if(key == '1'){
-        this.show_cs = !this.show_cs;
+        this.$router.push({path: '/show_embedded_cs'})
       }else if(key == '4-1'){
         this.dialogLoginVisible = true;
         this.activeName = 'first';
