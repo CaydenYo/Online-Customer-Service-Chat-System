@@ -11,26 +11,14 @@ import yhgl from '@/components/CsManage'
 import settings from '@/components/Settings'
 import know from '@/components/Know'
 import Customer_UI from '@/components/Customer_UI'
-import UserHCM from '@/components/UserHoverChat/UserHCM'
-import UserHCM2 from '@/components/UserHoverChat2/UserHCM2'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [{
-      path: '/',
+      path: '/Customer_UI',
       name: 'Customer_UI',
       component: Customer_UI
-    },
-    {
-      path: '/UserHCM',
-      name: '悬浮聊天',
-      component: UserHCM
-    },
-    {
-      path: '/UserHCM2',
-      name: '悬浮聊天',
-      component: UserHCM2
     },
     {
       path: '/CsLogin',
@@ -54,7 +42,7 @@ export default new Router({
       }]
     },
     {
-      path: '/success',
+      path: '/',
       name: '客服管理',
       component: AdminHome,
       children: [{

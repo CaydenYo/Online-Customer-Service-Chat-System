@@ -11,11 +11,11 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/HFUT_Group3':{
+        '/OCSSystem':{
             target: 'http://localhost:8080',
             changeOrigin: true,
             pathRewrite: {
-                '^/HFUT_Group3':'/HFUT_Group3'
+                '^/OCSSystem':'/OCSSystem'
             }
         }
     },

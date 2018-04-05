@@ -17,7 +17,7 @@ Vue.use(Vuex)
 Vue.prototype.$axios = axios
 Vue.use(ElementUI);
 Vue.config.productionTip = false
-Vue.prototype.rootUrl = '/HFUT_Group3'
+Vue.prototype.rootUrl = '/OCSSystem'
 
 /* eslint-disable no-new */
 new Vue({
