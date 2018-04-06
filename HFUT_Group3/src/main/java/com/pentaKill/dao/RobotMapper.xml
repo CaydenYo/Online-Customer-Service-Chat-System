@@ -36,5 +36,11 @@
 	<delete id="deleteKnowledge" parameterType="int">
 		delete from knowledge where knowledge_id=#{knowledge_id}
 	</delete>
-
+	
+	<update id="setRobotStatus" parameterType="robotStatusBean">
+        update companyInfo set
+        robot_open_flag = #{robot_open_flag}
+        where
+        knowledge_id=#{company_id}
+    </update>
 </mapper>

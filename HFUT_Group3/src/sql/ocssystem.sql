@@ -33,6 +33,7 @@ CREATE TABLE `companyInfo` (
 `dstribution_type` int DEFAULT 0,
 ---不能自增
 `robot_id`  int(10) NOT NULL,
+`robot_open_flag` int DEFAULT 0,
 `customer_info_flag` int DEFAULT 0,
 `mininum_operating_num` int DEFAULT 0,
 `robot_name`  varchar(20) NOT NULL
