@@ -6,6 +6,7 @@ import com.pentaKill.domain.ChooseCustomerServiceBean;
 import com.pentaKill.domain.CsEvaluateBean;
 import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceStatusBean;
+import com.pentaKill.domain.ListCSInfoBean;
 
 public interface CustomerServiceMapper {
 
@@ -28,4 +29,6 @@ public interface CustomerServiceMapper {
     public int getTotalWaitingNum(int company_id);
 
     public void insertNewEvaluateMapper(CsEvaluateBean ceb);
+    
+    public List<ListCSInfoBean> getCSInfoList(int company_id);
 }
