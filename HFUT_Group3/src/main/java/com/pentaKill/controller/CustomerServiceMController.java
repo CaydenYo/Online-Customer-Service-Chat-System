@@ -1,5 +1,6 @@
 package com.pentaKill.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -17,6 +18,7 @@ import com.pentaKill.domain.Company;
 import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceRegisterBean;
 import com.pentaKill.domain.CustomerServiceStatusBean;
+import com.pentaKill.domain.ListCSInfoBean;
 import com.pentaKill.service.CompanyService;
 import com.pentaKill.service.CustomerServiceService;
 
@@ -130,6 +132,19 @@ public class CustomerServiceMController {
         // 小于min_num的客服进行刷新
         CustomerService customerService = companyService.selectCustomerService(company);
         companyService.updateCustomerService(customerService, min_num);
+        Gson gson = new Gson();
+        return gson.toJson("UpdateSuccess");
+
+    }
+    
+    @RequestMapping(value = "/ListCSInfoList", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String listCSInfoList(HttpServletRequest request, HttpServletResponse response) {
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        int company_id = json.getInt("company_id");
+        List<ListCSInfoBean> list = new LinkedList<ListCSInfoBean>();
+        list = customerServiceService.getCSInfoList(company_id);
         Gson gson = new Gson();
         return gson.toJson("UpdateSuccess");
 

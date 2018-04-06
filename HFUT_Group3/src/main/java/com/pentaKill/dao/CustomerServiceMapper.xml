@@ -101,4 +101,10 @@
 		insert into cs_evaluate
 		values(#{cs_id},#{evaluate_time},#{cs_score},#{content})
 	</insert>
+
+	<select id="getCSInfoList" parameterType="int" resultType="listCSInfoBean">
+        select cs_workId,cs_name,cs_nickName,cs_register_status,cs_status,cs_email,cs_score
+        from customerServiceInfo
+        where company_id = #{0}
+    </select>
 </mapper>

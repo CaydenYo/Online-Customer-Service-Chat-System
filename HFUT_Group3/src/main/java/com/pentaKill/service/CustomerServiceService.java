@@ -15,6 +15,7 @@ import com.pentaKill.domain.ChooseCustomerServiceBean;
 import com.pentaKill.domain.CsEvaluateBean;
 import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceStatusBean;
+import com.pentaKill.domain.ListCSInfoBean;
 import com.pentaKill.domain.CustomerServiceLoginBean;
 import com.pentaKill.domain.CustomerServiceRegisterBean;
 import com.pentaKill.exception.LoginException;
@@ -129,5 +130,11 @@ public class CustomerServiceService {
 
     public void insertNewEvaluateService(CsEvaluateBean csb) {
         customerServiceMapper.insertNewEvaluateMapper(csb);
+    }
+    
+    public List<ListCSInfoBean> getCSInfoList(int company_id){
+        List<ListCSInfoBean> list = new LinkedList<ListCSInfoBean>();
+        list = customerServiceMapper.getCSInfoList(company_id);
+        return list;
     }
 }
