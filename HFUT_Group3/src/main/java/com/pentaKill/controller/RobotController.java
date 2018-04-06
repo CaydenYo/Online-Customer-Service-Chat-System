@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pentaKill.domain.CustomerServiceStatusBean;
 import com.pentaKill.domain.RobotKnowledge;
+import com.pentaKill.domain.RobotStatusBean;
 import com.pentaKill.domain.UpdateKnowledgeBean;
 import com.pentaKill.service.RobotService;
 
@@ -105,5 +106,19 @@ public class RobotController {
         System.out.println(str);
         return str;
     }
-
+    
+    @RequestMapping(value = "/setRobotStatus", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String setRobotStatus(HttpServletRequest request, HttpServletResponse response) {
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        int companyId = json.getInt("company_id");
+        int robotFlag = json.getInt("robot_flag");
+        RobotStatusBean rsb = new RobotStatusBean(companyId,robotFlag);
+        robotService.setRobotStatus(rsb);
+        Gson gson = new Gson();
+        String str = gson.toJson("success");
+        System.out.println(str);
+        return str;
+    }
 }

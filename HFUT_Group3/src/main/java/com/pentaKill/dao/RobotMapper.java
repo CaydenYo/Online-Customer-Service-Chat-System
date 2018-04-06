@@ -3,6 +3,7 @@ package com.pentaKill.dao;
 import java.util.List;
 
 import com.pentaKill.domain.RobotKnowledge;
+import com.pentaKill.domain.RobotStatusBean;
 import com.pentaKill.domain.UpdateKnowledgeBean;
 
 public interface RobotMapper {
@@ -16,5 +17,7 @@ public interface RobotMapper {
     public void updateKnowledge(UpdateKnowledgeBean updateKnowledgeBean);
 
     public void deleteKnowledge(int knowledge_id);
+
+    public void setRobotStatus(RobotStatusBean rsb);
 
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.pentaKill.dao.RobotMapper;
 import com.pentaKill.domain.RobotKnowledge;
+import com.pentaKill.domain.RobotStatusBean;
 import com.pentaKill.domain.UpdateKnowledgeBean;
 
 @Service
@@ -38,5 +39,9 @@ public class RobotService {
 
     public void deleteKnowledge(int knowledge_id) {
         robotMapper.deleteKnowledge(knowledge_id);
+    }
+
+    public void setRobotStatus(RobotStatusBean rsb) {
+        robotMapper.setRobotStatus(rsb);
     }
 }
