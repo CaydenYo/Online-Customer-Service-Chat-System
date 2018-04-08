@@ -27,6 +27,7 @@ import com.pentaKill.domain.RobotQuestionBean;
 import com.pentaKill.service.CSViewsHistoryMessageService;
 import com.pentaKill.service.ConversationService;
 import com.pentaKill.service.RobotChatService;
+import com.pentaKill.service.SessionTransferService;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -39,6 +40,8 @@ public class WebSocketServer {
     CSViewsHistoryMessageService csViewsHistoryMessageService;
     @Resource
     RobotChatService robotChatService;
+    @Resource
+    SessionTransferService sessionTransferService;
 
     private final int initvalue = 0;
     private boolean firstTime = true;
@@ -66,7 +69,77 @@ public class WebSocketServer {
         String company_name = json.getString("company_name");
         String company_id = json.getString("company_id");
 
+        // 当进行会话转接时需要此变量
+        String old_cs_id = null;
+
         if (firstTime) {
+
+            // 会话转接请求
+            if (content.startsWith("sessionTransfer") && Integer.parseInt(sender_id) < 2000) {
+                // 约定前端发来这个，表示某个客服接受了转接请求
+
+                userMap.put(session.getId(), nickname);
+
+                firstTime = false;
+
+                old_cs_id = json.getString("old_cs_id");
+                // 修改数据库的状态
+                // 原客服服务人数减1
+
+                int cs_id = Integer.parseInt(sender_id);
+
+                int old_cs_id_int = Integer.parseInt(old_cs_id);
+
+                sessionTransferService.decreaseCsWaitingNumService(old_cs_id_int);
+                // 新客服服务人数加1（无视新客服的服务和等待人数上限）
+                sessionTransferService.addCsWaitingNumService(cs_id);
+                // 关闭原有会话
+                Timestamp end_time = new Timestamp(System.currentTimeMillis());
+
+                ConversationBean old_cb = new ConversationBean(Integer.parseInt(receiver_id), old_cs_id_int, null,
+                        end_time, -1);
+                sessionTransferService.closeConversationService(old_cb);
+                // 增加新的会话
+                ConversationBean cb = new ConversationBean(Integer.parseInt(receiver_id), cs_id, null, null, -1);
+                conversationService.insertConversationService(cb);
+
+                // 客户的nickname
+                String reciver_nickname = conversationService
+                        .getCustomerNicknameByCustomerId(Integer.valueOf(receiver_id));
+
+                // 查找客服的欢迎语
+                content = "欢迎！";
+                json.put("date", df.format(new Date()));
+                json.put("content", content);
+
+                for (String key : userMap.keySet()) {
+                    webSocketServer = (WebSocketServer) connectedUser.get(key);
+                    if (nickname.equalsIgnoreCase(userMap.get(key))) {
+
+                        json.put("isSelf", true);
+                        synchronized (webSocketServer) {
+                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
+                        }
+                        // 还要根据receiver_id找到对应的nickname
+                    } else if (key.equals(reciver_nickname)) {
+                        json.put("isSelf", false);
+                        synchronized (webSocketServer) {
+                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
+
+                        }
+                    }
+
+                }
+                // 发送问候语
+                // 有查看历史信息的按钮
+
+                // 函数直接结束
+                return;
+            }
+
+            // 下面机器人这段改放哪里？
+
+            // 判断有无历史会话没完成
 
             // 当用户连接时，首先查询机器人是否开启
             // 如果开启，则加载相应的问题，发送到前端
@@ -251,6 +324,7 @@ public class WebSocketServer {
                     Integer.parseInt(sender_id), from_customer, null, content_type, content);
             conversationService.insertChatLogService(clb);
 
+            // 发送信息到前台
             json.put("date", df.format(new Date()));
 
             for (String key : userMap.keySet()) {
