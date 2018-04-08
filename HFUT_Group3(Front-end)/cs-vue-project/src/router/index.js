@@ -31,7 +31,8 @@ export default new Router({
       path: '/Customer_UI',
       name: 'Customer_UI',
       component: Customer_UI
-
+    },
+    {
       path: '/',
       name: 'CS_UI',
       component: CS_UI
