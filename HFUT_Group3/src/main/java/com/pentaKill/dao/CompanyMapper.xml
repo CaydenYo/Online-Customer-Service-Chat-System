@@ -5,44 +5,52 @@
 
 <mapper namespace="com.pentaKill.dao.CompanyMapper">
 
-	<select id="findCompany" parameterType="int" resultType="company">
-		select *
-		from company where
-		company_id=#{0};
-	</select>
+    <select
+        id="findCompany"
+        parameterType="int"
+        resultType="company">
+        select *
+        from company where
+        company_id=#{0};
+    </select>
 
-	<update id="updateCompany" parameterType="company">
-		update company
-		<set>
-			<if test="dstribution_type!=null">
-				dstribution_type = #{dstribution_type}
-			</if>
-			<if test="mininum_operating_num!=null">
-				mininum_operating_num = #{mininum_operating_num}
-			</if>
-			<if test="customer_info_flag!=null">
-				customer_info_flag = #{customer_info_flag}
-			</if>
-		</set>
-		where company_id=#{company_id}
-	</update>
+    <update
+        id="updateCompany"
+        parameterType="company">
+        update company
+        <set>
+            <if test="dstribution_type!=null">
+                dstribution_type = #{dstribution_type}
+            </if>
+            <if test="mininum_operating_num!=null">
+                mininum_operating_num = #{mininum_operating_num}
+            </if>
+            <if test="customer_info_flag!=null">
+                customer_info_flag = #{customer_info_flag}
+            </if>
+        </set>
+        where company_id=#{company_id}
+    </update>
 
-	<select id="selectCustomerService" resultType="customerService">
-		select * from
-		customerService where
-		company_id=#{0} and cs_operating_number &lt;
-		#{1};
-	</select>
+    <select
+        id="selectCustomerService"
+        resultType="customerService">
+        select * from
+        customerService where
+        company_id=#{0} and
+        cs_operating_number &lt;
+        #{1};
+    </select>
 
 
-	<update id="updateCustomerService">
-		update customerServiceInfo
-		<set>
-			<if test="dstribution_type!=null">
-				cs_operating_number = #{0}
-			</if>
-		</set>
-		where company_id=#{1}
-	</update>
+    <update id="updateCustomerService">
+        update customerServiceInfo
+        <set>
+            <if test="dstribution_type!=null">
+                cs_operating_number = #{0}
+            </if>
+        </set>
+        where company_id=#{1}
+    </update>
 
 </mapper>

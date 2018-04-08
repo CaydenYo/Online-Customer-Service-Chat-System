@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3.dtd">
+<mapper namespace="com.pentaKill.dao.SessionTransferMapper">
+
+    <!-- 根据客服id减少等待人数 -->
+    <update
+        id="decreaseCsWaitingNumMapper"
+        parameterType="int">
+        update customerServiceInfo set cs_waited_number=
+        cs_waited_number-1
+        where cs_id=#{0}
+
+    </update>
+
+    <!-- 根据客服id增加正在服务人数 -->
+    <update
+        id="addCsWaitingNumMapper"
+        parameterType="int">
+        update customerServiceInfo set cs_operated_number=
+        cs_operated_number+1
+        where cs_id=#{0}
+
+    </update>
+
+    <!-- 关闭会话 -->
+    <update
+        id="closeConversationMapper"
+        parameterType="ConversationBean">
+        update conversation set end_time=#{end_time}
+        where
+        cs_id=#{cs_id} and customer_id=#{customer_id} and
+        start_time=end_time
+
+    </update>
+</mapper>
