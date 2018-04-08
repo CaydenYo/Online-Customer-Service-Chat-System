@@ -17,11 +17,40 @@
     <el-card class="box-card">
       <h3>客服列表</h3>
       <el-table :data="tableData3" height="250" border style="width: 100%">
-        <el-table-column prop="date" label="日期" width="180">
+        <el-table-column prop="cs_workId" label="工号" width="180">
+          <template slot-scope="scope">
+            <span>{{scope.row.cs_workId}}</span>
+          </template>
         </el-table-column>
-        <el-table-column prop="name" label="姓名" width="180">
+        <el-table-column prop="cs_name" label="姓名" width="180">
+          <template slot-scope="scope">
+            <span>{{scope.row.cs_name}}</span>
+          </template>
         </el-table-column>
-        <el-table-column prop="address" label="地址">
+        <el-table-column prop="cs_nickName" label="昵称" width="180">
+          <template slot-scope="scope">
+            <span>{{scope.row.cs_nickName}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="cs_email" label="电邮" width="180">
+          <template slot-scope="scope">
+            <span>{{scope.row.cs_email}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="cs_score" label="评分" width="180">
+          <template slot-scope="scope">
+            <span>{{scope.row.cs_score}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="cs_register_status" label="注册状态" width="180">
+          <template slot-scope="scope">
+            <span>{{scope.row.cs_register_status}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="cs_status" label="状态" width="180">
+          <template slot-scope="scope">
+            <span>{{scope.row.cs_status}}</span>
+          </template>
         </el-table-column>
       </el-table>
     </el-card>
@@ -32,32 +61,32 @@
 export default {
   data() {
     return {
+      company_id: JSON.parse(localStorage.getItem('company_id')),
+      kfgl_url: '/ListCSInfoList',
       dialogFormVisible: false,
       form: {
         email: ''
       },
-      tableData3: [
-        {
-          date: '2016-05-03',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          date: '2016-05-02',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          date: '2016-05-04',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          date: '2016-05-01',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄'
-        }
-      ]
+      tableData3: []
+    }
+  },
+  mounted() {
+    this.init()
+  },
+  methods: {
+    init() {
+      console.log('页面加载完成')
+      console.log(JSON.stringify(this.company_id))
+      var params = new URLSearchParams()
+      let _this = this
+      params.append('data', JSON.stringify(this.company_id))
+      this.$axios({
+        method: 'post',
+        url: this.rootUrl + _this.kfgl_url,
+        data: params
+      }).then(res => {
+        _this.tableData3 = JSON.parse(res.data)
+      })
     }
   }
 }

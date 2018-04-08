@@ -1,12 +1,17 @@
 <template>
-  <el-container  style="height: 100%">
+  <el-container style="height: 100%">
     <el-header class="top">
       <el-menu class='el-menu-demo' mode="horizontal" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+        <div class="logo">
+          <img src="../../static/images/admin_home_logo.png" width="100%" height="100%" alt="ADMIN">
+        </div>
         <el-submenu index="1" style="float:right;">
           <template slot="title">运维人员</template>
           <router-link to="/CsLogin">
             <el-menu-item index="4-1">
-              <el-button type="text">登出</el-button>
+              <el-button type="text">
+                <span class="logout">登出</span>
+              </el-button>
             </el-menu-item>
           </router-link>
         </el-submenu>
@@ -66,6 +71,7 @@
 export default {
   data() {
     return {
+      company_id: JSON.parse(localStorage.getItem('company_id')),
       activeIndex: 'index'
     }
   }
@@ -76,8 +82,19 @@ export default {
 .top {
   background-color: #545c64;
 }
-.side{
+.side {
   background-color: #304156;
+}
+.logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 5px;
+  height: 54px;
+  width: 54px;
+}
+.logout {
+  color: #fff;
 }
 </style>
 

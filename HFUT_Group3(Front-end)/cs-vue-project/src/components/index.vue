@@ -62,13 +62,37 @@
 
 <script>
 export default {
+  company_id: JSON.parse(localStorage.getItem('company_id')),
   name: 'allActive',
   data: function() {
     return {
       totalKfNum: 88,
       totalActiveNum: 22,
       inConv: 25,
-      inWait: 28
+      inWait: 28,
+      four_data_url: ''
+    }
+  },
+  mounted() {
+    this.init()
+  },
+  methods: {
+    init() {
+      console.log(JSON.stringify(this.company_id))
+      var params = new URLSearchParams()
+      let _this = this
+      params.append('data', JSON.stringify(this.company_id))
+      this.$axios({
+        method: 'post',
+        url: this.rootUrl + _this.four_data_url,
+        data: params
+      }).then(res => {
+        var result = JSON.parse(res.data)
+        _this.totalKfNum = result.totalKfNum
+        _this.totalActiveNum = result.totalActiveNum
+        _this.inConv = result.inConv
+        _this.inWait = result.inWait
+      })
     }
   }
 }
@@ -110,10 +134,10 @@ export default {
 .num {
   font-size: 3em;
 }
-.pan{
+.pan {
   margin: 20px;
 }
-.pcol{
+.pcol {
   min-height: 450px;
 }
 </style>
