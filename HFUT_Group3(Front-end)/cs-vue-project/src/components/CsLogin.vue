@@ -52,6 +52,7 @@ export default {
               alert('success')
               this.$router.push({ path: '/index' })
             } else {
+              localStorage.setItem('company_id', '1')
               this.$message({
                 message: JSON.stringify(res.data),
                 type: 'error'
