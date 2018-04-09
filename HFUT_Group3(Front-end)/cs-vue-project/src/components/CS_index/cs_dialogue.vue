@@ -16,16 +16,19 @@
 					</el-main>
 				</el-container>
 			</div></el-col>
-			<el-col :span="9"><div class="grid-content bg-purple-light"></div></el-col>
+			<el-col :span="9"><div style="overflow: hidden;"class="grid-content bg-purple-light">
+				<message></message>
+				<usertext></usertext>
+			</div></el-col>
 			<el-col :span="5"><div class="grid-content bg-purple">
-				<el-tabs type="border-card">
+				<el-tabs type="border-card" style="height:100%;">
 					<el-tab-pane label="用户资料">用户管理</el-tab-pane>
 					<el-tab-pane label="知识库">配置管理</el-tab-pane>
 				</el-tabs>
 			</div></el-col>
 			<el-col :span="5"><div class="grid-content bg-purple-light">
-				<el-tabs type="border-card">
-					<el-tab-pane label="常用语">用户管理</el-tab-pane>
+				<el-tabs type="border-card" style="height:100%;">
+					<el-tab-pane label="常用语">常用语</el-tab-pane>
 					<el-tab-pane label="聊天记录">配置管理</el-tab-pane>
 				</el-tabs>
 			</div></el-col>
@@ -36,6 +39,8 @@
 
 <script>
 import {mapState} from 'vuex'
+import message from '../CS_embeddedChat/message'
+import usertext from '../CS_embeddedChat/usertext'
 
 export default {
 	name: 'list',
@@ -43,6 +48,10 @@ export default {
 		return {
 			
 		}
+	},
+	components: {
+		message,
+		usertext,
 	},
 	computed: mapState([
 		'sessions',

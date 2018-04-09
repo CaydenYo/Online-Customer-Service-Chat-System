@@ -9,52 +9,52 @@
         </el-table-column>
         <el-table-column prop="address" label="地址">
         </el-table-column>
-      </el-table>
-    </el-card>
-  </div>
+    </el-table>
+</el-card>
+</div>
 </template>
 <script>
 export default {
   data() {
     return {
       tableData3: [
-        {
+      {
           date: '2016-05-03',
           name: '张晓明',
           address: '合肥翡翠湖6#'
-        },
-        {
+      },
+      {
           date: '2016-05-02',
           name: '张晓明',
           address: '合肥翡翠湖6#'
-        },
-        {
+      },
+      {
           date: '2016-05-04',
           name: '张晓明',
           address: '合肥翡翠湖6#'
-        },
-        {
+      },
+      {
           date: '2016-05-01',
           name: '张晓明',
           address: '合肥翡翠湖6#'
-        },
-        {
+      },
+      {
           date: '2016-05-08',
           name: '张晓明',
           address: '合肥翡翠湖6#'
-        },
-        {
+      },
+      {
           date: '2016-05-06',
           name: '张晓明',
           address: '合肥翡翠湖6#'
-        },
-        {
+      },
+      {
           date: '2016-05-07',
           name: '张晓明',
           address: '合肥翡翠湖6#'
-        }
+      }
       ]
-    }
   }
+}
 }
 </script>

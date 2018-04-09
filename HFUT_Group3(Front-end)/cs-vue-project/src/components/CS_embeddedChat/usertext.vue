@@ -9,7 +9,7 @@
     @blur="onEditorBlur($event)"
     @focus="onEditorFocus($event)"
     @ready="onEditorReady($event)">
-</quill-editor>
+  </quill-editor>
 </div>
 </template>
 
@@ -23,29 +23,29 @@ export default {
   data () {
     return {
       content:''
-  }
-},
-computed: {
+    }
+  },
+  computed: {
     editor() {
       return this.$refs.QuillEditor.quill
-  }
-},
-methods: {
+    }
+  },
+  methods: {
     addMessage (e) {
       if (e.ctrlKey && e.keyCode ===13 && this.content.length) {
         alert(e.keyCode)
         this.$store.commit('addMessage',this.content);
         this.content='';
-    }
-},
+      }
+    },
     onEditorChange({ editor, html, text }) {//富文本编辑器  文本改变时 设置字段值  
       this.content = html
       if(e.ctrlKey && e.keyCode ===13 && this.content.length){
         this.$store.commit('addMessage',this.content);
         this.content='';
+      }
     }
-}
-}
+  }
 }
 </script>
 
@@ -61,7 +61,7 @@ methods: {
     height: 100%;
     border: none;
     outline: none;
-}
+  }
 }
 
 </style>
