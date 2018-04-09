@@ -21,7 +21,7 @@ export default {
   name: 'message',
   data () {
     return {
-      img: '../src/assets/images/1.jpg'
+      img: '../../assets/default.png'
   }
 },
 computed:mapState([
@@ -49,9 +49,15 @@ directives: {/*这个是vue的自定义指令,官方文档有详细说明*/
 </script>
 
 <style lang="scss" scoped>
+.quill-editor {
+   height: 745px;
+}
+.qi-container {
+  height:100%;
+}
+
 #message {
-  padding: 15px;
-  max-height: 68%;
+  height: 78%;
   overflow-y: scroll;
   ul {
     list-style-type: none;

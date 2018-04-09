@@ -4,8 +4,8 @@
       <el-button icon="el-icon-caret-left" @click="back">返回</el-button><br>
       <img class="avatar" v-bind:src="user.img">
       <p class="name">{{user.name}}</p>
-    </header>
-  </div>
+  </header>
+</div>
 </template>
 
 <script>
@@ -16,14 +16,14 @@ export default {
       user: {
         name: 'Li-yiwei',
         img: '../src/assets/images/1.jpg'
-      }
     }
-  },
-  methods:{
+}
+},
+methods:{
     back: function(event){
       this.$router.push({path: '/'})
-    }
   }
+}
 }
 </script>
 
@@ -34,14 +34,14 @@ export default {
     width: 40px;
     height: 40px;
     vertical-align: middle;/*这个是图片和文字居中对齐*/
-  }
-  .name {
+}
+.name {
     display: inline-block;
     padding: 10px;
     margin-bottom: 15px;
     font-size: 16px;
-  }
-  .search {
+}
+.search {
     background: #26292E;
     height: 30px;
     line-height: 30px;
@@ -50,6 +50,6 @@ export default {
     border-radius: 4px;
     outline: none;/*鼠标点击后不会出现蓝色边框*/
     color: #FFF;
-  }
+}
 }
 </style>

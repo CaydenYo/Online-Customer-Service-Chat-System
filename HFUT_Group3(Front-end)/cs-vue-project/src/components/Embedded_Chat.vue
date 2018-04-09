@@ -1,14 +1,14 @@
 <template>
   <div class="embedded_frame">
-  <div id="embedded_chat">
-    <div class="sidebar">
-      <card></card>
-      <list></list>
-    </div>
-    <div class="main">
-      <message></message>
-      <usertext></usertext>
-    </div>
+      <div id="embedded_chat">
+        <div class="sidebar">
+          <card></card>
+          <list></list>
+      </div>
+      <div class="main">
+          <message></message>
+          <usertext></usertext>
+      </div>
   </div>
 </div>
 </template>
@@ -25,16 +25,16 @@ export default {
     return {
       
     }
-  },
-  mounted:function() {
+},
+mounted:function() {
     this.$store.dispatch('initData');
-  },
-  components:{
+},
+components:{
     card,
     list,
     message,
     usertext
-  }
+}
 }
 </script>
 
@@ -52,17 +52,17 @@ export default {
   border-radius: 10px;
   .sidebar, .main {
     height: 100%;
-  }
-  .sidebar {
+}
+.sidebar {
     float: left;
     color: #f4f4f4;
     background-color: #2e3238;
     width: 200px;
-  }
-  .main {
+}
+.main {
     position: relative;
     overflow: hidden;
     background-color: #eee;
-  }
+}
 }
 </style>

@@ -5,22 +5,22 @@
         <el-col :span="6">
           {{ totalKfNum }}<br>
           <span>客服总数</span>
-        </el-col>
-        <el-col :span="6">
+      </el-col>
+      <el-col :span="6">
           {{ totalActiveNum }}<br>
           <span>在线客服</span>
-        </el-col>
-        <el-col :span="6">
+      </el-col>
+      <el-col :span="6">
           {{ inConv }}<br>
           <span>接入会话</span>
-        </el-col>
-        <el-col :span="6">
+      </el-col>
+      <el-col :span="6">
           {{ inWait }}<br>
           <span>正在等待</span>
-        </el-col>
       </el-col>
-    </el-row>
-  </div>
+  </el-col>
+</el-row>
+</div>
 </template>
 
 <script>
@@ -32,8 +32,8 @@ export default {
       totalActiveNum: 5,
       inConv: 25,
       inWait: 28
-    }
   }
+}
 }
 </script>
 
