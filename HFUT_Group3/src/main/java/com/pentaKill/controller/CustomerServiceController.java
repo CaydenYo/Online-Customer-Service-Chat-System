@@ -28,7 +28,6 @@ import com.pentaKill.service.CustomerServiceService;
 import net.sf.json.JSONObject;
 
 @Controller
-@RequestMapping(value = "/customerService")
 public class CustomerServiceController {
     @Resource
     private CustomerServiceService customerSvcService;
@@ -36,7 +35,7 @@ public class CustomerServiceController {
     @Resource
     private CompanyService companyService;
 
-    @RequestMapping(value = "/Login", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @RequestMapping(value = "/customerService/Login", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String csLogin(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -56,18 +55,17 @@ public class CustomerServiceController {
                 } else {
                     // 登陆后状态为工作
                     customerSvcService.setStatus(1, customerService);
-                    return gson.toJson("success");
+                    return gson.toJson(customerService);
                 }
             } else {
                 return gson.toJson("用户名或者密码错误");
             }
         } catch (LoginException e) {
-            // System.out.println(e.getMessage());
             return gson.toJson("用户名或者密码错误");
         }
     }
 
-    @RequestMapping(value = "/setProfile", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @RequestMapping(value = "/customerService/setProfile", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String setProfile(HttpServletRequest request, HttpServletResponse response) {
         Gson gson = new Gson();
@@ -86,7 +84,7 @@ public class CustomerServiceController {
         return gson.toJson("success");
     }
 
-    @RequestMapping(value = "/setNumber", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @RequestMapping(value = "/customerService/setNumber", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String setNumber(HttpServletRequest request, HttpServletResponse response) {
         Gson gson = new Gson();
@@ -113,7 +111,7 @@ public class CustomerServiceController {
         return gson.toJson("success");
     }
 
-    @RequestMapping(value = "/setStatus", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @RequestMapping(value = "/customerService/setStatus", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String setStatus(HttpServletRequest request, HttpServletResponse response) {
         Gson gson = new Gson();

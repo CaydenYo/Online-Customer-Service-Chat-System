@@ -122,12 +122,16 @@ public class CustomerServiceMController {
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
         int company_id = json.getInt("company_id");
-        int dstribution_type = json.getInt("dstribution_type");
-
-        int customer_info_flag = json.getInt("customer_info_flag");
+        boolean distribution_type = json.getBoolean("distribution_type");
+        boolean customer_info_flag = json.getBoolean("customer_info_flag");
+        boolean access_type = json.getBoolean("access_type");
+        int int_distribution_type = (distribution_type==true?1:0);
+        int int_customer_info_flag = (customer_info_flag==true?1:0);
+        int int_access_type = (access_type==true?1:0);
         int min_num = json.getInt("mininum_operating_num");
         Company company = companyService.findCompany(company_id);
-        companyService.update(company, dstribution_type, customer_info_flag, min_num);
+      
+        companyService.update(company, int_distribution_type, int_customer_info_flag, int_access_type, min_num);
 
         // 小于min_num的客服进行刷新
         CustomerService customerService = companyService.selectCustomerService(company);
