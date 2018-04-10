@@ -8,6 +8,15 @@ public class Company {
     private int dstribution_type;
     private int mininum_operating_num;
     private int customer_info_flag;
+    private int access_type;
+
+    public int getAccess_type() {
+        return access_type;
+    }
+
+    public void setAccess_type(int access_type) {
+        this.access_type = access_type;
+    }
 
     public int getMininum_operating_num() {
         return mininum_operating_num;

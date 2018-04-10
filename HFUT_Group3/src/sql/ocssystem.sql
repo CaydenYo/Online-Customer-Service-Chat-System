@@ -36,10 +36,12 @@ CREATE TABLE `companyInfo` (
 `robot_open_flag` int DEFAULT 0,
 `customer_info_flag` int DEFAULT 0,
 `mininum_operating_num` int DEFAULT 0,
+---0网页 1悬浮式
+`access_type` int DEFAULT 0,
 `robot_name`  varchar(20) NOT NULL
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-insert into companyInfo values(1,"CISCO",1,1,"XIAO AI");
+insert into companyInfo values(1,"CISCO",0,0,0,0,0,0,"XIAO AI");
 
 --4客服表
 DROP TABLE IF EXISTS `customerServiceInfo`;

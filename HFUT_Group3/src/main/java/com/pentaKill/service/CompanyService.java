@@ -18,10 +18,11 @@ public class CompanyService {
         return companyMapper.findCompany(company_id);
     }
 
-    public void update(Company company, int dstribution_type, int customer_info_flag, int min_num) {
+    public void update(Company company, int dstribution_type, int customer_info_flag, int access_type, int min_num) {
         company.setMininum_operating_num(min_num);
         company.setDstribution_type(dstribution_type);
         company.setCustomer_info_flag(customer_info_flag);
+        company.setAccess_type(access_type);
         companyMapper.UpdateCompany(company);
     }
 

@@ -28,6 +28,9 @@
             <if test="customer_info_flag!=null">
                 customer_info_flag = #{customer_info_flag}
             </if>
+            <if test="access_type!=null">
+                access_type = #{access_type}
+            </if>
         </set>
         where company_id=#{company_id}
     </update>

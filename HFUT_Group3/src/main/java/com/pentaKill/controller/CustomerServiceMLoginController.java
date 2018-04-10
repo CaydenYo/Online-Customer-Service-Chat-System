@@ -30,12 +30,12 @@ public class CustomerServiceMLoginController {
     @Resource
     private CustomerServiceMService customerServiceMService;
 
-    @RequestMapping(value = "/Login", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @RequestMapping(value = "/csmLogin", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String csmLogin(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         Gson gson = new Gson();
-        System.out.println("进来了");
+        //System.out.println("进来了");
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
         String csm_email = json.getString("csm_email");
@@ -45,7 +45,7 @@ public class CustomerServiceMLoginController {
         try {
             csManager = customerServiceMService.csmLogin(csManagerLoginBean);
             if (csManager != null) {// 如果验证成功，则跳转进首页
-                return gson.toJson("success");
+                return gson.toJson(csManager);
             } else {
                 return gson.toJson("用户名或者密码错误");
             }
