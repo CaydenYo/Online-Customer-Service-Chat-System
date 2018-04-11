@@ -31,4 +31,8 @@ public interface CustomerServiceMapper {
     public void insertNewEvaluateMapper(CsEvaluateBean ceb);
     
     public List<ListCSInfoBean> getCSInfoList(int company_id);
+    
+    public int countServiceNum(int company_id);
+    
+    public int countOnlineServiceNum(int company_id);
 }

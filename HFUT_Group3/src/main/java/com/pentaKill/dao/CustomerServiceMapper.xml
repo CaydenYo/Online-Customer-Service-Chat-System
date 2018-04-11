@@ -107,4 +107,17 @@
         from customerServiceInfo
         where company_id = #{0}
     </select>
+
+    <select id="countServiceNum" parameterType="int" resultType="int">
+        select count(*)
+        from customerServiceInfo
+        where company_id = #{0}
+    </select>
+    
+    <select id="countOnlineServiceNum" parameterType="int" resultType="int">
+        select count(*)
+        from customerServiceInfo
+        where cs_status = 1 and company_id = #{0}
+    </select>
+    
 </mapper>
