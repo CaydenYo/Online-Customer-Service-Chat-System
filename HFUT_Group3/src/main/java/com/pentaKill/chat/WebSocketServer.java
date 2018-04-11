@@ -44,7 +44,7 @@ public class WebSocketServer {
     SessionTransferService sessionTransferService;
 
     private final int initvalue = 0;
-    private boolean firstTime = true;
+    private boolean firstTime = false;
     private String nickname;
     private static HashMap<String, Object> connectedUser = new HashMap<String, Object>();
     private static HashMap<String, String> userMap = new HashMap<String, String>();
@@ -54,6 +54,7 @@ public class WebSocketServer {
     public void onOpen(Session session) {
         this.session = session;
         connectedUser.put(session.getId(), this);
+        // System.out.println(session);
     }
 
     @OnMessage
@@ -301,23 +302,30 @@ public class WebSocketServer {
 
             String reciverNickname;
 
+            // System.out.println("1");
             // 判断发送者是客服还是用户
             if (Integer.parseInt(senderId) < 2000) {
                 fromCustomer = 1;
                 csId = Integer.parseInt(senderId);
                 customerId = Integer.parseInt(receiverId);
                 // nickname为客户的nickname
+                // System.out.println("2");
                 reciverNickname = conversationService.getCustomerNicknameByCustomerId(Integer.valueOf(receiverId));
+                // System.out.println("3");
             } else {
                 customerId = Integer.parseInt(senderId);
                 csId = Integer.parseInt(receiverId);
                 // nickname为客服的nickname
+                // System.out.println("4");
                 reciverNickname = conversationService.getCsNicknameByCsId(Integer.valueOf(receiverId));
+                // System.out.println("5");
             }
 
+            // System.out.println("6");
             FindConversationBean fcb = new FindConversationBean(customerId, csId);
             conversationId = conversationService.findConversationIdService(fcb);
 
+            // System.out.println("7");
             ChatLogBean clb = new ChatLogBean(conversationId, Integer.parseInt(receiverId), Integer.parseInt(senderId),
                     fromCustomer, null, contentType, content);
             conversationService.insertChatLogService(clb);
@@ -328,13 +336,14 @@ public class WebSocketServer {
             for (String key : userMap.keySet()) {
                 webSocketServer = (WebSocketServer) connectedUser.get(key);
                 if (nickname.equalsIgnoreCase(userMap.get(key))) {
-
+                    // System.out.println("8");
                     json.put("isSelf", true);
                     synchronized (webSocketServer) {
                         webSocketServer.session.getAsyncRemote().sendText(json.toString());
                     }
                     // 还要根据receiverId找到对应的nickname
                 } else if (key.equals(reciverNickname)) {
+                    // System.out.println("9");
                     json.put("isSelf", false);
                     synchronized (webSocketServer) {
                         webSocketServer.session.getAsyncRemote().sendText(json.toString());
