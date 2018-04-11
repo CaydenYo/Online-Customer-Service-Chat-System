@@ -104,9 +104,9 @@
 										'link unlink | emotion image video  | map' ]
 							});
 
-			var nickname = "yukang";
-			var senderId = "2000";
-			var receiverId = "1000";
+			var nickname = "kefu1";
+			var senderId = "1000";
+			var receiverId = "2000";
 			var companyName = "pentaKill";
 			var companyId = "1";
 			var socket = new WebSocket(

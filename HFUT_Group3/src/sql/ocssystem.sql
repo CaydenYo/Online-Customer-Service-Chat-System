@@ -1,10 +1,12 @@
+drop database IF EXISTS ocssystem;
 create database ocssystem;
+use ocssystem;
 
 --1客户表
 DROP TABLE IF EXISTS `customerInfo`;
 CREATE TABLE `customerInfo` (
 `customer_id` int(11) PRIMARY KEY auto_increment,
-、customer_nickname、 varchar(20),
+`customer_nickname` varchar(20),
 `customer_name` varchar(20) NOT NULL,
 `customer_status` int default 0,
 `customer_age` int default 0,
@@ -14,7 +16,8 @@ CREATE TABLE `customerInfo` (
 `customer_address`  varchar(255) DEFAULT NULL,
 `customer_img`  varchar(255) DEFAULT NULL
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
+ --余康测试
+insert into customerInfo values(2000,'yukang','yukang',1,20,1,'123456@qq.com','123','hefei','cus01.jpg');
 
 --2游客表
 DROP TABLE IF EXISTS `aCustomerInfo`;
@@ -65,6 +68,9 @@ CREATE TABLE `customerServiceInfo` (
 `cs_score`  float DEFAULT 0,
 `cs_code` varchar(255)
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+--余康测试
+insert into customerServiceInfo values(1000,'2015214421','gongchao',1,'kefu1','1','123','809049664@qq.com',
+'123.jpg',0,1,3,3,0,0,0,'aaa');
 
 insert into customerServiceInfo values(1000,'2015214459','Ye Fei','1','Sherhom',1,'123456','846953477@qq.com',
 			'1.jpg',124,1,0,0,1,1,5.0,'aaabbb');
@@ -94,6 +100,8 @@ UNIQUE KEY `conversation_id` (`conversation_id`),
 FOREIGN KEY (`customer_id`) REFERENCES `customerInfo` (`customer_id`) ,
 FOREIGN KEY (`cs_id`) REFERENCES `customerServiceInfo` (`cs_id`)
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+--余康测试
+insert into conversation(conversation_id,customer_id,cs_id,score) values(1,2000,1000,0);
 
 --7会话语句表
 DROP TABLE IF EXISTS `chatLog`;
