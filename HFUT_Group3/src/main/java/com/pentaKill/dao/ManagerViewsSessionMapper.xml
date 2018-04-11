@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3.dtd">
+
+<mapper namespace="com.pentaKill.dao.ManagerViewsSessionMapper">
+
+    <resultMap
+        type="MVSConversationBean"
+        id="codp_map">
+        <result
+            column="conversation.conversation_id"
+            property="conversation_id" />
+        <result
+            column="conversation.customer_id"
+            property="customer_id" />
+        <result
+            column="customerInfo.customer_nickname"
+            property="customer_nickname" />
+        <result
+            column="conversation.cs_id"
+            property="cs_id" />
+        <result
+            column="customerServiceInfo.cs_nickName"
+            property="cs_nickName" />
+        <result
+            column="conversation.start_time"
+            property="start_time" />
+        <result
+            column="conversation.end_time"
+            property="end_time" />
+        <result
+            column="conversation.score"
+            property="score" />
+    </resultMap>
+
+    <!-- 管理员查询当前会话信息 -->
+    <select
+        id="getCurrentConversationMapper"
+        resultMap="codp_map">
+        SELECT * FROM
+        conversation,customerInfo,customerServiceInfo
+        WHERE
+        start_time=end_time and conversation.customer_id =
+        customerInfo.customer_id
+        and conversation.cs_id =
+        customerServiceInfo.cs_id
+    </select>
+
+
+    <!-- 通过Id查询当前会话信息 -->
+    <select
+        id="getCurrentConversationByIdMapper"
+        parameterType="int"
+        resultType="MVSConversationBean">
+        SELECT * FROM
+        conversation,customerInfo,customerServiceInfo
+        WHERE
+        conversation.conversation_id = #{0} and conversation.customer_id
+        = customerInfo.customer_id
+        and conversation.cs_id =
+        customerServiceInfo.cs_id
+    </select>
+
+
+    <!-- 通过Id查询聊天记录 -->
+    <select
+        id="getChatLogMapper"
+        parameterType="int"
+        resultType="MVSChatLogBean">
+        SELECT * FROM chatLog
+        WHERE conversation_id = #{0}
+    </select>
+
+
+    <!-- 查询历史会话信息 -->
+    <select
+        id="getHistoryConversationMapper"
+        resultMap="codp_map">
+        SELECT * FROM
+        conversation,customerInfo,customerServiceInfo
+        WHERE start_time !=
+        end_time and conversation.customer_id = customerInfo.customer_id
+        and conversation.cs_id = customerServiceInfo.cs_id
+    </select>
+
+</mapper>
