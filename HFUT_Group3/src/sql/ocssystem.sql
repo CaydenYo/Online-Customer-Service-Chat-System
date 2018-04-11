@@ -67,7 +67,9 @@ CREATE TABLE `customerServiceInfo` (
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 insert into customerServiceInfo values(1000,'2015214459','Ye Fei','1','Sherhom',1,'123456','846953477@qq.com',
-			'1.jpg',124,1,0,0,5.0,'aaabbb');
+			'1.jpg',124,1,0,0,1,1,5.0,'aaabbb');
+insert into customerServiceInfo values(1001,'2015214459','Ye Fei','1','Sherhom',1,'123456','846353477@qq.com',
+            '1.jpg',124,0,0,0,1,1,5.0,'aaabbb');
 
 --5客服管理人员表
 DROP TABLE IF EXISTS `csManagerInfo`;

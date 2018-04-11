@@ -137,4 +137,14 @@ public class CustomerServiceService {
         list = customerServiceMapper.getCSInfoList(company_id);
         return list;
     }
+    
+    public int countServiceNum(int company_id){
+        int num = customerServiceMapper.countServiceNum(company_id);
+        return num;
+    }
+    
+    public int countOnlineServiceNum(int company_id){
+        int num = customerServiceMapper.countOnlineServiceNum(company_id);
+        return num;
+    }
 }
