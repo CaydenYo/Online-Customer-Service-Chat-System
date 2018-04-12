@@ -1,15 +1,6 @@
 <template>
   <div id="uesrtext">
-    <quill-editor ref="QuillEditor"
-    v-model="content"
-    :config="editorOption"
-    :options = "editorOption"
-    @keyup="addMessage($event)"  
-    @change="onEditorChange($event)"  
-    @blur="onEditorBlur($event)"
-    @focus="onEditorFocus($event)"
-    @ready="onEditorReady($event)">
-  </quill-editor>
+    <textarea placeholder="按 Ctrl + Enter 发送" v-model="content" v-on:keyup="addMessage"></textarea>
 </div>
 </template>
 
@@ -22,30 +13,58 @@ export default {
   name: 'uesrtext',
   data () {
     return {
-      content:''
-    }
-  },
-  computed: {
+      content:'',
+      websocket: null
+  }
+},
+created() {
+    this.initWebSocket()
+},
+computed: {
     editor() {
       return this.$refs.QuillEditor.quill
-    }
-  },
-  methods: {
-    addMessage (e) {
-      if (e.ctrlKey && e.keyCode ===13 && this.content.length) {
-        alert(e.keyCode)
-        this.$store.commit('addMessage',this.content);
-        this.content='';
-      }
-    },
-    onEditorChange({ editor, html, text }) {//富文本编辑器  文本改变时 设置字段值  
-      this.content = html
-      if(e.ctrlKey && e.keyCode ===13 && this.content.length){
-        this.$store.commit('addMessage',this.content);
-        this.content='';
-      }
-    }
   }
+},
+methods: {
+    addMessage(e) {
+        if(e.ctrlKey && e.keyCode === 13 && this.content.length) {
+            if(this.websocket.readyState === this.websocket.OPEN) {
+                this.websocketsend(this.content)
+            }else if(this.websocket.readyState === this.websocket.CONNECTING) {
+                let that = this;
+                setTimeout(function() {
+                    that.websocketsend(this.content)
+                }, 300)
+            }else {
+                this.initWebSocket();
+                let that = this;
+                setTimeout(function() {
+                    that.websocketsend(this.content)
+                },500)
+            }
+        }
+    },
+    initWebSocket() {
+        const wsurl = 'ws://localhost:8080/HFUT_Group3/serve'
+        this.websocket = new WebSocket(wsurl);
+        this.websocket.onmessage = this.websocketonmessagel;
+        this.websocket.onclose = this.websocketclose;
+    },
+    websocketonmessage(e) {
+
+    },
+    websocketsend(e) {
+        this.websocket.send(this.content)
+        this.$store.commit('addMessage', this.content);
+        this.content = '';
+    },
+    websocketclose(e) {
+
+    },
+    onEditorChange({ editor, html, text}) {
+        this.content = html;
+    }
+}
 }
 </script>
 
@@ -56,12 +75,12 @@ export default {
   width: 100%;
   height: 20%;
   border-top: solid 1px #DDD;
-  > quill-editor {
+  > textarea {
     width: 100%;
     height: 100%;
     border: none;
     outline: none;
-  }
+}
 }
 
 </style>
