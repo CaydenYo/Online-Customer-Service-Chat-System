@@ -72,11 +72,10 @@
 		where cs_email=#{cs_email}
 	</update>
 
-
 	<select id="getCustomerServiceStatus" parameterType="int"
 		resultType="customerServiceStatusBean">
 		select
-		cs_id,cs_workId,cs_name,cs_status,cs_operating_number,cs_img,cs_score
+		cs_id,cs_img,cs_status,cs_workId,cs_name,cs_waited_number,cs_operated_number,cs_score
 		from customerServiceInfo
 		where company_id = #{0}
 	</select>

@@ -73,7 +73,8 @@ public class CustomerServiceMController {
         Gson gson = new Gson();
         return gson.toJson("login");
     }
-
+    
+    //显示客服在线信息
     @RequestMapping(value = "/listCsStatus", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String listCsStatus(HttpServletRequest request, HttpServletResponse response) {
@@ -85,7 +86,7 @@ public class CustomerServiceMController {
         List<CustomerServiceStatusBean> statusList = customerServiceService.listCustomerSStatus(companyId);
         String str = gson.toJson(statusList);
         System.out.println(str);
-        return str;
+        return gson.toJson(statusList);
     }
     
     //显示正在操作的对话
@@ -152,7 +153,7 @@ public class CustomerServiceMController {
         List<ListCSInfoBean> list = new LinkedList<ListCSInfoBean>();
         list = customerServiceService.getCSInfoList(companyId);
         Gson gson = new Gson();
-        return gson.toJson("UpdateSuccess");
+        return gson.toJson(list);
 
     }
     
