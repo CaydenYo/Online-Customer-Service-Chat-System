@@ -38,7 +38,7 @@ export default new Router({
       component: Embedded_Chat
   },
   {
-      path: '/',
+      path: '/CS_UI',
       name: 'CS_UI',
       redirect: '/cs_dialogue',
       component: CS_UI,
