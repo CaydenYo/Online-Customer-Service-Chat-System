@@ -25,9 +25,10 @@
 	<insert id="create" parameterType="customerService"
 		useGeneratedKeys="true" keyProperty="cs_id">
 		insert into
-		customerServiceInfo(cs_workId,cs_name,cs_nickName,company_id,cs_pwd,cs_email,cs_img)
-		values(#{cs_workId},#{cs_name},#{cs_nickName},#{company_id},#{cs_pwd},#{cs_email},#{cs_img})
+		customerServiceInfo(cs_workId,cs_name,cs_nickName,company_id,cs_pwd,cs_email,cs_img,cs_code)
+		values(#{cs_workId},#{cs_name},#{cs_nickName},#{company_id},#{cs_pwd},#{cs_email},#{cs_img},#{cs_code})
 	</insert>
+
 
 	<update id="setRegStatus" parameterType="customerService">
 		update customerServiceInfo
@@ -44,6 +45,9 @@
 	<update id="modifyUser" parameterType="customerService">
 		update customerServiceInfo
 		<set>
+            <if test="cs_register_status!=null">
+                cs_register_status = #{cs_register_status},
+            </if>
 			<if test="cs_name!=null">
 				cs_name = #{cs_name},
 			</if>

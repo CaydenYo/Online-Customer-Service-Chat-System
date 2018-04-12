@@ -6,8 +6,8 @@ use ocssystem;
 DROP TABLE IF EXISTS `customerInfo`;
 CREATE TABLE `customerInfo` (
 `customer_id` int(11) PRIMARY KEY auto_increment,
-`customer_nickname` varchar(20),
-`customer_name` varchar(20) NOT NULL,
+`customer_nickname` varchar(255),
+`customer_name` varchar(255) NOT NULL,
 `customer_status` int default 0,
 `customer_age` int default 0,
 `customer_sex` int NOT NULL,		-- 0为女,1为男
@@ -31,7 +31,7 @@ CREATE TABLE `aCustomerInfo` (
 DROP TABLE IF EXISTS `companyInfo`;
 CREATE TABLE `companyInfo` (
 `company_id`  int(20) PRIMARY KEY auto_increment,
-`company_name`  varchar(20) NOT NULL,
+`company_name`  varchar(255) NOT NULL,
 ---分配方式
 `dstribution_type` int DEFAULT 0,
 ---不能自增
@@ -41,7 +41,7 @@ CREATE TABLE `companyInfo` (
 `mininum_operating_num` int DEFAULT 0,
 ---0网页 1悬浮式
 `access_type` int DEFAULT 0,
-`robot_name`  varchar(20) NOT NULL
+`robot_name`  varchar(255) NOT NULL
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 insert into companyInfo values(1,"CISCO",0,0,0,0,0,0,"XIAO AI");
@@ -50,10 +50,10 @@ insert into companyInfo values(1,"CISCO",0,0,0,0,0,0,"XIAO AI");
 DROP TABLE IF EXISTS `customerServiceInfo`;
 CREATE TABLE `customerServiceInfo` (
 `cs_id` int(20) PRIMARY KEY auto_increment,
-`cs_workId` varchar(20) NOT NULL,
-`cs_name` varchar(20) NOT NULL,
+`cs_workId` varchar(255) NOT NULL,
+`cs_name` varchar(255) NOT NULL,
 `cs_register_status` int default 0,
-`cs_nickName` varchar(20) NOT NULL,
+`cs_nickName` varchar(255) NOT NULL,
 `company_id` int(20) NOT NULL,
 `cs_pwd`  varchar(20) NOT NULL,
 `cs_email`  varchar(255) DEFAULT NULL,
