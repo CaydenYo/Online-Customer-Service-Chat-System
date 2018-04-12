@@ -44,8 +44,8 @@ public class CustomerServiceMController {
         return null;
     }
 
-    @RequestMapping(value = "reg.do", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
-    public String reg(ModelAndView mv, HttpServletRequest request) {
+    @RequestMapping(value = "/reg", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    public String reg(HttpServletRequest request, HttpServletResponse response) {
         CustomerServiceRegisterBean customerServiceRegisterBean = new CustomerServiceRegisterBean();
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
@@ -64,14 +64,12 @@ public class CustomerServiceMController {
         }
     }
 
-    @RequestMapping(value = "regconf.do")
-    public String regconf(ModelAndView mv, HttpServletRequest request) {
-        String data = request.getParameter("data");
-        JSONObject json = JSONObject.fromObject(data);
-        String csCode = json.getString("cs_code");
+    @RequestMapping(value = "/regconf.do")
+    public ModelAndView  regconf(ModelAndView mv, HttpServletRequest request) {
+        String csCode = request.getParameter("code");  
         customerServiceService.regconf(csCode);
-        Gson gson = new Gson();
-        return gson.toJson("login");
+        mv.setViewName("/index");  
+        return mv;  
     }
     
     //显示客服在线信息
@@ -119,30 +117,53 @@ public class CustomerServiceMController {
         return str;
     }
 
+    
+    @RequestMapping(value = "/setRobotConf", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String setRobotConf(HttpServletRequest request, HttpServletResponse response) {
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        int companyId = json.getInt("company_id");
+        int robotOpenFlag = json.getInt("robot_open_flag");
+        Company company = companyService.findCompany(companyId);
+        companyService.updateRobotConf(company, robotOpenFlag);
+        Gson gson = new Gson();
+        return gson.toJson("UpdateSuccess");
+    }
+    
     @RequestMapping(value = "/setCompanyInfo", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String setCompanyInfo(HttpServletRequest request, HttpServletResponse response) {
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
         int companyId = json.getInt("company_id");
-        boolean distributionType = json.getBoolean("distribution_type");
-        boolean customerInfoFlag = json.getBoolean("customer_info_flag");
-        boolean accessType = json.getBoolean("access_type");
-        int intDistributionType = (distributionType==true?1:0);
-        int intCustomerInfoFlag = (customerInfoFlag==true?1:0);
-        int intAccessType = (accessType==true?1:0);
+        int distributionType = json.getInt("distribution_type");
+        int customerInfoFlag = json.getInt("customer_info_flag");
         int minNum = json.getInt("mininum_operating_num");
         Company company = companyService.findCompany(companyId);
       
-        companyService.update(company, intDistributionType, intCustomerInfoFlag, intAccessType, minNum);
-
+        companyService.update(company, distributionType, customerInfoFlag, minNum);
+        
         // 小于min_num的客服进行刷新
         CustomerService customerService = companyService.selectCustomerService(company);
         companyService.updateCustomerService(customerService, minNum);
         Gson gson = new Gson();
         return gson.toJson("UpdateSuccess");
-
     }
+
+    @RequestMapping(value = "/setAccessType", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String setAccessType(HttpServletRequest request, HttpServletResponse response) {
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        int companyId = json.getInt("company_id");
+        int accessType = json.getInt("access_type");
+        Company company = companyService.findCompany(companyId);
+        companyService.updateAccess(company, accessType);
+        Gson gson = new Gson();
+        return gson.toJson("UpdateSuccess");
+    }
+
     
     @RequestMapping(value = "/ListCSInfoList", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody

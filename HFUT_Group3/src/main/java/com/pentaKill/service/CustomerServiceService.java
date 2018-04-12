@@ -64,9 +64,9 @@ public class CustomerServiceService {
         // TODO Auto-generated method stub
         String code = UUID.randomUUID().toString() + UUID.randomUUID().toString();
         code = code.replaceAll("-", "");
-        customerServiceRegisterBean.setCs_code(code);
         CustomerService customerService = new CustomerService();
         String email = customerServiceRegisterBean.getCs_email();
+        customerService.setCs_code(code);
         customerService.setCompany_id(customerServiceRegisterBean.getCompany_id());
         customerService.setCs_email(email);
         customerService.setCs_workId("pentaKill_" + email);
@@ -77,14 +77,13 @@ public class CustomerServiceService {
         if (customerServiceMapper.selectByEmail(email) == null) {
             customerServiceMapper.create(customerService);
             try {
-
                 StringBuffer sbd = new StringBuffer();
                 sbd.append("<br/>欢迎！请确认此邮件地址以激活您的账号。<br/>");
-                sbd.append("<font color='red'><a href='http://localhost:8080/EBP_TEAM7/regconf.do?code="
-                        + customerServiceRegisterBean.getCs_code() + "' target='_blank'");
+                sbd.append("<font color='red'><a href='http://localhost:8080/OCSSystem/regconf.do?code="
+                        + code + "' target='_blank'");
                 sbd.append(">立即激活</a></font><br/>");
                 sbd.append("或者点击下面链接:<br/>");
-                sbd.append("http://localhost:8080/EBP_TEAM7/regconf.do?code=" + customerServiceRegisterBean.getCs_code()
+                sbd.append("http://localhost:8080/OCSSystem/regconf.do?code=" + code
                         + "<br/>");
                 sbd.append("这是一封自动发送的邮件；如果您并未要求但收到这封信件，您不需要进行任何操作。");
 
@@ -103,6 +102,7 @@ public class CustomerServiceService {
         CustomerService customerService = customerServiceMapper.selectByCode(code);
         customerService.setCs_register_status(1);
         customerService.setCs_code(code);
+        System.out.println(customerService.getCs_register_status());
         customerServiceMapper.setRegStatus(customerService);
     }
 

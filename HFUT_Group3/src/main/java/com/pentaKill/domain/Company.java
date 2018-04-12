@@ -9,6 +9,15 @@ public class Company {
     private int mininum_operating_num;
     private int customer_info_flag;
     private int access_type;
+    private int robot_open_flag;
+
+    public int getRobot_open_flag() {
+        return robot_open_flag;
+    }
+
+    public void setRobot_open_flag(int robot_open_flag) {
+        this.robot_open_flag = robot_open_flag;
+    }
 
     public int getAccess_type() {
         return access_type;

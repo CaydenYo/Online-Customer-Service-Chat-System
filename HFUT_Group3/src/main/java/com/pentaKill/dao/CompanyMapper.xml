@@ -10,15 +10,18 @@
         parameterType="int"
         resultType="company">
         select *
-        from company where
+        from companyinfo where
         company_id=#{0};
     </select>
 
     <update
         id="updateCompany"
         parameterType="company">
-        update company
+        update companyinfo
         <set>
+            <if test="robot_open_flag!=null">
+                robot_open_flag = #{robot_open_flag}
+            </if>
             <if test="dstribution_type!=null">
                 dstribution_type = #{dstribution_type}
             </if>
@@ -39,7 +42,7 @@
         id="selectCustomerService"
         resultType="customerService">
         select * from
-        customerService where
+        customerServiceInfo where
         company_id=#{0} and
         cs_operating_number &lt;
         #{1};
