@@ -20,17 +20,17 @@
     <el-card class="box-card">
       <h3>客服列表</h3>
       <el-table :data="tableData3" height="250" border style="width: 100%">
-        <el-table-column prop="cs_workId" label="工号" width="100">
+        <el-table-column prop="cs_workId" label="工号" width="300">
         </el-table-column>
-        <el-table-column prop="cs_name" label="姓名" width="100">
+        <el-table-column prop="cs_name" label="姓名" width="300">
         </el-table-column>
-        <el-table-column prop="cs_nickName" label="昵称" width="180">
+        <el-table-column prop="cs_nickName" label="昵称" width="120">
         </el-table-column>
-        <el-table-column prop="cs_email" label="电邮" width="180">
+        <el-table-column prop="cs_email" label="电邮" width="200">
         </el-table-column>
-        <el-table-column prop="cs_score" label="评分" width="180">
+        <el-table-column prop="cs_score" label="评分" width="100">
         </el-table-column>
-        <el-table-column prop="cs_status" label="状态" width="180">
+        <el-table-column prop="cs_status" label="状态" width="100">
         </el-table-column>
       </el-table>
     </el-card>

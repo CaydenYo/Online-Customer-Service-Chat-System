@@ -2,7 +2,7 @@
   <div id="sets">
     <el-card class="scard">
       <div slot="header">接入方式</div>
-      <el-switch @change="jrfun" v-model="form1.distribution_type" active-color="#13ce66" inactive-color="#409eff" active-text="悬浮式" inactive-text="网页" active-value=1 inactive-value=0>
+      <el-switch @change="jrfun" v-model="form1.access_type" active-color="#13ce66" inactive-color="#409eff" active-text="悬浮式" inactive-text="网页" active-value=1 inactive-value=0>
       </el-switch>
       <!-- <br><br>
           <el-button class="btn-c" type="primary">确定</el-button> -->
@@ -18,7 +18,7 @@
       <div slot="header">客服设置</div>
       <el-form ref="form3" :model="form3">
         <h5>分配方式</h5>
-        <el-switch v-model="form3.dstribution_type" active-color="#13ce66" inactive-color="#409eff" active-text="老用户" active-value=1 inactive-text="轮流" inactive-value=0>
+        <el-switch v-model="form3.distribution_type" active-color="#13ce66" inactive-color="#409eff" active-text="老用户" active-value=1 inactive-text="轮流" inactive-value=0>
         </el-switch>
         <h5>用户信息展示</h5>
         <el-switch v-model="form3.customer_info_flag" active-color="#13ce66" inactive-color="#409eff" active-text="开启" active-value=1 inactive-text="关闭" inactive-value=0>
@@ -37,10 +37,10 @@ export default {
   data() {
     return {
       company_id: JSON.parse(localStorage.getItem('company_id')),
-      form1_url: '/setCompanyInfo',
+      form1_url: '/setAccessType',
       form1: {
         company_id: JSON.parse(localStorage.getItem('company_id')),
-        distribution_type: ''
+        access_type: ''
       },
       form2_url: '/setRobotStatus',
       form2: {
@@ -50,7 +50,7 @@ export default {
       form3_url: '/setCompanyInfo',
       form3: {
         company_id: JSON.parse(localStorage.getItem('company_id')),
-        dstribution_type: '',
+        distribution_type: '',
         customer_info_flag: '',
         mininum_operating_num: ''
       }
