@@ -6,17 +6,17 @@
 
     <!-- 根据客服id减少等待人数 -->
     <update
-        id="decreaseCsWaitingNumMapper"
+        id="decreaseCsOperatedNumMapper"
         parameterType="int">
         update customerServiceInfo set cs_waited_number=
-        cs_waited_number-1
+        cs_operated_number-1
         where cs_id=#{0}
 
     </update>
 
     <!-- 根据客服id增加正在服务人数 -->
     <update
-        id="addCsWaitingNumMapper"
+        id="addCsOperatedNumMapper"
         parameterType="int">
         update customerServiceInfo set cs_operated_number=
         cs_operated_number+1

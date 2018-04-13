@@ -83,73 +83,12 @@ public class WebSocketServer {
 
         if (firstTime) {
 
-            // 会话转接请求
-            if (content.startsWith("sessionTransfer") && Integer.parseInt(senderId) < 2000) {
-                // 约定前端发来这个，表示某个客服接受了转接请求
-
-                userMap.put(session.getId(), nickname);
-
-                firstTime = false;
-
-                oldCsId = json.getString("oldCsId");
-                // 修改数据库的状态
-                // 原客服服务人数减1
-
-                int csId = Integer.parseInt(senderId);
-
-                int oldCsIdInt = Integer.parseInt(oldCsId);
-
-                sessionTransferService.decreaseCsWaitingNumService(oldCsIdInt);
-                // 新客服服务人数加1（无视新客服的服务和等待人数上限）
-                sessionTransferService.addCsWaitingNumService(csId);
-                // 关闭原有会话
-                Timestamp endTime = new Timestamp(System.currentTimeMillis());
-
-                ConversationBean oldCb = new ConversationBean(Integer.parseInt(receiverId), oldCsIdInt, null, endTime,
-                        -1);
-                sessionTransferService.closeConversationService(oldCb);
-                // 增加新的会话
-                ConversationBean cb = new ConversationBean(Integer.parseInt(receiverId), csId, null, null, -1);
-                conversationService.insertConversationService(cb);
-
-                // 客户的nickname
-                String reciverNickname = conversationService
-                        .getCustomerNicknameByCustomerId(Integer.valueOf(receiverId));
-
-                // 查找客服的欢迎语
-                content = "欢迎！";
-                json.put("date", df.format(new Date()));
-                json.put("content", content);
-
-                for (String key : userMap.keySet()) {
-                    webSocketServer = (WebSocketServer) connectedUser.get(key);
-                    if (nickname.equalsIgnoreCase(userMap.get(key))) {
-
-                        json.put("isSelf", true);
-                        synchronized (webSocketServer) {
-                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
-                        }
-                        // 还要根据receiverId找到对应的nickname
-                    } else if (key.equals(reciverNickname)) {
-                        json.put("isSelf", false);
-                        synchronized (webSocketServer) {
-                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
-
-                        }
-                    }
-
-                }
-                // 发送问候语
-                // 有查看历史信息的按钮
-
-                // 函数直接结束
-                return;
-            }
-
             // 下面机器人这段改放哪里？
 
             // 判断有无历史会话没完成
-
+            
+            // 第一次打开窗口要发送用户名进来
+            // 第一次要开启会话，记录会话的开始时间(发送者是客服的时候)
             // 当用户连接时，首先查询机器人是否开启
             // 如果开启，则加载相应的问题，发送到前端
             // 用户回复数字，查询对应问题的答案，发送回前端
@@ -179,14 +118,62 @@ public class WebSocketServer {
                     }
                 } else {
                     // 机器人未开启，将其加入等待队列
+                    // 按照正常的客户第一次连进来进行处理
+                    int csId;
+                    boolean listEmpty = false;
+                    // 可以继续添加客服的老顾客
+                    List<ChooseCustomerServiceBean> properLastList = new LinkedList<ChooseCustomerServiceBean>();
+                    // 新客服且有空列表
+                    List<ChooseCustomerServiceBean> csList = new LinkedList<ChooseCustomerServiceBean>();
+                    // 先找上次老客服
+                    // 老客服且有空列表
+                    List<LastCustomerServiceBean> lcsList = new LinkedList<LastCustomerServiceBean>();
+                    lcsList = conversationService.selectLastCustomerService(Integer.parseInt(senderId));
+                    if (!lcsList.isEmpty()) {
+                        for (LastCustomerServiceBean lcs : lcsList) {
+                            ChooseCustomerServiceBean ccs = conversationService
+                                    .selecLasttCustomerServiceInfo(lcs.getCs_id());
+                            if (ccs.getCs_status() == 1 && ccs.getCs_waiting_number() > ccs.getCs_waited_number()) {
+                                properLastList.add(ccs);
+                            }
+                        }
+                        if (properLastList.isEmpty()) {
+                            listEmpty = true;
+                        }
+                    }
 
+                    int distributionType = conversationService.getDistributionType(companyName);
+
+                    if (listEmpty) {
+                        // 功能1//找到所有在线的客服，找到所有在线客服中未满排队上限数的客服
+                        csList = conversationService.selectCustomerServiceByStatus();
+                        // 功能2//两种算法 （1）老顾客优先算法去conversation里面找 （2）空闲优先算法选择最多空闲的客服
+                        // 2.1 负载分配
+                        ChooseCustomerServiceBean temp = csList.get(0);
+                        if (distributionType == 0) {
+                            for (ChooseCustomerServiceBean ccsb : csList) {
+                                if ((ccsb.getCs_waiting_number()
+                                        - ccsb.getCs_waited_number()) > (temp.getCs_waiting_number()
+                                                - temp.getCs_waited_number())) {
+                                    temp = ccsb;
+                                }
+                            }
+                        } else {
+                            // 2.2轮流分配
+
+                        }
+                        csId = temp.getCs_id();
+                    } else {
+                        csId = properLastList.get(properLastList.size() - 1).getCs_id();
+                    }
+                    // 功能3//将该客服的customerId和被选择csId放进到客服等待列表customer_waiting_team中(已写service和mapper)
+                    conversationService.inserCustomerWaitingTeam(Integer.parseInt(senderId), csId);
+                    // 功能4 //客服管理人员查看等待人数要+1
+                    conversationService.increaseCsManageToolWaitingPeople(Integer.valueOf(companyId));
                 }
-            }
-
-            // 第一次打开窗口要发送用户名进来
-
-            // 第一次要开启会话，记录会话的开始时间(发送者是客服的时候)
-            if (Integer.parseInt(senderId) < 2000) {
+            }else{
+                //客服第一次进来
+                
                 ConversationBean cb = new ConversationBean(Integer.parseInt(receiverId), Integer.parseInt(senderId),
                         null, null, -1);
                 conversationService.insertConversationService(cb);
@@ -194,66 +181,13 @@ public class WebSocketServer {
                 // 功能1//customer_waiting_team中包含该csId和customerId的记录remove掉
                 conversationService.deleteCustomerWaitingTeam(Integer.parseInt(senderId), Integer.valueOf(receiverId));
                 // 功能2//客服管理人员查看等待人数要-1
-                conversationService.decreaseCsManageToolWaitingPeople();
-
-            } else {
-                int csId;
-                boolean listEmpty = false;
-                // 可以继续添加客服的老顾客
-                List<ChooseCustomerServiceBean> properLastList = new LinkedList<ChooseCustomerServiceBean>();
-                // 新客服且有空列表
-                List<ChooseCustomerServiceBean> csList = new LinkedList<ChooseCustomerServiceBean>();
-                // 先找上次老客服
-                // 老客服且有空列表
-                List<LastCustomerServiceBean> lcsList = new LinkedList<LastCustomerServiceBean>();
-                lcsList = conversationService.selectLastCustomerService(Integer.parseInt(senderId));
-                if (!lcsList.isEmpty()) {
-                    for (LastCustomerServiceBean lcs : lcsList) {
-                        ChooseCustomerServiceBean ccs = conversationService
-                                .selecLasttCustomerServiceInfo(lcs.getCs_id());
-                        if (ccs.getCs_status() == 1 && ccs.getCs_waiting_number() > ccs.getCs_waited_number()) {
-                            properLastList.add(ccs);
-                        }
-                    }
-                    if (properLastList.isEmpty()) {
-                        listEmpty = true;
-                    }
-                }
-
-                int distributionType = conversationService.getDistributionType(companyName);
-
-                if (listEmpty) {
-                    // 功能1//找到所有在线的客服，找到所有在线客服中未满排队上限数的客服
-                    csList = conversationService.selectCustomerServiceByStatus();
-                    // 功能2//两种算法 （1）老顾客优先算法去conversation里面找 （2）空闲优先算法选择最多空闲的客服
-                    // 2.1 负载分配
-                    ChooseCustomerServiceBean temp = csList.get(0);
-                    if (distributionType == 0) {
-                        for (ChooseCustomerServiceBean ccsb : csList) {
-                            if ((ccsb.getCs_waiting_number()
-                                    - ccsb.getCs_waited_number()) > (temp.getCs_waiting_number()
-                                            - temp.getCs_waited_number())) {
-                                temp = ccsb;
-                            }
-                        }
-                    } else {
-                        // 2.2轮流分配
-
-                    }
-                    csId = temp.getCs_id();
-                } else {
-                    csId = properLastList.get(properLastList.size() - 1).getCs_id();
-                }
-                // 功能3//将该客服的customerId和被选择csId放进到客服等待列表customer_waiting_team中(已写service和mapper)
-                conversationService.inserCustomerWaitingTeam(Integer.parseInt(senderId), csId);
-                // 功能4 //客服管理人员查看等待人数要+1
-                conversationService.increaseCsManageToolWaitingPeople();
-
+                conversationService.decreaseCsManageToolWaitingPeople(Integer.parseInt(companyId));                
             }
 
             userMap.put(session.getId(), nickname);
 
             firstTime = false;
+        
         } else if (content.equals("csViewsHistoryMessage.action")) {
             // 当客服点击查看历史信息时，就会发送这个信息"csViewsHistoryMessage.action"
             // 从后台取出所有客服与这个客户的聊天记录，然后发送到前台
@@ -301,6 +235,77 @@ public class WebSocketServer {
             }
 
         } else {
+            
+            // 会话转接请求
+            if (content.startsWith("sessionTransfer") && Integer.parseInt(senderId) < 2000) {
+                // 约定前端发来这个，表示某个客服接受了转接请求
+
+                userMap.put(session.getId(), nickname);
+
+                firstTime = false;
+
+                oldCsId = json.getString("oldCsId");
+                // 修改数据库的状态
+                // 原客服服务人数减1
+
+                int csId = Integer.parseInt(senderId);
+
+                int oldCsIdInt = Integer.parseInt(oldCsId);               
+                
+                //老客服正在操作人数减1
+                sessionTransferService.decreaseCsOperatedNumService(oldCsIdInt);
+                // 新客服服务人数加1（无视新客服的服务和等待人数上限）
+                // 能不能弹出来一个窗口？？？？
+                sessionTransferService.addCsOperatedNumService(csId);
+                
+                // 关闭原有会话
+                Timestamp endTime = new Timestamp(System.currentTimeMillis());
+
+                ConversationBean oldCb = new ConversationBean(Integer.parseInt(receiverId), oldCsIdInt, null, endTime,
+                        -1);
+                sessionTransferService.closeConversationService(oldCb);
+                // 增加新的会话
+                ConversationBean cb = new ConversationBean(Integer.parseInt(receiverId), csId, null, null, -1);
+                conversationService.insertConversationService(cb);
+
+                // 客户的nickname
+                String reciverNickname = conversationService
+                        .getCustomerNicknameByCustomerId(Integer.valueOf(receiverId));
+
+                // 查找客服的欢迎语
+                content = "欢迎！";
+                json.put("date", df.format(new Date()));
+                json.put("content", content);
+
+                for (String key : userMap.keySet()) {
+                    webSocketServer = (WebSocketServer) connectedUser.get(key);
+                    if (nickname.equalsIgnoreCase(userMap.get(key))) {
+
+                        json.put("isSelf", true);
+                        synchronized (webSocketServer) {
+                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
+                        }
+                        // 还要根据receiverId找到对应的nickname
+                    } else if (key.equals(reciverNickname)) {
+                        json.put("isSelf", false);
+                        synchronized (webSocketServer) {
+                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
+
+                        }
+                    }
+
+                }
+                // 发送问候语
+                // 有查看历史信息的按钮
+
+                // 函数直接结束
+                return;
+            }
+            
+            
+            
+            
+            
             // 每次会话都要存入数据库
             int customerId = initvalue;
             int csId = initvalue;

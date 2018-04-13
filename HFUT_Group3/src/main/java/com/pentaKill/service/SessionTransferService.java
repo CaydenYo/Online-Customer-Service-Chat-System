@@ -14,12 +14,12 @@ public class SessionTransferService {
     @Resource
     SessionTransferMapper sessionTransferMapper;
 
-    public void decreaseCsWaitingNumService(int cs_id) {
-        sessionTransferMapper.decreaseCsWaitingNumMapper(cs_id);
+    public void decreaseCsOperatedNumService(int cs_id) {
+        sessionTransferMapper.decreaseCsOperatedNumMapper(cs_id);
     }
 
-    public void addCsWaitingNumService(int cs_id) {
-        sessionTransferMapper.addCsWaitingNumMapper(cs_id);
+    public void addCsOperatedNumService(int cs_id) {
+        sessionTransferMapper.addCsOperatedNumMapper(cs_id);
     }
 
     public void closeConversationService(ConversationBean cb) {

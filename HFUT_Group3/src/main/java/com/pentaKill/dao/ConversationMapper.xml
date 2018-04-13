@@ -71,14 +71,14 @@
 		values(#{0},#{1})
 	</insert>
 
-	<update id="increaseCsManageToolWaitingPeople">
+	<update id="increaseCsManageToolWaitingPeople" parameterType="int">
 		update cs_management_tool set waiting_number =
-		waiting_number + 1
+		waiting_number + 1 where company_id = #{0}
 	</update>
 
-	<update id="decreaseCsManageToolWaitingPeople">
+	<update id="decreaseCsManageToolWaitingPeople" parameterType="int">
 		update cs_management_tool set waiting_number =
-		waiting_number - 1
+		waiting_number - 1 where company_id = #{0}
 	</update>
 
 	<delete id="deleteCustomerWaitingTeam" parameterType="int">

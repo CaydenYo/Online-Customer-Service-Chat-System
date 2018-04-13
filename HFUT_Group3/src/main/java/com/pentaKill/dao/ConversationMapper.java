@@ -25,11 +25,11 @@ public interface ConversationMapper {
 
     public void insertWaitingCustomer(int customerId, int csId);
 
-    public void increaseCsManageToolWaitingPeople();
+    public void increaseCsManageToolWaitingPeople(int companyId);
 
     public void deleteCustomerWaitingTeam(int csId, int customerId);
 
-    public void decreaseCsManageToolWaitingPeople();
+    public void decreaseCsManageToolWaitingPeople(int companyId);
 
     public String getCsNicknameByCsId(int cs_id);
 
