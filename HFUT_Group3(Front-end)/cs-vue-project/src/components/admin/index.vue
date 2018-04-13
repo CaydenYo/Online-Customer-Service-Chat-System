@@ -89,19 +89,20 @@ export default {
         _this.inConv = result[2]
         _this.inWait = result[3]
       })
+    },
+    query_ocs() {
+      console.log('in query_ocs function')
+      var params = new URLSearchParams()
+      let _this = this
+      params.append('data', JSON.stringify(this.index_post))
+      this.$axios({
+        method: 'post',
+        url: this.rootUrl + _this.query_ocs_url,
+        data: params
+      }).then(res => {
+        _this.tableData3 = res.data
+      })
     }
-  },
-  query_ocs() {
-    var params = new URLSearchParams()
-    let _this = this
-    params.append('data', JSON.stringify(this.index_post))
-    this.$axios({
-      method: 'post',
-      url: this.rootUrl + _this.query_ocs_url,
-      data: params
-    }).then(res => {
-      _this.tableData3 = res.data
-    })
   }
 }
 </script>
