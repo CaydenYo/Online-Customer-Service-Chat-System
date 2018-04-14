@@ -30,8 +30,8 @@ export default new Router({
     },
     {
       path: '/',
-      name: 'Embedded_Chat',
-      component: Embedded_Chat
+      name: 'CS_UI',
+      component: CS_UI
     },
     {
       path: '/show_embedded_cs',

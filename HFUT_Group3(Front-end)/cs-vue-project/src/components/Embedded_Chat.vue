@@ -1,16 +1,16 @@
 <template>
-  <div class="embedded_frame">
-      <div id="embedded_chat">
-        <div class="sidebar">
-          <card></card>
-          <list></list>
-      </div>
-      <div class="main">
-          <message></message>
-          <usertext></usertext>
-      </div>
-  </div>
-</div>
+    <div class="embedded_frame">
+        <div id="embedded_chat">
+            <div class="sidebar">
+                <card></card>
+                <list></list>
+            </div>
+            <div class="main">
+                <message></message>
+                <usertext></usertext>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>

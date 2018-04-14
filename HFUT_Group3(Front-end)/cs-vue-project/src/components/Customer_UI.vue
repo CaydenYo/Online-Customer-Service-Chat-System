@@ -1,29 +1,8 @@
 <template>
   <div class="user_ui">
     <el-container>
-      <!--
-      <transition name="el-zoom-in-top">
-        <el-aside width="40%" v-if="show_cs">
-          <div style="float:left;width:100%;height:100%">
-            <div style="float:left;width:100%;height:7%">
-             <el-row>
-              <el-button type="info" icon="el-icon-caret-left"circle
-              style="float:left;margin-top:1%;margin-left:1%" 
-              @click="show_cs=false"></el-button>
-            </el-row>
-          </div>
-          <div style="float:left;width:100%;height:93%">
-            <Heads>
-            </Heads>
-            <ChatList>
-            </ChatList>
-          </div>
-        </div>
-      </el-aside>
-    </transition>
--->
 <el-container>
-  <el-header style="background-color:#545c64">
+  <el-header class="customer-index">
     <div class="line"></div>
     <el-menu
     class="el-menu-demo"
@@ -64,37 +43,38 @@
     <el-tab-pane label="登录" name="first">
       <label for="login_username">账号</label>
       <el-input type="text" v-model="login_info.customer_email" id="login_username" placeholder="请输入邮箱"
-      style="width:50%;"></el-input>
+      class="info-input"></el-input>
       <br><br>
       <label for="login_password">密码</label>
       <el-input type="password" v-model="login_info.customer_pwd" id="login_password" placeholder="请输入密码"
-      style="width:50%;"></el-input>
+      class="info-input"></el-input>
       <br><br>
-      <el-button round v-on:click="login" style="width:50%;">登录</el-button>
+      <el-button round v-on:click="login" class="login-button">登录</el-button>
   </el-tab-pane>
   <el-tab-pane label="注册" name="second">
       <label for="register_username">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</label>
       <el-input type="text" v-model="register_info.customer_email" id="register_username" placeholder="请输入邮箱"
-      style="width:50%;"></el-input>
+      class="info-input"></el-input>
       <br><br>
       <label for="register_password">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
       <el-input type="password" v-model="register_info.customer_pwd" id="register_password" placeholder="请输入密码"
-      style="width:50%;"></el-input>
+      class="info-input"></el-input>
       <br><br>
       <label for="register_name">确认密码</label>
       <el-input type="text" v-model="register_info.customer_repwd" id="register_repassword" placeholder="请输入密码"
-      style="width:50%;"></el-input>
+      class="info-input"></el-input>
       <br><br>
       <label for="register_ID">家庭地址</label>
-      <el-input type="text" v-model="register_info.customer_address" id="register_address" placeholder="请输入地址" style="width:50%;"></el-input>
+      <el-input type="text" v-model="register_info.customer_address" id="register_address" placeholder="请输入地址"
+      class="info-input"></el-input>
       <br><br>
       <label for="register_nickname">昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</label>
-      <el-input type="text" v-model="register_info.customer_nickname" id="register_nickname" placeholder="由13、15、18开头" style="width:50%;"></el-input>
+      <el-input type="text" v-model="register_info.customer_nickname" id="register_nickname" placeholder="由13、15、18开头" class="info-input"></el-input>
       <br><br>
       <el-radio v-model="register_info.customer_gender" label="1">男</el-radio>
       <el-radio v-model="register_info.customer_gender" label="2">女</el-radio>
       <br><br>
-      <el-button round v-on:click="register" style="width:50%;">注册</el-button>
+      <el-button round v-on:click="register" class="register-button">注册</el-button>
   </el-tab-pane>
 </el-tabs>
 </el-dialog>
@@ -106,26 +86,28 @@ width="50%"
 <h1>账号注册</h1>
 <label for="register_username">账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</label>
 <el-input type="text" v-model="register_info.customer_email" id="register_username" placeholder="请输入邮箱"
-style="width:50%;"></el-input>
+class="info-input"></el-input>
 <br><br>
 <label for="register_password">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码</label>
 <el-input type="password" v-model="register_info.customer_pwd" id="register_password" placeholder="请输入密码"
-style="width:50%;"></el-input>
+class="info-input"></el-input>
 <br><br>
 <label for="register_name">确认密码</label>
 <el-input type="text" v-model="register_info.customer_repwd" id="register_repassword" placeholder="请输入密码"
-style="width:50%;"></el-input>
+class="info-input"></el-input>
 <br><br>
 <label for="register_ID">家庭地址</label>
-<el-input type="text" v-model="register_info.customer_address" id="register_address" placeholder="请输入地址" style="width:50%;"></el-input>
+<el-input type="text" v-model="register_info.customer_address" id="register_address" placeholder="请输入地址"
+class="info-input"></el-input>
 <br><br>
 <label for="register_nickname">昵&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;称</label>
-<el-input type="text" v-model="register_info.customer_nickname" id="register_nickname" placeholder="由13、15、18开头" style="width:50%;"></el-input>
+<el-input type="text" v-model="register_info.customer_nickname" id="register_nickname" placeholder="由13、15、18开头"
+class="info-input"></el-input>
 <br><br>
 <el-radio v-model="register_info.customer_gender" label="1">男</el-radio>
 <el-radio v-model="register_info.customer_gender" label="2">女</el-radio>
 <br><br>
-<el-button round v-on:click="register" style="width:50%;">注册</el-button>
+<el-button round v-on:click="register" class="register-button">注册</el-button>
 </el-dialog>
 
 
@@ -267,6 +249,18 @@ login : function(event){
 </script>
 
 <style scoped>
+.customer-index {
+   background-color:#545c64
+}
+.info-input {
+  width: 50%;
+}
+.login-button {
+  width: 50%;
+}
+.register-button {
+  width: 50%;
+}
 .el-header, .el-footer {
     background-color:none;
     color: #333;
