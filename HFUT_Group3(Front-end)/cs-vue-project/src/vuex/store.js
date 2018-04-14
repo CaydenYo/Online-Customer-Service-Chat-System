@@ -18,7 +18,7 @@ const store = new Vuex.Store({
 				date: now
 			}, {
 				content: '项目地址(原作者): https://github.com/coffcer/vue-chat',
-				date: now
+				date: now 
 			}, {
 				content: '本项目地址(重构): https://github.com/is-liyiwei',
 				date: now

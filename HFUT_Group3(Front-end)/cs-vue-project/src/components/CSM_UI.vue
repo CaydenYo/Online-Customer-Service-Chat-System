@@ -1,8 +1,8 @@
 <template>
-  <div class="csm_login">
-    <el-container style="padding-top:100px;width:100%;">
+  <div class="csm-login">
+    <el-container class="csm-login-frame">
       <el-header class="header">
-        <el-button-group style="float:right;margin-top:10px;">
+        <el-button-group class="login-register-button">
           <el-button @click="login_tag">登录<i class="el-icon-caret-right"></i></el-button>
           <el-button @click="dialogRegisterVisible = true">注册<i class="el-icon-circle-plus"></i></el-button>
       </el-button-group>
@@ -17,28 +17,28 @@
       <el-tab-pane label="登录" name="first">
         <label for="login_username">账号</label>
         <el-input type="text" v-model="login_info.csm_email" id="login_username" placeholder="请输入邮箱"
-        style="width:50%;" props="csm_email"></el-input>
+        class="info-input" props="csm_email"></el-input>
         <br><br>
         <label for="login_password">密码</label>
         <el-input type="password" v-model="login_info.csm_pwd" id="login_password" placeholder="请输入密码"
-        style="width:50%;" props="csm_pwd"></el-input>
+        class="info-input" props="csm_pwd"></el-input>
         <br><br>
-        <el-button round @click="login" style="width:50%;">登录</el-button>
+        <el-button round @click="login" class="login-button">登录</el-button>
     </el-tab-pane>
     <el-tab-pane label="注册" name="second">
         <label for="register_username">公司</label>
         <el-input type="text" v-model="register_info.csm_company" id="register_username" placeholder="请输入公司ID"
-        style="width:50%;"></el-input>
+        class="info-input"></el-input>
         <br><br>
         <label for="register_password">账号</label>
         <el-input type="password" v-model="register_info.csm_email" id="register_password" placeholder="请输入邮箱"
-        style="width:50%;"></el-input>
+        class="info-input"></el-input>
         <br><br>
         <label for="register_name">密码</label>
         <el-input type="text" v-model="register_info.csm_pwd" id="register_name" placeholder="请输入密码"
-        style="width:50%;"></el-input>
+        class="info-input"></el-input>
         <br><br>
-        <el-button round v-on:click="register" style="width:50%;">注册</el-button>
+        <el-button round v-on:click="register" class="register-button">注册</el-button>
     </el-tab-pane>
 </el-tabs>
 </el-dialog>
@@ -49,17 +49,17 @@ width="50%"
 <h1>账号注册</h1>
 <label for="register_username">公司</label>
 <el-input type="text" v-model="register_info.cs_company" id="register_username" placeholder="请输入公司ID"
-style="width:50%;"></el-input>
+class="info-input"></el-input>
 <br><br>
 <label for="register_password">账号</label>
 <el-input type="password" v-model="register_info.cs_email" id="register_password" placeholder="请输入邮箱"
-style="width:50%;"></el-input>
+class="info-input"></el-input>
 <br><br>
 <label for="register_name">密码</label>
 <el-input type="text" v-model="register_info.cs_pwd" id="register_name" placeholder="请输入密码"
-style="width:50%;"></el-input>
+class="info-input"></el-input>
 <br><br>
-<el-button round v-on:click="register" style="width:50%;">注册</el-button>
+<el-button round v-on:click="register" class="register-button">注册</el-button>
 </el-dialog>
 </el-main>
 </el-container>
@@ -170,9 +170,31 @@ methods: {
 }
 }
 
-.csm_login{
+.csm-login {
   background-image: url("../img/csm_background.jpg");
   height: 100%;
+}
+
+.csm-login-frame {
+    padding-top:100px;
+    width:100%;
+}
+
+.login-register-button {
+    float:right;
+    margin-top:10px;
+}
+
+.login-button{
+    width: 50%;
+} 
+
+.register-button {
+    width:50%;
+}
+
+.info-input {
+    width: 50%;
 }
 
 .header{

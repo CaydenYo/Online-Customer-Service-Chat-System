@@ -13,12 +13,6 @@ import  'mint-ui/lib/style.css'
 import VueQuillEditor from 'vue-quill-editor'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-
-import '../static/UE/ueditor.config.js'
-import '../static/UE/ueditor.all.min.js'
-import '../static/UE/lang/zh-cn/zh-cn.js'
-import '../static/UE/ueditor.parse.min.js'
-
 Vue.use(MintUI)
 Vue.use(Vuex)
 Vue.use(VueQuillEditor)

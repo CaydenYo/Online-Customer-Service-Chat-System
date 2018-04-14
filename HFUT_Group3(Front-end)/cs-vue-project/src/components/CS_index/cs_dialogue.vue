@@ -1,33 +1,40 @@
 <template>
 	<div id="cs_dialogue">
 		<el-row>
-			<el-col :span="5"><div class="grid-content bg-purple">
-				<el-container style="height:100%;">
-					<el-header>Header</el-header>
-					<el-main style="height:100%;">
-						<div id="list">
-							<ul>
-								<li v-for="item in sessions" :class="{ active: item.id === currentSessionId }" v-on:click="changeCurrentSessionId(item.id)"><!--   :class="[item.id === currentSessionId ? 'active':'']" -->
-									<img class="avatar" :src="item.user.img">
-									<p class="name">{{item.user.name}}</p>
-								</li>
-							</ul>
-						</div>
-					</el-main>
-				</el-container>
-			</div></el-col>
-			<el-col :span="9"><div style="overflow: hidden;"class="grid-content bg-purple-light">
+			<el-col :span="5">
+                <div class="grid-content">
+				    <el-container class = "dialogue">
+					    <el-header>
+                            当前会话
+                            <el-button class = "add-dialogue" icon="el-icon-circle-plus">接入新会话</el-button>
+                        </el-header>
+					    <el-main>
+						    <div id="list">
+							    <ul>
+								    <li v-for="item in sessions" :class="{ active: item.id === currentSessionId }" v-on:click="changeCurrentSessionId(item.id)"><!--   :class="[item.id === currentSessionId ? 'active':'']" -->
+									   <img class="avatar" :src="item.user.img">
+									   <p class="name">{{item.user.name}}</p>
+								    </li>
+						  	    </ul>
+						    </div>
+					    </el-main>
+				    </el-container>
+			    </div>
+            </el-col>
+			<el-col :span="9"><div class="grid-content bg-purple-light">
 				<message></message>
 				<usertext></usertext>
 			</div></el-col>
-			<el-col :span="5"><div class="grid-content bg-purple">
-				<el-tabs type="border-card" style="height:100%;">
-					<el-tab-pane label="用户资料">用户管理</el-tab-pane>
-					<el-tab-pane label="知识库">配置管理</el-tab-pane>
-				</el-tabs>
-			</div></el-col>
-			<el-col :span="5"><div class="grid-content bg-purple-light">
-				<el-tabs type="border-card" style="height:100%;">
+			<el-col :span="5">
+                <div class="grid-content">
+				    <el-tabs type="border-card">
+					   <el-tab-pane label="用户资料">用户管理</el-tab-pane>
+					   <el-tab-pane label="知识库">配置管理</el-tab-pane>
+				    </el-tabs>
+			    </div>
+            </el-col>
+			<el-col :span="5"><div class="grid-content">
+				<el-tabs type="border-card">
 					<el-tab-pane label="常用语">常用语</el-tab-pane>
 					<el-tab-pane label="聊天记录">配置管理</el-tab-pane>
 				</el-tabs>
@@ -66,7 +73,43 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+#list {
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+    li {
+        padding: 12px 15px;
+        border-bottom: 1px solid #E6E6E6;
+        cursor: pointer;
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+    }
+    li.active {/*注意这个是.不是冒号:*/
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    .avatar {
+        border-radius: 2px;
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+    }
+    .name {
+        display: inline-block;
+        margin-left: 15px;
+    }
+}
+.add-dialogue {
+    margin-left: 11%;
+}
+.dialogue {
+    height: 100%;
+}
+.el-tabs {
+    height: 100%;
+}
 .el-row {
 	height: 100%;
 	margin-bottom: 20px;
@@ -78,12 +121,6 @@ export default {
 	border-radius: 4px;
 	height: 100%;
 }
-.bg-purple-dark {
-	background: #99a9bf;
-}
-.bg-purple {
-	background: #d3dce6;
-}
 .bg-purple-light {
 	background: #e5e9f2;
 }
@@ -91,6 +128,7 @@ export default {
 	border-radius: 4px;
 	min-height: 36px;
 	height: 100%;
+    overflow: hidden;
 }
 .row-bg {
 	padding: 10px 0;
@@ -118,7 +156,6 @@ export default {
 	background-color: #E9EEF3;
 	color: #333;
 	text-align: center;
-	line-height: 160px;
 }
 
 body > .el-container {
