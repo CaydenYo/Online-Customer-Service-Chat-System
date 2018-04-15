@@ -22,7 +22,7 @@ public class CSViewsCustomerInfoController {
     HttpServletRequest req;
 
     @RequestMapping(value = "/csViewsCustomerInfo.action")
-    public String customerRegiste() {
+    public String csViewsCustomerInfo() {
 
         String data = req.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);

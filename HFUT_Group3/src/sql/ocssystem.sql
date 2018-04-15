@@ -43,8 +43,9 @@ CREATE TABLE `companyInfo` (
 `access_type` int DEFAULT 0,
 `robot_name`  varchar(255) NOT NULL
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
-insert into companyInfo values(1,"CISCO",0,0,0,0,0,0,"XIAO AI");
+--余康测试
+insert into companyInfo values(1,"facebook",0,0,1,0,0,0,"miki");
+insert into companyInfo values(2,"CISCO",0,0,0,0,0,0,"XIAO AI");
 
 --4客服表
 DROP TABLE IF EXISTS `customerServiceInfo`;
@@ -72,9 +73,9 @@ CREATE TABLE `customerServiceInfo` (
 insert into customerServiceInfo values(1000,'2015214421','gongchao',1,'kefu1','1','123','809049664@qq.com',
 '123.jpg',0,1,3,3,0,0,0,'aaa');
 
-insert into customerServiceInfo values(1000,'2015214459','Ye Fei','1','Sherhom',1,'123456','846953477@qq.com',
+insert into customerServiceInfo values(1001,'2015214459','Ye Fei','1','Sherhom',1,'123456','846953477@qq.com',
 			'1.jpg',124,1,0,0,1,1,5.0,'aaabbb');
-insert into customerServiceInfo values(1001,'2015214459','Ye Fei','1','Sherhom',1,'123456','846353477@qq.com',
+insert into customerServiceInfo values(1002,'2015214459','Ye Fei','1','Sherhom',1,'123456','846353477@qq.com',
             '1.jpg',124,0,0,0,1,1,5.0,'aaabbb');
 
 --5客服管理人员表
@@ -148,6 +149,11 @@ CREATE TABLE `knowledge` (
 `question`  varchar(255) NOT NULL,
 `answer`  varchar(255) NOT NULL
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+--余康测试
+insert into knowledge values(1,0,"人有几个腿？","2条");
+insert into knowledge values(2,0,"大蛇是谁？","变态西尾锦学长");
+insert into knowledge values(3,0,"老虎是谁？","虎书翔大佬！");
+insert into knowledge values(4,0,"金木是什么级别","SSS级");
 
 --11等待客户表
 DROP TABLE IF EXISTS `customer_waiting_team`;
