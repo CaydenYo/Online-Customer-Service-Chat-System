@@ -7,10 +7,10 @@ public interface CompanyMapper {
 
     public Company findCompany(int company_id);
 
-    public void UpdateCompany(Company company);
+    public void updateCompany(Company company);
 
     public CustomerService selectCustomerService(int company_id, int min_num);
 
-    public void updateCustomerService(int min_num, int cs_id);
+    public void updateCustomerService(int min_num, int company_id);
 
 }

@@ -145,8 +145,7 @@ public class CustomerServiceMController {
         companyService.update(company, distributionType, customerInfoFlag, minNum);
         
         // 小于min_num的客服进行刷新
-        CustomerService customerService = companyService.selectCustomerService(company);
-        companyService.updateCustomerService(customerService, minNum);
+        companyService.updateCustomerService(minNum,companyId);
         Gson gson = new Gson();
         return gson.toJson("UpdateSuccess");
     }

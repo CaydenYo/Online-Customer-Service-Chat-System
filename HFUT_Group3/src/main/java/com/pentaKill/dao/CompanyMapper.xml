@@ -5,46 +5,33 @@
 
 <mapper namespace="com.pentaKill.dao.CompanyMapper">
 
-    <select
-        id="findCompany"
-        parameterType="int"
-        resultType="company">
+    <select id="findCompany" parameterType="int" resultType="company">
         select *
         from companyinfo where
         company_id=#{0};
     </select>
 
-    <update
-        id="updateCompany"
-        parameterType="company">
+    <update id="updateCompany" parameterType="company">
         update companyinfo
         <set>
-            <if test="robot_open_flag!=null">
-                robot_open_flag = #{robot_open_flag}
-            </if>
-            <if test="dstribution_type!=null">
-                dstribution_type = #{dstribution_type}
-            </if>
-            <if test="mininum_operating_num!=null">
-                mininum_operating_num = #{mininum_operating_num}
-            </if>
-            <if test="customer_info_flag!=null">
-                customer_info_flag = #{customer_info_flag}
-            </if>
-            <if test="access_type!=null">
-                access_type = #{access_type}
-            </if>
+            dstribution_type = #{dstribution_type},
+            mininum_operating_num = #{mininum_operating_num},
+            customer_info_flag = #{customer_info_flag},
+            access_type = #{access_type},
+            robot_open_flag = #{robot_open_flag},
+            company_name =
+            #{company_name},
+            robot_id = #{robot_id}
         </set>
         where company_id=#{company_id}
     </update>
 
-    <select
-        id="selectCustomerService"
-        resultType="customerService">
+    <select id="selectCustomerService" resultType="customerService">
         select * from
         customerServiceInfo where
         company_id=#{0} and
-        cs_operating_number &lt;
+        cs_operating_number
+        &lt;
         #{1};
     </select>
 
@@ -52,11 +39,9 @@
     <update id="updateCustomerService">
         update customerServiceInfo
         <set>
-            <if test="dstribution_type!=null">
-                cs_operating_number = #{0}
-            </if>
+            cs_operating_number = #{0}
         </set>
-        where company_id=#{1}
+        where cs_operating_number &lt; #{0} and company_id = #{1};
     </update>
 
 </mapper>
