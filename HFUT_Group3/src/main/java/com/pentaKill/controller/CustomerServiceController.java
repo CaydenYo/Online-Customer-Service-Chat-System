@@ -1,6 +1,7 @@
 package com.pentaKill.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -21,10 +22,13 @@ import com.pentaKill.dao.CustomerServiceMapper;
 import com.pentaKill.domain.Company;
 import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceLoginBean;
+import com.pentaKill.domain.FastReplyBean;
 import com.pentaKill.exception.LoginException;
 import com.pentaKill.service.CompanyService;
 import com.pentaKill.service.CustomerServiceService;
+import com.pentaKill.service.FastReplyService;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 @Controller
@@ -34,6 +38,9 @@ public class CustomerServiceController {
 
     @Resource
     private CompanyService companyService;
+
+    @Resource
+    private FastReplyService fastReplyService;
 
     @RequestMapping(value = "/customerService/Login", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
@@ -128,4 +135,76 @@ public class CustomerServiceController {
         return gson.toJson("success");
     }
 
+    @RequestMapping(value = "/customerService/showFastReply", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String showOneFastReply(HttpServletRequest request, HttpServletResponse response) {
+        Gson gson = new Gson();
+
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        int cs_id = json.getInt("cs_id");
+
+        List<FastReplyBean> fastReplyList = fastReplyService.showFastReplyService(cs_id);
+        // for(FastReplyBean i:fastReplyList){
+        // System.out.println(i);
+        // }
+        return gson.toJson(fastReplyList);
+    }
+
+    @RequestMapping(value = "/customerService/deleteOneFastReply", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteOneFastReply(HttpServletRequest request, HttpServletResponse response) {
+        Gson gson = new Gson();
+
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        int shortcut_language_id = json.getInt("shortcut_language_id");
+
+        fastReplyService.deleteFastReplyService(shortcut_language_id);
+        return gson.toJson("DeleteSuccess");
+    }
+
+    @RequestMapping(value = "/customerService/deleteFastReply", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteFastReply(HttpServletRequest request, HttpServletResponse response) {
+        Gson gson = new Gson();
+
+        String data = request.getParameter("data");
+        JSONArray jsonArray = JSONArray.fromObject(data);
+        List<FastReplyBean> fastReplyList = (List) JSONArray.toCollection(jsonArray, FastReplyBean.class);
+        for (FastReplyBean fastReply : fastReplyList) {
+            fastReplyService.deleteFastReplyService(fastReply.getShortcut_language_id());
+        }
+        return gson.toJson("DeleteSuccess");
+    }
+
+    @RequestMapping(value = "/customerService/modifyFastReply", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String modifyOneFastReply(HttpServletRequest request, HttpServletResponse response) {
+        Gson gson = new Gson();
+
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        int shortcut_language_id = json.getInt("shortcut_language_id");
+        String content = json.getString("content");
+        fastReplyService.modifyFastReplyService(shortcut_language_id, content);
+
+        return gson.toJson("ModifySuccess");
+    }
+
+    @RequestMapping(value = "/customerService/addFastReply", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String addFastReply(HttpServletRequest request, HttpServletResponse response) {
+        Gson gson = new Gson();
+
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        int cs_id = json.getInt("cs_id");
+        String content = json.getString("content");
+        FastReplyBean fastReplyBean = new FastReplyBean();
+        fastReplyBean.setContent(content);
+        fastReplyBean.setCs_id(cs_id);
+        fastReplyService.addFastReplyService(fastReplyBean);
+        return gson.toJson("AddSuccess");
+    }
 }

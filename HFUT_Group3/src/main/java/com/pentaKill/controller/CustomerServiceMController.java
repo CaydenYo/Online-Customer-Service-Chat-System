@@ -201,5 +201,27 @@ public class CustomerServiceMController {
         System.out.println(gson.toJson(list));
         return gson.toJson(list);
     }
+    
+    
+    @RequestMapping(value = "/initializeSetting", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String initializeSetting(HttpServletRequest request, HttpServletResponse response) {
+        String data = request.getParameter("data");
+        System.out.println(data);
+        JSONObject json = JSONObject.fromObject(data);
+        int companyId = json.getInt("company_id");
+        System.out.println(companyId);
+        Company company = companyService.findCompany(companyId);
+        System.out.println(company);
+        List<Integer> list = new LinkedList<Integer>();
+        list.add(company.getAccess_type());
+        list.add(company.getRobot_open_flag());
+        list.add(company.getDstribution_type());
+        list.add(company.getCustomer_info_flag());
+        list.add(company.getMininum_operating_num());
+        Gson gson = new Gson();
+        System.out.println(gson.toJson(list));
+        return gson.toJson(list);
+    }
 
 }

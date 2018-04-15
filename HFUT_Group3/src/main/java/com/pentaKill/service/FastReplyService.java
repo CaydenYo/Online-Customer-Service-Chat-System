@@ -25,11 +25,11 @@ public class FastReplyService {
         fastReplyMapper.addFastReplyMapper(frb);
     }
 
-    public void deleteFastReplyService(FastReplyBean frb) {
-        fastReplyMapper.deleteFastReplyMapper(frb);
+    public void deleteFastReplyService(int shortcut_language_id) {
+        fastReplyMapper.deleteFastReplyMapper(shortcut_language_id);
     }
 
-    public void modifyFastReplyService(FastReplyBean frb) {
-        fastReplyMapper.modifyFastReplyMapper(frb);
+    public void modifyFastReplyService(int shortcut_language_id,String content) {
+        fastReplyMapper.modifyFastReplyMapper(shortcut_language_id,content);
     }
 }
