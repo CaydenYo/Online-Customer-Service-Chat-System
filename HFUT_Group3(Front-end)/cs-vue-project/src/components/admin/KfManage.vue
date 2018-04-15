@@ -17,20 +17,25 @@
         </div>
       </el-dialog>
     </el-card><br>
-    <el-card class="box-card">
+    <el-card>
       <h3>客服列表</h3>
-      <el-table :data="tableData3" height="250" border style="width: 100%">
-        <el-table-column prop="cs_workId" label="工号" width="300">
+      <el-table :data="tableData3" height="500" border class="tab">
+        <el-table-column prop="cs_workId" label="工号">
         </el-table-column>
-        <el-table-column prop="cs_name" label="姓名" width="300">
+        <el-table-column prop="cs_name" label="姓名">
         </el-table-column>
-        <el-table-column prop="cs_nickName" label="昵称" width="120">
+        <el-table-column prop="cs_nickName" label="昵称">
         </el-table-column>
-        <el-table-column prop="cs_email" label="电邮" width="200">
+        <el-table-column prop="cs_email" label="电邮">
         </el-table-column>
-        <el-table-column prop="cs_score" label="评分" width="100">
+        <el-table-column prop="cs_score" label="评分">
         </el-table-column>
-        <el-table-column prop="cs_status" label="状态" width="100">
+        <el-table-column prop="cs_status" label="状态">
+          <template slot-scope='scope'>
+            <p v-if="scope.row.cs_status === 1">在线</p>
+            <p v-else-if="scope.row.cs_status === 2">休息</p>
+            <p v-else>离线</p>
+          </template>
         </el-table-column>
       </el-table>
     </el-card>
@@ -96,5 +101,11 @@ export default {
   }
 }
 </script>
+
+<style>
+.tab {
+  width: 100%;
+}
+</style>
 
 

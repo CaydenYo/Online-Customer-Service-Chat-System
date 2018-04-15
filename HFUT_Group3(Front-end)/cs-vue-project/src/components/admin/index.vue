@@ -34,17 +34,17 @@
     </div>
     <div class="card2">
       <el-card class="box-card">
-        <h3>客服列表</h3>
-        <el-table :data="tableData3" height="250" border style="width: 100%">
-          <el-table-column prop="cs_workId" label="工号" width="100">
+        <h3>在线客服列表</h3>
+        <el-table :data="tableData3" height="430" border>
+          <el-table-column prop="cs_workId" label="工号">
           </el-table-column>
-          <el-table-column prop="cs_name" label="姓名" width="100">
+          <el-table-column prop="cs_name" label="姓名">
           </el-table-column>
-          <el-table-column prop="cs_waited_number" label="等待人数" width="180">
+          <el-table-column prop="cs_waited_number" label="等待人数">
           </el-table-column>
-          <el-table-column prop="cs_operated_number" label="正在服务人数" width="180">
+          <el-table-column prop="cs_operated_number" label="正在服务人数">
           </el-table-column>
-          <el-table-column prop="cs_score" label="评分" width="180">
+          <el-table-column prop="cs_score" label="评分">
           </el-table-column>
         </el-table>
       </el-card>
@@ -62,7 +62,7 @@ export default {
       inConv: 25,
       inWait: 28,
       index_url: '/listNumbers',
-      query_ocs_url: '',
+      query_ocs_url: '/listCsStatus',
       index_post: {
         company_id: JSON.parse(localStorage.getItem('company_id'))
       },

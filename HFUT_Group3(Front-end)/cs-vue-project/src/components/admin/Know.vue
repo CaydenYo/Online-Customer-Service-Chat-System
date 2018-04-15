@@ -20,14 +20,14 @@
     </el-card>
     <!-- 知识库显示表格 -->
     <el-card>
-      <el-table :data="know" height="250" border style="width: 100%">
+      <el-table :data="know" height="500" border class="tab">
         <el-table-column prop="question" label="问题">
         </el-table-column>
         <el-table-column prop="answer" label="答案">
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope='scope'>
-            <el-button size="mini" type="primary" @click="handleEdit(scope.$index,scope.row)" icon="el-icon-edit-outline">修改</el-button>
+            <el-button size="mini" class="tabbut" type="primary" @click="handleEdit(scope.$index,scope.row)" icon="el-icon-edit-outline">修改</el-button>
             <el-button size="mini" type="danger" @click="handleDelete(scope.$index, know)" icon="el-icon-delete">删除</el-button>
           </template>
         </el-table-column>
@@ -54,13 +54,12 @@
 export default {
   data() {
     return {
-      update_line: '',
       dialogFormVisible: false,
       updateFormVisible: false,
       zsk_url: '/listAllKnowledge',
       insert_know_url: '/insertKnowledge',
-      update_know_url: '',
-      delete_know_url: '',
+      update_know_url: '/updateKnowledge',
+      delete_know_url: '/deleteKnowledge',
       zsk: {
         company_id: JSON.parse(localStorage.getItem('company_id'))
       },
@@ -121,16 +120,18 @@ export default {
         method: 'post',
         url: this.rootUrl + _this.insert_know_url,
         data: params
-      }).then(res => {
-        if (res.data === 'success') {
-          alert('success')
-        } else {
-          this.$message({
-            message: JSON.stringify(res.data),
-            type: 'error'
-          })
-        }
       })
+        .then(res => {
+          if (res.data === 'success') {
+            alert('success')
+          } else {
+            this.$message({
+              message: JSON.stringify(res.data),
+              type: 'error'
+            })
+          }
+        })
+        .then(_this.init())
     },
     // 点击表格修改按键
     handleEdit(index, row) {
@@ -145,17 +146,53 @@ export default {
     },
     // 点击表格删除按键
     handleDelete(index, row) {
-      console.log(index, row)
       this.deletekn.knowledge_id = row[index].knowledge_id
       console.log('12345:      ' + row[index].knowledge_id)
       console.log('lalal:      ' + this.deletekn.knowledge_id)
       row.splice(index, 1)
+      var params = new URLSearchParams()
+      let _this = this
+      params.append('data', JSON.stringify(this.deletekn))
+      this.$axios({
+        method: 'post',
+        url: this.rootUrl + _this.delete_know_url,
+        data: params
+      }).then(res => {
+        if (res.data === 'success') {
+          alert('success')
+        } else {
+          this.$message({
+            message: JSON.stringify(res.data),
+            type: 'error'
+          })
+        }
+      })
     },
     // 点击对话框确定按键，进行修改
     updateknfun() {
       this.updateFormVisible = false
       this.know[this.update_line].question = this.updatekn.question
       this.know[this.update_line].answer = this.updatekn.answer
+      this.updatekn.knowledge_id = this.know[this.update_line].knowledge_id
+      this.updatekn.question = this.know[this.update_line].question
+      this.updatekn.answer = this.know[this.update_line].answer
+      var params = new URLSearchParams()
+      let _this = this
+      params.append('data', JSON.stringify(this.updatekn))
+      this.$axios({
+        method: 'post',
+        url: this.rootUrl + _this.update_know_url,
+        data: params
+      }).then(res => {
+        if (res.data === 'success') {
+          alert('success')
+        } else {
+          this.$message({
+            message: JSON.stringify(res.data),
+            type: 'error'
+          })
+        }
+      })
     }
   }
 }
@@ -164,6 +201,9 @@ export default {
 <style>
 .body {
   margin-bottom: 2%;
+}
+.tab {
+  width: 100%;
 }
 </style>
 
