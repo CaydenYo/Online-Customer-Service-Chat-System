@@ -9,8 +9,8 @@ public interface FastReplyMapper {
 
     public void addFastReplyMapper(FastReplyBean frb);
 
-    public void deleteFastReplyMapper(FastReplyBean frb);
+    public void deleteFastReplyMapper(int shortcut_language_id);
 
-    public void modifyFastReplyMapper(FastReplyBean frb);
+    public void modifyFastReplyMapper(int shortcut_language_id,String content);
 
 }

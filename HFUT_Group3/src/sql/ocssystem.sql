@@ -46,6 +46,7 @@ CREATE TABLE `companyInfo` (
 --余康测试
 insert into companyInfo values(1,"facebook",0,0,1,0,0,0,"miki");
 insert into companyInfo values(2,"CISCO",0,0,0,0,0,0,"XIAO AI");
+insert into companyInfo values(3,"SUMSUNG",1,1,1,1,3,1,"XIAO BING");
 
 --4客服表
 DROP TABLE IF EXISTS `customerServiceInfo`;
@@ -120,7 +121,8 @@ CREATE TABLE `chatLog` (
 FOREIGN KEY (`conversation_id`) REFERENCES `conversation` (`conversation_id`)
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-
+insert into chatLog(conversation_id,receiver_id,sender_id,from_customer,content_type,content)
+values(1,1000,2000,1,0,'aaa');
 
 --8客服快捷语
 DROP TABLE IF EXISTS `cs_shortcut_language`;
@@ -130,6 +132,10 @@ CREATE TABLE `cs_shortcut_language` (
 `content` varchar(255),
 FOREIGN KEY (`cs_id`) REFERENCES `customerServiceInfo` (`cs_id`)
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+insert into cs_shortcut_language(cs_id,content)values(1,'请您稍等');
+insert into cs_shortcut_language(cs_id,content)values(1,'感谢您的评价');
+insert into cs_shortcut_language(cs_id,content)values(1,'这是我的荣幸');
 
 --9客服管理人员查看总信息表
 DROP TABLE IF EXISTS `cs_management_tool`;
