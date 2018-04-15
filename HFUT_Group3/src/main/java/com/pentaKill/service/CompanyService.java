@@ -20,19 +20,19 @@ public class CompanyService {
 
     public void updateAccess(Company company, int access_type){
         company.setAccess_type(access_type);
-        companyMapper.UpdateCompany(company);
+        companyMapper.updateCompany(company); 
     }
     
     public void update(Company company, int dstribution_type, int customer_info_flag, int min_num) {
         company.setMininum_operating_num(min_num);
         company.setDstribution_type(dstribution_type);
         company.setCustomer_info_flag(customer_info_flag);
-        companyMapper.UpdateCompany(company);
+        companyMapper.updateCompany(company);
     }
     
     public void updateRobotConf(Company company, int robot_open_flag) {
         company.setRobot_open_flag(robot_open_flag);
-        companyMapper.UpdateCompany(company);
+        companyMapper.updateCompany(company);
     }
 
     public CustomerService selectCustomerService(Company company) {
@@ -41,8 +41,7 @@ public class CompanyService {
         return companyMapper.selectCustomerService(company_id, min_num);
     }
 
-    public void updateCustomerService(CustomerService customerService, int min_num) {
-        int cs_id = customerService.getCs_id();
-        companyMapper.updateCustomerService(min_num, cs_id);
+    public void updateCustomerService(int min_num, int company_id) {
+        companyMapper.updateCustomerService(min_num, company_id);
     }
 }

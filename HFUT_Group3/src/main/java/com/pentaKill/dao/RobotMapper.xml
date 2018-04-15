@@ -41,6 +41,6 @@
         update companyInfo set
         robot_open_flag = #{robot_open_flag}
         where
-        knowledge_id=#{company_id}
+        company_id=#{company_id}
     </update>
 </mapper>
