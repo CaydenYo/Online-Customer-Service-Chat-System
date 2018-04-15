@@ -60,9 +60,8 @@ export default {
     handleChange(value) {
       console.log(value)
     },
-    // cs setting
+    // 客服设置
     submitForm(formName) {
-      alert(JSON.stringify(this.form3))
       var params = new URLSearchParams()
       let _this = this
       params.append('data', JSON.stringify(this.form3))
@@ -82,18 +81,17 @@ export default {
         }
       })
     },
-    // Access mode
+    // 接入设置
     jrfun() {
       var params = new URLSearchParams()
       let _this = this
-      alert(JSON.stringify(this.form1))
       params.append('data', JSON.stringify(this.form1))
       this.$axios({
         method: 'post',
         url: this.rootUrl + _this.form1_url,
         data: params
       }).then(res => {
-        if (res.data === 'success') {
+        if (res.data === 'UpdateSuccess') {
           alert('success')
         } else {
           console.log(JSON.parse(localStorage.getItem('company_id')))
@@ -104,12 +102,10 @@ export default {
         }
       })
     },
-    // robot setting
+    // 机器人设置
     rbfun() {
-      console.log(this.form2.robot_flag)
       var params = new URLSearchParams()
       let _this = this
-      alert(JSON.stringify(this.form2))
       params.append('data', JSON.stringify(this.form2))
       this.$axios({
         method: 'post',

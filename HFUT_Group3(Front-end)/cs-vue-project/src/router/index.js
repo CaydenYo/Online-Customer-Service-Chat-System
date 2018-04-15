@@ -106,60 +106,36 @@ export default new Router({
       redirect: '/index',
       component: AdminHome,
       children: [{
-        path: '/index',
-        component: index,
-        name: '首页'
-      }]
-    },
-    {
-      path: '/',
-      name: '客服管理',
-      component: AdminHome,
-      children: [{
-        path: '/kfgl',
-        component: kfgl,
-        name: '客服管理'
-      }]
-    },
-    {
-      path: '/',
-      name: '设置',
-      component: AdminHome,
-      children: [{
-        path: '/settings',
-        component: settings,
-        name: '设置'
-      }]
-    },
-    {
-      path: '/',
-      name: '知识库',
-      component: AdminHome,
-      children: [{
-        path: '/know',
-        component: know,
-        name: '知识库'
-      }]
-    },
-    {
-      path: '/',
-      name: '当前会话',
-      component: AdminHome,
-      children: [{
-        path: '/Smanage_now',
-        component: Smanage_now,
-        name: '当前会话'
-      }]
-    },
-    {
-      path: '/',
-      name: '历史会话',
-      component: AdminHome,
-      children: [{
-        path: '/Smanage_past',
-        component: Smanage_past,
-        name: '历史会话'
-      }]
+          path: '/index',
+          component: index,
+          name: '首页'
+        },
+        {
+          path: '/kfgl',
+          component: kfgl,
+          name: '客服管理'
+        },
+        {
+          path: '/settings',
+          component: settings,
+          name: '设置'
+        },
+        {
+          path: '/know',
+          component: know,
+          name: '知识库'
+        },
+        {
+          path: '/Smanage_now',
+          component: Smanage_now,
+          name: '当前会话'
+        },
+        {
+          path: '/Smanage_past',
+          component: Smanage_past,
+          name: '历史会话'
+        }
+      ]
     }
   ]
 })

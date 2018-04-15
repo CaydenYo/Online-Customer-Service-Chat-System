@@ -6,7 +6,7 @@
           <img src="../../../static/images/admin_home_logo.png" width="100%" height="100%" alt="ADMIN">
         </div>
         <el-submenu index="1" style="float:right;">
-          <template slot="title">运维人员</template>
+          <template slot="title">管理人员</template>
           <router-link to="/CsLogin">
             <el-menu-item index="4-1">
               <el-button type="text">
