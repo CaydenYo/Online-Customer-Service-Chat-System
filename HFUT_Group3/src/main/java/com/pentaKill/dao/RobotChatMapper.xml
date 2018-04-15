@@ -6,17 +6,23 @@
 <mapper namespace="com.pentaKill.dao.RobotChatMapper">
 
 
-	<!-- 获取机器人服务是否开启标志 -->
-	<select id="getRobotChatFlagMapper" parameterType="int"
-		resultType="int">
-		select robot_open_flag from companyInfo
-		where company_id = #{0}
-	</select>
+    <!-- 获取机器人服务是否开启标志 -->
+    <select
+        id="getRobotChatFlagMapper"
+        parameterType="int"
+        resultType="int">
+        select robot_open_flag from companyInfo
+        where
+        company_id = #{0}
+    </select>
 
-	<!-- 获取一个公司机器人的所有问题 -->
-	<select id="getRobotQuestionMapper" parameterType="int"
-		resultType="RobotQuestionBean">
-		select question,anwser from knowledge,companyInfo
-		where company_id = #{0} and companyInfo.robot_id = knowledge.robot_id
-	</select>
+    <!-- 获取一个公司机器人的所有问题 -->
+    <select
+        id="getRobotQuestionMapper"
+        parameterType="int"
+        resultType="RobotQuestionBean">
+        select question,answer from knowledge,companyInfo
+        where company_id = #{0} and companyInfo.robot_id =
+        knowledge.robot_id
+    </select>
 </mapper>

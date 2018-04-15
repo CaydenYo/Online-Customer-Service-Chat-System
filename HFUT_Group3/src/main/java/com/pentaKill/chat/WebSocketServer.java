@@ -77,7 +77,6 @@ public class WebSocketServer {
         String content = json.getString("content");
         String companyName = json.getString("companyName");
         String companyId = json.getString("companyId");
-
         // 当进行会话转接时需要此变量
         String oldCsId = null;
 
@@ -86,7 +85,7 @@ public class WebSocketServer {
             // 下面机器人这段改放哪里？
 
             // 判断有无历史会话没完成
-            
+
             // 第一次打开窗口要发送用户名进来
             // 第一次要开启会话，记录会话的开始时间(发送者是客服的时候)
             // 当用户连接时，首先查询机器人是否开启
@@ -96,7 +95,12 @@ public class WebSocketServer {
                 int robotFlag = robotChatService.getRobotFlagService(Integer.parseInt(companyId));
                 if (robotFlag == 1) {
                     // 查询本公司机器人对应的全部问题
-                    List<RobotQuestionBean> rqb = robotChatService.getRobotQuestionService(Integer.parseInt(companyId));
+                    List<RobotQuestionBean> rqb = null;
+                    try {
+                        rqb = robotChatService.getRobotQuestionService(Integer.parseInt(companyId));
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                    }
 
                     for (String key : userMap.keySet()) {
                         webSocketServer = (WebSocketServer) connectedUser.get(key);
@@ -109,6 +113,7 @@ public class WebSocketServer {
                             joTemp.put("isSelf", false);
                             JSONArray jsonArray = new JSONArray();
                             String contentOfRqb = jsonArray.fromObject(rqb).toString();
+                            // System.out.println(contentOfRqb);
                             joTemp.put("content", contentOfRqb);
                             synchronized (webSocketServer) {
                                 webSocketServer.session.getAsyncRemote().sendText(joTemp.toString());
@@ -147,7 +152,8 @@ public class WebSocketServer {
                     if (listEmpty) {
                         // 功能1//找到所有在线的客服，找到所有在线客服中未满排队上限数的客服
                         csList = conversationService.selectCustomerServiceByStatus();
-                        // 功能2//两种算法 （1）老顾客优先算法去conversation里面找 （2）空闲优先算法选择最多空闲的客服
+                        // 功能2//两种算法 （1）老顾客优先算法去conversation里面找
+                        // （2）空闲优先算法选择最多空闲的客服
                         // 2.1 负载分配
                         ChooseCustomerServiceBean temp = csList.get(0);
                         if (distributionType == 0) {
@@ -171,9 +177,9 @@ public class WebSocketServer {
                     // 功能4 //客服管理人员查看等待人数要+1
                     conversationService.increaseCsManageToolWaitingPeople(Integer.valueOf(companyId));
                 }
-            }else{
-                //客服第一次进来
-                
+            } else {
+                // 客服第一次进来
+
                 ConversationBean cb = new ConversationBean(Integer.parseInt(receiverId), Integer.parseInt(senderId),
                         null, null, -1);
                 conversationService.insertConversationService(cb);
@@ -181,13 +187,13 @@ public class WebSocketServer {
                 // 功能1//customer_waiting_team中包含该csId和customerId的记录remove掉
                 conversationService.deleteCustomerWaitingTeam(Integer.parseInt(senderId), Integer.valueOf(receiverId));
                 // 功能2//客服管理人员查看等待人数要-1
-                conversationService.decreaseCsManageToolWaitingPeople(Integer.parseInt(companyId));                
+                conversationService.decreaseCsManageToolWaitingPeople(Integer.parseInt(companyId));
             }
 
             userMap.put(session.getId(), nickname);
 
             firstTime = false;
-        
+
         } else if (content.equals("csViewsHistoryMessage.action")) {
             // 当客服点击查看历史信息时，就会发送这个信息"csViewsHistoryMessage.action"
             // 从后台取出所有客服与这个客户的聊天记录，然后发送到前台
@@ -214,28 +220,55 @@ public class WebSocketServer {
 
         } else if (content.startsWith("robotAnwser") && Integer.parseInt(senderId) >= 2000) {
             // 约定前端发进来这个，表示用户想知道机器人问题的答案
-            int ansNum = Integer.parseInt(content.substring(11));
-            List<RobotQuestionBean> rqb = robotChatService.getRobotQuestionService(Integer.parseInt(companyId));
-            String ans = rqb.get(ansNum - 1).getAnwser();
 
-            for (String key : userMap.keySet()) {
-                webSocketServer = (WebSocketServer) connectedUser.get(key);
-                if (nickname.equalsIgnoreCase(userMap.get(key))) {
-                    // 新建一个json对象返回答案
-                    JSONObject joTemp = new JSONObject();
-                    joTemp.put("nickname", companyName);
-                    joTemp.put("date", df.format(new Date()));
-                    joTemp.put("isSelf", false);
-                    joTemp.put("content", ans);
-                    synchronized (webSocketServer) {
-                        webSocketServer.session.getAsyncRemote().sendText(joTemp.toString());
+            int ansNum = initvalue;
+            try {
+                ansNum = Integer.parseInt(content.substring(14, 15));
+
+                for (String key : userMap.keySet()) {
+                    webSocketServer = (WebSocketServer) connectedUser.get(key);
+                    if (nickname.equalsIgnoreCase(userMap.get(key))) {
+                        // 新建一个json对象返回答案
+                        String cus_ques = content.substring(11);
+                        JSONObject joTemp = new JSONObject();
+                        joTemp.put("nickname", nickname);
+                        joTemp.put("date", df.format(new Date()));
+                        joTemp.put("isSelf", true);
+                        joTemp.put("content", cus_ques);
+                        synchronized (webSocketServer) {
+                            webSocketServer.session.getAsyncRemote().sendText(joTemp.toString());
+                        }
+
                     }
-
                 }
+
+                Thread.sleep(2000);// 停止2秒在发送回复
+
+                List<RobotQuestionBean> rqb = robotChatService.getRobotQuestionService(Integer.parseInt(companyId));
+                // System.out.println(rqb);
+                String ans = rqb.get(ansNum - 1).getAnswer();
+                // System.out.println(ans);
+                for (String key : userMap.keySet()) {
+                    webSocketServer = (WebSocketServer) connectedUser.get(key);
+                    if (nickname.equalsIgnoreCase(userMap.get(key))) {
+                        // 新建一个json对象返回答案
+                        JSONObject joTemp = new JSONObject();
+                        joTemp.put("nickname", companyName);
+                        joTemp.put("date", df.format(new Date()));
+                        joTemp.put("isSelf", false);
+                        joTemp.put("content", ans);
+                        synchronized (webSocketServer) {
+                            webSocketServer.session.getAsyncRemote().sendText(joTemp.toString());
+                        }
+
+                    }
+                }
+            } catch (Throwable e) {
+                e.printStackTrace();
             }
 
         } else {
-            
+
             // 会话转接请求
             if (content.startsWith("sessionTransfer") && Integer.parseInt(senderId) < 2000) {
                 // 约定前端发来这个，表示某个客服接受了转接请求
@@ -250,14 +283,14 @@ public class WebSocketServer {
 
                 int csId = Integer.parseInt(senderId);
 
-                int oldCsIdInt = Integer.parseInt(oldCsId);               
-                
-                //老客服正在操作人数减1
+                int oldCsIdInt = Integer.parseInt(oldCsId);
+
+                // 老客服正在操作人数减1
                 sessionTransferService.decreaseCsOperatedNumService(oldCsIdInt);
                 // 新客服服务人数加1（无视新客服的服务和等待人数上限）
                 // 能不能弹出来一个窗口？？？？
                 sessionTransferService.addCsOperatedNumService(csId);
-                
+
                 // 关闭原有会话
                 Timestamp endTime = new Timestamp(System.currentTimeMillis());
 
@@ -301,11 +334,7 @@ public class WebSocketServer {
                 // 函数直接结束
                 return;
             }
-            
-            
-            
-            
-            
+
             // 每次会话都要存入数据库
             int customerId = initvalue;
             int csId = initvalue;

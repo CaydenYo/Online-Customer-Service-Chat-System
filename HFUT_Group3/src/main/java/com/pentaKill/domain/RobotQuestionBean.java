@@ -3,22 +3,22 @@ package com.pentaKill.domain;
 public class RobotQuestionBean {
 
     private String question;
-    private String anwser;
+    private String answer;
 
     public RobotQuestionBean() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    public RobotQuestionBean(String question, String anwser) {
+    public RobotQuestionBean(String question, String answer) {
         super();
         this.question = question;
-        this.anwser = anwser;
+        this.answer = answer;
     }
 
     @Override
     public String toString() {
-        return "RobotQuestionBean [question=" + question + ", anwser=" + anwser + "]";
+        return "RobotQuestionBean [question=" + question + ", answer=" + answer + "]";
     }
 
     public String getQuestion() {
@@ -29,12 +29,12 @@ public class RobotQuestionBean {
         this.question = question;
     }
 
-    public String getAnwser() {
-        return anwser;
+    public String getAnswer() {
+        return answer;
     }
 
-    public void setAnwser(String anwser) {
-        this.anwser = anwser;
+    public void setAnswer(String answer) {
+        this.answer = answer;
     }
 
 }

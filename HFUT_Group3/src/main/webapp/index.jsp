@@ -90,6 +90,8 @@
 	</div>
 	<script type="text/javascript">
 		$(function() {
+			var robotFlag = true;//标明机器人服务是否开启，如果处于人工服务状态则将其变为false
+
 			//实例化编辑器
 			var um = UM
 					.getEditor(
@@ -133,7 +135,9 @@
 									//获取输入框的内容
 									var txt = um.getContent();
 									//构建一个标准格式的JSON对象
-
+									if (robotFlag) {
+										txt = "robotAnwser" + txt;
+									}
 									var obj = JSON.stringify({
 										nickname : nickname,
 										senderId : senderId,
@@ -157,12 +161,52 @@
 		//人名nickname，时间date，是否自己isSelf，内容content
 		function addMessage(msg) {
 
+			/*  var result=data
+			 var html = "";
+			 var tdHead = "<td>";
+			 var tdFoot = "</td>";
+			 $("#t1 tr:gt(0)").remove();//第一行是table的表格头不需清除。
+			 for(var i=0;i<result.length;i++){
+			     var guaInfo = result[i];
+			     
+			     var carNum=guaInfo.carNum;
+			     var mainPeriod=guaInfo.mainPeriod;
+			     var mainDes=guaInfo.mainDes;
+			     var times=guaInfo.times;
+			     
+			     html += "<tr>" + tdHead + (i + 1) + tdFoot + 
+			     tdHead + carNum + tdFoot +
+			     tdHead + mainPeriod + tdFoot + 
+			     tdHead + mainDes + tdFoot +
+			     tdHead + times + tdFoot + "</tr>";
+			 }
+			 $("#t1").append(html);//将新数据填充到table */
 			var box = $("#msgtmp").clone(); //复制一份模板，取名为box
 			box.show(); //设置box状态为显示
 			box.appendTo("#chatContent"); //把box追加到聊天面板中
 			box.find('[ff="nickname"]').html(msg.nickname); //在box中设置昵称
 			box.find('[ff="msgdate"]').html(msg.date); //在box中设置时间
-			box.find('[ff="content"]').html(msg.content); //在box中设置内容
+			if (msg.content instanceof Array) {
+				//如果是数组，说明是机器人的问题
+				var html = "";
+				html += "<p>" + "您好！我是机器人小机本机，请问您想问的是以下问题吗？" + "</p>";
+				var result = msg.content;
+				html += "<ol>";
+				//alert(JSON.stringify(result[0]));
+				for (var i = 0; i < result.length; i++) {
+					var obj = result[i];
+					var question = obj.question;
+					//var answer = obj.answer;
+					html += "<li>" + question + "</li>";
+				}
+				html += "</ol>";
+				//alert(html);
+				box.find('[ff="content"]').html("");
+				box.find('[ff="content"]').append(html);
+			} else {
+				box.find('[ff="content"]').html(msg.content); //在box中设置内容
+			}
+			//box.find('[ff="content"]').html(msg.content); //在box中设置内容
 			box.addClass(msg.isSelf ? 'am-comment-flip' : ''); //右侧显示
 			box.addClass(msg.isSelf ? 'am-comment-warning'
 					: 'am-comment-success');//颜色
