@@ -1,44 +1,48 @@
 <template>
   <div id="cs_statics">
-    <div class="cs-info">
-        <a href="">客服头像</a>
-        <p>客服名称</p>
-        <el-rate
-        v-model="cs_score"
-        disabled
-        show-score
-        text-color="#ff9900"
-        score-template="{value}">
+    <el-card class="box_card">
+      <div class="show_head">
+        <img src="../../../static/images/cs_def.png" alt="" class="show_head_img">
+        <div class="show_head_text">
+          小张
+        </div>
+        <el-rate v-model="value5" disabled show-score text-color="#ff9900" score-template="{value}">
         </el-rate>
+      </div>
+    </el-card>
+    <div class="general">
+      <el-row type="flex" justify="space-around">
+        <el-col :span="5" class="col col1">
+          <div class="overview">
+            <i class="iicon el-icon-share"></i>
+            <span class="word">会话总数</span>
+            <span class="num">{{ total_dialog }}</span>
+          </div>
+        </el-col>
+        <el-col :span="5" class="col col2">
+          <div class="overview">
+            <i class="iicon el-icon-service"></i>
+            <span class="word">总时长(min)</span>
+            <span class="num">{{ total_server_time }}</span>
+          </div>
+        </el-col>
+        <el-col :span="5" class="col col3">
+          <div class="overview">
+            <i class="iicon el-icon-phone"></i>
+            <span class="word">平均评价</span>
+            <span class="num">{{ avg_eva }}</span>
+          </div>
+        </el-col>
+        <el-col :span="5" class="col col4">
+          <div class="overview">
+            <i class="iicon el-icon-loading"></i>
+            <span class="word">今日会话</span>
+            <span class="num">{{ today_chat }}</span>
+          </div>
+        </el-col>
+      </el-row>
+    </div>
   </div>
-  <div class="statics-frame">
-      <div class="allActive">
-        <el-row class="head">
-          <el-col :span="24" class="statics">
-            <el-col :span="6">
-              {{ totalKfNum }}<br>
-              <span>客服总数</span>
-          </el-col>
-          <el-col :span="6">
-              {{ totalActiveNum }}<br>
-              <span>在线客服</span>
-          </el-col>
-          <el-col :span="6">
-              {{ inConv }}<br>
-              <span>接入会话</span>
-          </el-col>
-          <el-col :span="6">
-              {{ inWait }}<br>
-              <span>正在等待</span>
-          </el-col>
-      </el-col>
-  </el-row>
-</div>
-</div> 
-<div class="graphic">
-  图表
-</div>
-</div>
 </template>
 
 <script>
@@ -46,49 +50,74 @@ export default {
   name: 'allActive',
   data: function() {
     return {
-      totalKfNum: 10,
-      totalActiveNum: 5,
-      inConv: 25,
-      inWait: 28,
-      cs_score: 3.5
+      total_dialog: 46,
+      total_server_time: 50,
+      avg_eva: 4.8,
+      today_chat: 5,
+      cs_score: 3.5,
+      value5: 3.7
+    }
   }
-}
 }
 </script>
 
 
 <style scoped>
-#cs_statics {
-  height: 100%;
-  width: 100%;
+.box_card {
+  margin-bottom: 5%;
 }
-.statics {
-   padding:20px 0;
-   background: #33CCCC;
+.show_head_img {
+  border-radius: 100%;
+  width: 100px;
+  margin: 10px 50px 10px 10px;
+  float: left;
 }
-.cs-info {
-  height:20%;
-  width:100%;
+.show_head_text {
+  margin-bottom: 20px;
 }
-.graphic {
-  height:50%;
-}
-.static-frame {
-   height:10%;
-}
-.allActive > .head > .el-col > .el-col {
-  padding: 20px 0;
-  border-right: solid 1px #fff;
-}
-
-.allActive .head {
+.col {
+  border-radius: 4px;
+  min-height: 150px;
   text-align: center;
-  color: #fff;
-  font-size: 30px;
-  margin-bottom: 50px;
 }
-
-.allActive .head span {
-  font-size: 16px;
+.col1 {
+  background-color: #67c23a;
+  box-shadow: 0px 10px 10px rgba(103, 194, 58, 0.5);
+}
+.col2 {
+  background-color: #e6a23c;
+  box-shadow: 0px 10px 10px rgba(230, 162, 60, 0.5);
+}
+.col3 {
+  background-color: #f56c6c;
+  box-shadow: 0px 10px 10px rgba(245, 108, 108, 0.5);
+}
+.col4 {
+  background-color: #909399;
+  box-shadow: 0px 10px 10px rgba(141, 147, 153, 0.5);
+}
+.overview {
+  color: #fff;
+  padding: 40px 12px 12px 12px;
+}
+.iicon {
+  margin-right: 0.3em;
+  float: left;
+}
+.word {
+  font-size: 1.2em;
+  font-weight: 200;
+}
+.num {
+  font-size: 3em;
+}
+.pan {
+  margin: 20px;
+}
+.pcol {
+  min-height: 450px;
+}
+.general {
+  margin-bottom: 50px;
 }
 </style>

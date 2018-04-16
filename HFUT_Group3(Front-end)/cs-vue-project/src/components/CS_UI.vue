@@ -27,7 +27,7 @@
                         <template slot="title"><i class="el-icon-edit-outline"></i>统计</template>
                     </el-menu-item>
                     <el-menu-item index="common_language">
-                        <template slot="title"><i class="el-icon-tickets"></i>知识库与常用语</template>
+                        <template slot="title"><i class="el-icon-tickets"></i>常用语</template>
                     </el-menu-item>
                     <el-menu-item index="customer_information">
                         <template slot="title"><i class="el-icon-document"></i>客户资料库</template>

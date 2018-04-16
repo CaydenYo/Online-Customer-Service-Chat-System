@@ -147,8 +147,8 @@ export default {
     // 点击表格删除按键
     handleDelete(index, row) {
       this.deletekn.knowledge_id = row[index].knowledge_id
-      console.log('12345:      ' + row[index].knowledge_id)
-      console.log('lalal:      ' + this.deletekn.knowledge_id)
+      // console.log('12345:      ' + row[index].knowledge_id)
+      // console.log('lalal:      ' + this.deletekn.knowledge_id)
       row.splice(index, 1)
       var params = new URLSearchParams()
       let _this = this
