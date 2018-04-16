@@ -69,7 +69,7 @@ public class CustomerServiceService {
         customerService.setCs_code(code);
         customerService.setCompany_id(customerServiceRegisterBean.getCompany_id());
         customerService.setCs_email(email);
-        customerService.setCs_workId("pentaKill_" + email);
+        customerService.setCs_workId(customerServiceRegisterBean.getCs_workId());
         customerService.setCs_name("pentaKill_" + email);
         customerService.setCs_nickName("pentaKill_" + email);
         customerService.setCs_pwd("pentaKill_" + email);
@@ -121,10 +121,11 @@ public class CustomerServiceService {
         customerServiceMapper.modifyUser(customerService);
     }
 
-    public void setProfile(String cs_pwd, String cs_img, String cs_nickName, CustomerService customerService) {
+    public void setProfile(String cs_pwd, String cs_img, String cs_nickName, String cs_name, CustomerService customerService) {
         customerService.setCs_pwd(cs_pwd);
         customerService.setCs_img(cs_img);
         customerService.setCs_nickName(cs_nickName);
+        customerService.setCs_name(cs_name);
         customerServiceMapper.modifyUser(customerService);
     }
 

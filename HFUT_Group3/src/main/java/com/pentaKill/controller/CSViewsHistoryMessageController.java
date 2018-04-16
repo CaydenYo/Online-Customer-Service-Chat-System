@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.pentaKill.domain.CSViewsCustomerInfoBean;
@@ -24,7 +26,8 @@ public class CSViewsHistoryMessageController {
 
     // 先要判断是否有历史会话信息，即判断是否是老顾客
     // 根据结果选择是否显示查看历史消息按钮
-    @RequestMapping(value = "/historyMessageFlag.action")
+    @RequestMapping(value = "/historyMessageFlag.action", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
     public String historyMessageFlag() {
         // 查询会话数据库，判断是否有历史会话
         String data = req.getParameter("data");

@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.pentaKill.dao.CustomerServiceMapper;
@@ -21,7 +23,8 @@ public class CSEvaluateController {
     @Resource
     HttpServletRequest req;
 
-    @RequestMapping(value = "/csEvaluate.action")
+    @RequestMapping(value = "/csEvaluate.action", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
     public String csEvaluate() {
         String data = req.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
