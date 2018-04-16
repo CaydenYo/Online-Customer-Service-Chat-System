@@ -179,15 +179,22 @@ public class WebSocketServer {
                 }
             } else {
                 // 客服第一次进来
+                // 添加一次请关闭，因为暂时还没有会话关闭
+                System.out.println("开启新的会话");
+                try {
+                    ConversationBean cb = new ConversationBean(Integer.parseInt(receiverId), Integer.parseInt(senderId),
+                            null, null, -1);
+                    conversationService.insertConversationService(cb);
 
-                ConversationBean cb = new ConversationBean(Integer.parseInt(receiverId), Integer.parseInt(senderId),
-                        null, null, -1);
-                conversationService.insertConversationService(cb);
+                    // 功能1//customer_waiting_team中包含该csId和customerId的记录remove掉
+                    conversationService.deleteCustomerWaitingTeam(Integer.parseInt(senderId),
+                            Integer.valueOf(receiverId));
+                    // 功能2//客服管理人员查看等待人数要-1
+                    conversationService.decreaseCsManageToolWaitingPeople(Integer.parseInt(companyId));
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
 
-                // 功能1//customer_waiting_team中包含该csId和customerId的记录remove掉
-                conversationService.deleteCustomerWaitingTeam(Integer.parseInt(senderId), Integer.valueOf(receiverId));
-                // 功能2//客服管理人员查看等待人数要-1
-                conversationService.decreaseCsManageToolWaitingPeople(Integer.parseInt(companyId));
             }
 
             userMap.put(session.getId(), nickname);
@@ -242,7 +249,7 @@ public class WebSocketServer {
                     }
                 }
 
-                Thread.sleep(2000);// 停止2秒在发送回复
+                Thread.sleep(2000);// 停止2秒再发送回复
 
                 List<RobotQuestionBean> rqb = robotChatService.getRobotQuestionService(Integer.parseInt(companyId));
                 // System.out.println(rqb);
