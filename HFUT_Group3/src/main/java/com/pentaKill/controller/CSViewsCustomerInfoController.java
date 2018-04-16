@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.pentaKill.domain.CSViewsCustomerInfoBean;
@@ -21,7 +23,8 @@ public class CSViewsCustomerInfoController {
     @Resource
     HttpServletRequest req;
 
-    @RequestMapping(value = "/csViewsCustomerInfo.action")
+    @RequestMapping(value = "/csViewsCustomerInfo.action", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
     public String csViewsCustomerInfo() {
 
         String data = req.getParameter("data");

@@ -72,6 +72,19 @@ public class CustomerServiceController {
         }
     }
 
+    @RequestMapping(value = "/customerService/showProfile", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String showProfile(HttpServletRequest request, HttpServletResponse response) {
+        Gson gson = new Gson();
+
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        String cs_email = json.getString("cs_email");
+
+        CustomerService customerService = customerSvcService.selectByEmail(cs_email);
+        return gson.toJson(customerService);
+    }
+
     @RequestMapping(value = "/customerService/setProfile", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
     public String setProfile(HttpServletRequest request, HttpServletResponse response) {
@@ -79,15 +92,16 @@ public class CustomerServiceController {
 
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        String cs_email = json.getString("cs_email");
         String cs_img = json.getString("cs_img");
+        String cs_name = json.getString("cs_name");
         String cs_nickName = json.getString("cs_nickName");
         String cs_pwd = json.getString("cs_pwd");
+        String cs_email = json.getString("cs_email");
 
         CustomerService customerService = new CustomerService();
         // 要先拿出来，其他数据不能动
         customerService = customerSvcService.selectByEmail(cs_email);
-        customerSvcService.setProfile(cs_pwd, cs_img, cs_nickName, customerService);
+        customerSvcService.setProfile(cs_pwd, cs_img, cs_nickName, cs_name, customerService);
         return gson.toJson("success");
     }
 

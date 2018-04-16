@@ -5,23 +5,55 @@ public class CSViewsCustomerInfoBean {
     private String customer_name;
     private int customer_age;
     private String customer_address;
+    private int customer_sex;
+    private String customer_nickname;
+    private String customer_img;
 
     public CSViewsCustomerInfoBean() {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    public CSViewsCustomerInfoBean(String customer_name, int customer_age, String customer_address) {
+    public CSViewsCustomerInfoBean(String customer_name, int customer_age, String customer_address, int customer_sex,
+            String customer_nickname, String customer_img) {
         super();
         this.customer_name = customer_name;
         this.customer_age = customer_age;
         this.customer_address = customer_address;
+        this.customer_sex = customer_sex;
+        this.customer_nickname = customer_nickname;
+        this.customer_img = customer_img;
     }
 
     @Override
     public String toString() {
         return "CSViewsCustomerInfoBean [customer_name=" + customer_name + ", customer_age=" + customer_age
-                + ", customer_address=" + customer_address + "]";
+                + ", customer_address=" + customer_address + ", customer_sex=" + customer_sex + ", customer_nickname="
+                + customer_nickname + ", customer_img=" + customer_img + "]";
+    }
+
+    public int getCustomer_sex() {
+        return customer_sex;
+    }
+
+    public void setCustomer_sex(int customer_sex) {
+        this.customer_sex = customer_sex;
+    }
+
+    public String getCustomer_nickname() {
+        return customer_nickname;
+    }
+
+    public void setCustomer_nickname(String customer_nickname) {
+        this.customer_nickname = customer_nickname;
+    }
+
+    public String getCustomer_img() {
+        return customer_img;
+    }
+
+    public void setCustomer_img(String customer_img) {
+        this.customer_img = customer_img;
     }
 
     public String getCustomer_name() {
