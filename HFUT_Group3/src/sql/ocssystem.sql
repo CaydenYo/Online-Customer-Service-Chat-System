@@ -168,6 +168,13 @@ CREATE TABLE `customer_waiting_team` (
 `customer_id` int(11),
 `cs_id` int(20)
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+--余康测试
+--注意此数据纯属虚构,最终系统测试请勿使用
+insert into customer_waiting_team(customer_id,cs_id) values(2000,1000);
+insert into customer_waiting_team(customer_id,cs_id) values(2000,1001);
+insert into customer_waiting_team(customer_id,cs_id) values(2000,1002);
+insert into customer_waiting_team(customer_id,cs_id) values(2000,1003);
+
 
 --12客服评价表
 DROP TABLE IF EXISTS `cs_evaluate`;

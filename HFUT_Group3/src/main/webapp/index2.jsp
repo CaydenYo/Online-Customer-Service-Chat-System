@@ -112,6 +112,24 @@
 			var socket = new WebSocket(
 					"ws://${pageContext.request.getServerName()}:${pageContext.request.getServerPort()}${pageContext.request.contextPath}/serve");
 			//接收服务器的消息
+			socket.onopen = function() {
+				//客服界面开启即发送消息，触发服务端的onmessage，开启新的会话
+
+				//获取输入框的内容
+				var txt = um.getContent();
+				//构建一个标准格式的JSON对象
+
+				var obj = JSON.stringify({
+					nickname : nickname,
+					senderId : senderId,
+					receiverId : receiverId,
+					content : txt,
+					companyName : companyName,
+					companyId : companyId
+				});
+				// 发送消息
+				socket.send(obj);
+			}
 			socket.onmessage = function(ev) {
 				var obj = eval('(' + ev.data + ')');
 				addMessage(obj);
