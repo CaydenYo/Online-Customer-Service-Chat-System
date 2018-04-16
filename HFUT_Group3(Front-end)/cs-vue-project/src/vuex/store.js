@@ -14,15 +14,6 @@ const store = new Vuex.Store({
 				img: './src/assets/images/2.png'
 			},
 			messages: [{
-				content: 'Hello，这是一个基于Vue + Vuex + Webpack构建的简单chat示例，聊天记录保存在localStorge, 有什么问题可以通过Github Issue问我。',
-				date: now
-			}, {
-				content: '项目地址(原作者): https://github.com/coffcer/vue-chat',
-				date: now 
-			}, {
-				content: '本项目地址(重构): https://github.com/is-liyiwei',
-				date: now
-			}, {
 				content: '测试',
 				date: now
 			}]
@@ -52,6 +43,20 @@ const store = new Vuex.Store({
 				content: msg,
 				date: new Date(),
 				self: true
+			})
+		},
+		addItem(state) {
+			state.sessions.push({
+				id: state.sessions.length + 1,
+				user: {
+					name: '测试',
+					img: './src/assets/images/2.png'
+				},
+				messages: [{
+					content: 'hi!!!我是第' + (state.sessions.length + 1) + '个!!',
+					date: new Date(),
+					self: true
+				}]
 			})
 		},
 		INIT_DATA(state) {

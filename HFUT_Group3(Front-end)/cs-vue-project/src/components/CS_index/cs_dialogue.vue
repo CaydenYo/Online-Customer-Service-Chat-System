@@ -6,7 +6,7 @@
 				    <el-container class = "dialogue">
 					    <el-header>
                             当前会话
-                            <el-button class = "add-dialogue" icon="el-icon-circle-plus">接入新会话</el-button>
+                            <el-button class = "add-dialogue" icon="el-icon-circle-plus" v-on:click="addItem">接入新会话</el-button>
                         </el-header>
 					    <el-main>
 						    <div id="list">
@@ -67,7 +67,10 @@ export default {
 	methods:{
 		changeCurrentSessionId:function (id) {
 			this.$store.commit('changeCurrentSessionId',id)
-		}
+		},
+        addItem: function() {
+            this.$store.commit('addItem')
+        }
 	}
 }
 </script>
@@ -95,10 +98,11 @@ export default {
         width: 30px;
         height: 30px;
         vertical-align: middle;
+        float: left;
     }
     .name {
         display: inline-block;
-        margin-left: 15px;
+        margin-left: 0;
     }
 }
 .add-dialogue {
