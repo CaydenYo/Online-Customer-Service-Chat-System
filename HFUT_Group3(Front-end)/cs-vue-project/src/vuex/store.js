@@ -40,9 +40,9 @@ const store = new Vuex.Store({
 		},
 		addMessage(state, msg) {
 			state.sessions[state.currentSessionId - 1].messages.push({
-				content: msg,
-				date: new Date(),
-				self: true
+				content: msg.content,
+				date: msg.date,
+				self: !isSelf
 			})
 		},
 		addItem(state) {
