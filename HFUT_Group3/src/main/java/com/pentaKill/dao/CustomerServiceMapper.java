@@ -35,4 +35,13 @@ public interface CustomerServiceMapper {
     public int countServiceNum(int company_id);
     
     public int countOnlineServiceNum(int company_id);
+    
+    public int getCountToday(int cs_id);
+
+    public int getCount(int cs_id);
+
+    public int getScore(int cs_id);
+
+    public int getTime(int cs_id);
+
 }

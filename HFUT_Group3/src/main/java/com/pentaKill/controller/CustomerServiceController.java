@@ -1,6 +1,7 @@
 package com.pentaKill.controller;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -221,4 +222,24 @@ public class CustomerServiceController {
         fastReplyService.addFastReplyService(fastReplyBean);
         return gson.toJson("AddSuccess");
     }
+
+    @RequestMapping(value = "/customerService/showTimeAndScore", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String showTimeAndScore(HttpServletRequest request, HttpServletResponse response) {
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        int cs_id = json.getInt("cs_id");
+        int cs_countToday = customerSvcService.getCountToday(cs_id);
+        int cs_count = customerSvcService.getCount(cs_id);
+        int cs_score = customerSvcService.getScore(cs_id);
+        int cs_time = customerSvcService.getTime(cs_id);
+        List<Integer> list = new LinkedList<Integer>();
+        list.add(cs_count);
+        list.add(cs_time);
+        list.add(cs_score);
+        list.add(cs_countToday);
+        Gson gson = new Gson();
+        return gson.toJson(list);
+    }
+
 }

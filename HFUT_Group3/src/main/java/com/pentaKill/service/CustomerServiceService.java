@@ -148,4 +148,25 @@ public class CustomerServiceService {
         int num = customerServiceMapper.countOnlineServiceNum(company_id);
         return num;
     }
+    
+    public int getCountToday(int cs_id) {
+        int count = customerServiceMapper.getCountToday(cs_id);
+        return count;
+    }
+
+    public int getCount(int cs_id) {
+        int count = customerServiceMapper.getCount(cs_id);
+        return count;
+    }
+
+    public int getScore(int cs_id) {
+        int count = customerServiceMapper.getScore(cs_id);
+        return count;
+    }
+
+    public int getTime(int cs_id) {
+        int count = customerServiceMapper.getTime(cs_id);
+        return count;
+    }
+
 }
