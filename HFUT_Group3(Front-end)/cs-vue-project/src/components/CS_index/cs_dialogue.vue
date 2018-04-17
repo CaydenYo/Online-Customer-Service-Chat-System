@@ -3,23 +3,42 @@
     <el-row>
       <el-col :span="5">
         <div class="grid-content">
-          <el-container class="dialogue">
-            <el-header>
-              当前会话
-              <el-button class="add-dialogue" icon="el-icon-circle-plus">接入新会话</el-button>
-            </el-header>
-            <el-main>
-              <div id="list">
-                <ul>
-                  <li v-for="item in sessions" :class="{ active: item.id === currentSessionId }" v-on:click="changeCurrentSessionId(item.id)">
-                    <!--   :class="[item.id === currentSessionId ? 'active':'']" -->
-                    <img class="avatar" :src="item.user.img">
-                    <p class="name">{{item.user.name}}</p>
-                  </li>
-                </ul>
-              </div>
-            </el-main>
-          </el-container>
+          <el-tabs type="border-card">
+            <el-tab-pane label="当前会话">
+              <el-container class="dialogue">
+                <el-header>
+                  <el-button v-on:click="addItem" icon="el-icon-circle-plus">接入新会话</el-button>
+                </el-header>
+                <el-main>
+                  <div id="list">
+                    <ul>
+                      <li v-for="item in sessions" :class="{ active: item.id === currentSessionId }" v-on:click="changeCurrentSessionId(item.id)">
+                        <!--   :class="[item.id === currentSessionId ? 'active':'']" -->
+                        <img class="avatar" :src="item.user.img">
+                        <p class="name">{{item.user.name}}</p>
+                      </li>
+                    </ul>
+                  </div>
+                </el-main>
+              </el-container>
+            </el-tab-pane>
+            <el-tab-pane label="排队列表">
+              <el-container class="dialogue">
+                <el-main>
+                  <div id="list">
+                    <ul>
+                      <li v-for="item in sessions" :class="{ active: item.id === currentSessionId }" v-on:click="changeCurrentSessionId(item.id)">
+                        <!--   :class="[item.id === currentSessionId ? 'active':'']" -->
+                        <img class="avatar" :src="item.user.img">
+                        <p class="name">{{item.user.name}}</p>
+                        <i class="el-icon-circle-plus-outline el-icon--right"></i>
+                      </li>
+                    </ul>
+                  </div>
+                </el-main>
+              </el-container>
+            </el-tab-pane>
+          </el-tabs>     
         </div>
       </el-col>
       <el-col :span="9">
@@ -94,6 +113,9 @@ export default {
   methods: {
     changeCurrentSessionId: function(id) {
       this.$store.commit('changeCurrentSessionId', id)
+    },
+    addItem: function(){
+      this.$store.commit('addItem')
     }
   }
 }
@@ -122,15 +144,12 @@ export default {
     border-radius: 2px;
     width: 30px;
     height: 30px;
-    vertical-align: middle;
+    float:left;
   }
   .name {
     display: inline-block;
     margin-left: 15px;
   }
-}
-.add-dialogue {
-  margin-left: 11%;
 }
 .dialogue {
   height: 100%;
@@ -154,7 +173,6 @@ export default {
 }
 .grid-content {
   border-radius: 4px;
-  min-height: 36px;
   height: 100%;
   overflow: hidden;
 }
