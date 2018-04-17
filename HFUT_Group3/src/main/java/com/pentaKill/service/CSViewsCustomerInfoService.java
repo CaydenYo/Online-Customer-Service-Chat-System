@@ -1,5 +1,7 @@
 package com.pentaKill.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.context.annotation.Scope;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.pentaKill.dao.CSViewsCustomerInfoMapper;
 import com.pentaKill.domain.CSViewsCustomerInfoBean;
+import com.pentaKill.domain.CustomerInfoBean;
 
 @Service
 @Scope
@@ -24,9 +27,13 @@ public class CSViewsCustomerInfoService {
         return company_id;
     }
 
-    public CSViewsCustomerInfoBean searchCustomerInfoService(int customer_id) {
-        CSViewsCustomerInfoBean temp = csViewsCustomerInfoMapper.searchCustomerInfoMapper(customer_id);
+    public CustomerInfoBean searchCustomerInfoService(int customer_id) {
+        CustomerInfoBean temp = csViewsCustomerInfoMapper.searchCustomerInfoMapper(customer_id);
         return temp;
+    }
+    
+    public List<CSViewsCustomerInfoBean> searchCurrentTime(int cs_id){
+        return csViewsCustomerInfoMapper.searchCurrentTime(cs_id);
     }
 
 }
