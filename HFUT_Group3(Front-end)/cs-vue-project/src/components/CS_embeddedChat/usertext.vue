@@ -47,15 +47,23 @@ methods: {
     initWebSocket() {
         const wsurl = 'ws://localhost:8080/HFUT_Group3/serve'
         this.websocket = new WebSocket(wsurl);
-        this.websocket.onmessage = this.websocketonmessagel;
+        this.websocket.onmessage = this.websocketonmessage;
         this.websocket.onclose = this.websocketclose;
     },
     websocketonmessage(e) {
-
+        var receiverMsg = JSON.parse(e.data)
+        this.$store.commit('addMessage', receiverMsg);
     },
     websocketsend(e) {
-        this.websocket.send(this.content)
-        this.$store.commit('addMessage', this.content);
+        var obj = JSON.stringify({
+            nickname: "kefu1",
+            senderId: "1000",
+            receiverId: "2000",
+            companyName: "pentaKill",
+            companyId: "1",
+            content: this.content
+        })
+        this.websocket.send(obj)
         this.content = '';
     },
     websocketclose(e) {

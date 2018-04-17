@@ -47,15 +47,23 @@ methods: {
     initWebSocket() {
         const wsurl = 'ws://localhost:8080/HFUT_Group3/serve'
         this.websocket = new WebSocket(wsurl);
-        this.websocket.onmessage = this.websocketonmessagel;
+        this.websocket.onmessage = this.websocketonmessage;
         this.websocket.onclose = this.websocketclose;
     },
     websocketonmessage(e) {
-
+        var receiverMsg = JSON.parse(e.data)
+        this.$store.commit('addMessage', receiverMsg);
     },
     websocketsend(e) {
-        this.websocket.send(this.content)
-        this.$store.commit('addMessage', this.content);
+        var obj = JSON.stringify({
+            nickname: "yukang",
+            senderId: "2000",
+            receiverId: "1000",
+            companyName: "pentaKill",
+            companyId: "1",
+            content: this.content
+        })
+        this.websocket.send(obj)
         this.content = '';
     },
     websocketclose(e) {
@@ -73,7 +81,7 @@ methods: {
   bottom: 0;
   right: 0;
   width: 100%;
-  height: 20%;
+  height: 10%;
   border-top: solid 1px #DDD;
   > textarea {
     width: 100%;

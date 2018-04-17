@@ -3,11 +3,11 @@
       <ul v-if="currentSessionId === item.id" v-for="item in sessions">
          <li v-for="entry in item.messages">
             <p class="time">
-            <span>{{entry.date | time}}</span>
+            <span>{{entry.date}}</span>
             </p>
             <div class="main" :class="{self:entry.self}">
                <img class="avatar" :src="entry.self ? img : item.user.img" alt="">
-               <p class="text">{{entry.content}}</p>
+               <p class="text" v-html="entry.content"></p>
             </div>
          </li>
       </ul>
