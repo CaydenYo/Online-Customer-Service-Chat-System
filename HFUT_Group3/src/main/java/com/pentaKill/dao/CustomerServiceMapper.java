@@ -7,6 +7,7 @@ import com.pentaKill.domain.CsEvaluateBean;
 import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceStatusBean;
 import com.pentaKill.domain.ListCSInfoBean;
+import com.pentaKill.domain.WaitingQueueCustomerInfo;
 
 public interface CustomerServiceMapper {
 
@@ -43,5 +44,8 @@ public interface CustomerServiceMapper {
     public int getScore(int cs_id);
 
     public int getTime(int cs_id);
-
+    
+    public List<Integer> getWaitingQueue(int cs_id);
+    
+    public WaitingQueueCustomerInfo getCustomerInfo(int customer_id);
 }
