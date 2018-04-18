@@ -53,10 +53,40 @@ export default {
         distribution_type: '',
         customer_info_flag: '',
         mininum_operating_num: ''
+      },
+      index_url: '/initializeSetting',
+      index_post: {
+        company_id: JSON.parse(localStorage.getItem('company_id'))
       }
     }
   },
+  mounted() {
+    this.init()
+  },
   methods: {
+    init() {
+      console.log('执行初始化函数')
+      var params = new URLSearchParams()
+      let _this = this
+      params.append('data', JSON.stringify(this.index_post))
+      this.$axios({
+        method: 'post',
+        url: this.rootUrl + _this.index_url,
+        data: params
+      }).then(res => {
+        var result = res.data
+        _this.form1.access_type = result[0] + ''
+        _this.form2.robot_flag = result[1] + ''
+        _this.form3.distribution_type = result[2] + ''
+        _this.form3.customer_info_flag = result[3] + ''
+        _this.form3.mininum_operating_num = result[4] + ''
+        console.log('1: ' + _this.form1.access_type)
+        console.log('2: ' + _this.form2.robot_flag)
+        console.log('3: ' + _this.form3.distribution_type)
+        console.log('4: ' + _this.form3.customer_info_flag)
+        console.log('5: ' + _this.form3.mininum_operating_num)
+      })
+    },
     handleChange(value) {
       console.log(value)
     },
@@ -71,7 +101,10 @@ export default {
         data: params
       }).then(res => {
         if (res.data === 'UpdateSuccess') {
-          alert('success')
+          this.$message({
+            message: '成功',
+            type: 'success'
+          })
         } else {
           console.log('return message: ' + res.data)
           this.$message({
@@ -92,7 +125,10 @@ export default {
         data: params
       }).then(res => {
         if (res.data === 'UpdateSuccess') {
-          alert('success')
+          this.$message({
+            message: '成功',
+            type: 'success'
+          })
         } else {
           console.log(JSON.parse(localStorage.getItem('company_id')))
           this.$message({
@@ -113,7 +149,10 @@ export default {
         data: params
       }).then(res => {
         if (res.data === 'success') {
-          alert('success')
+          this.$message({
+            message: '成功',
+            type: 'success'
+          })
         } else {
           console.log(JSON.parse(localStorage.getItem('company_id')))
           this.$message({

@@ -48,15 +48,22 @@ export default {
             url: this.rootUrl + _this.login_url,
             data: params
           }).then(res => {
-            if (res.data === 'success') {
-              alert('success')
-              this.$router.push({ path: '/index' })
-            } else {
-              localStorage.setItem('company_id', '1')
-              this.$message({
-                message: JSON.stringify(res.data),
-                type: 'error'
-              })
+            if (res.data === '客服账号未激活') {
+              alert('客服账号未激活')
+              //this.$router.push({ path: '/index' })
+            } else if (res.data === '用户名或者密码错误'){
+              // localStorage.setItem('company_id', '1')
+              // this.$message({
+              //   message: JSON.stringify(res.data),
+              //   type: 'error'
+              // })
+              alert('用户名或者密码错误')
+            } else{
+              var d = res.data
+              localStorage.setItem('company_id', d.company_id)
+              localStorage.setItem('cs_pwd', d.cs_pwd)
+              console.log("2:" +  JSON.parse(localStorage.getItem('company_id')))
+              console.log("3:" +  localStorage.getItem('cs_pwd'))
             }
           })
         } else {

@@ -13,7 +13,7 @@
           <el-table-column prop="start_time" label="日期" width="140">
             <template slot-scope="scope">
               <i class="el-icon-time"></i>
-              <span style="margin-left: 10px">{{ scope.row.start_time }}</span>
+              <span style="margin-left: 10px">{{ '2018-0'+Math.floor(Math.random()*3+1)+'-0'+Math.floor(Math.random()*8+1) }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="customer_name" label="姓名" width="120">
@@ -52,7 +52,6 @@ export default {
   data() {
     const item = {
       customer_id: '',
-      start_time: '2016-05-02',
       customer_name: '游凯佳',
       customer_nickname: 'test',
       customer_age: 15,

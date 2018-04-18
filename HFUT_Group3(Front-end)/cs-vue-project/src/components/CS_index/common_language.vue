@@ -1,87 +1,6 @@
 <template>
   <div id="common_language">
     <el-tabs class="cl-index" v-model="activeName" @tab-click="handleClick">
-      <!-- 知识库展示标签页 -->
-      <!-- <el-tab-pane class="knowledge-index" label="知识库管理" name="first">
-        <el-container>
-          <el-header class="kmanage-head">
-            <el-button type="primary" class="add-knowledge">添加知识</el-button>
-            <el-input class="search-knowledge">
-              <i class="el-icon-edit el-input__icon" slot="suffix" />
-            </el-input> 
-          </el-header>
-          <el-main>
-            <el-row :gutter="12">
-              <el-col :span="8">
-                <el-card shadow="always">
-                  总是显示
-                </el-card>
-              </el-col>
-              <el-col :span="8">
-                <el-card shadow="hover">
-                  鼠标悬浮时显示
-                </el-card>
-              </el-col>
-              <el-col :span="8">
-                <el-card shadow="never">
-                  从不显示
-                </el-card>
-              </el-col>
-            </el-row>
-            <el-row :gutter="12">
-              <el-col :span="8">
-                <el-card shadow="always">
-                  总是显示
-                </el-card>
-              </el-col>
-              <el-col :span="8">
-                <el-card shadow="hover">
-                  鼠标悬浮时显示
-                </el-card>
-              </el-col>
-              <el-col :span="8">
-                <el-card shadow="never">
-                  从不显示
-                </el-card>
-              </el-col>
-            </el-row>
-            <el-row :gutter="12">
-              <el-col :span="8">
-                <el-card shadow="always">
-                  总是显示
-                </el-card>
-              </el-col>
-              <el-col :span="8">
-                <el-card shadow="hover">
-                  鼠标悬浮时显示
-                </el-card>
-              </el-col>
-              <el-col :span="8">
-                <el-card shadow="never">
-                  从不显示
-                </el-card>
-              </el-col>
-            </el-row>
-            <el-row :gutter="12">
-              <el-col :span="8">
-                <el-card shadow="always">
-                  总是显示
-                </el-card>
-              </el-col>
-              <el-col :span="8">
-                <el-card shadow="hover">
-                  鼠标悬浮时显示
-                </el-card>
-              </el-col>
-              <el-col :span="8">
-                <el-card shadow="never">
-                  从不显示
-                </el-card>
-              </el-col>
-            </el-row>
-          </el-main>
-        </el-container>
-      </el-tab-pane> -->
       <!-- 常用语管理标签页 -->
       <el-tab-pane label="常用语管理" name="second">
         <el-container>
@@ -90,14 +9,14 @@
             <el-button type="danger" @click="deleteCL()" class="delete-commonlanguage">删除常用语</el-button>
             <!-- 添加常用语对话框 -->
             <el-dialog title="添加常用语" :visible.sync="insertCLFV" center width="30%">
-              <el-form :model="insertCLF">
-                <el-form-item label="常用语">
-                  <el-input v-model="insertCLF.question" auto-complete="off"></el-input>
+              <el-form :model="insertCLF" ref="insertCLF" :rules="rules1">
+                <el-form-item label="常用语" prop="content">
+                  <el-input v-model="insertCLF.content" auto-complete="off"></el-input>
                 </el-form-item>
               </el-form>
               <div slot="footer" class="dialog-footer">
                 <el-button @click="insertCLFV = false">取 消</el-button>
-                <el-button type="primary" @click="insertCLFfun()">确 定</el-button>
+                <el-button type="primary" @click="insertCLFfun('insertCLF')">确 定</el-button>
               </div>
             </el-dialog>
           </el-header>
@@ -106,11 +25,31 @@
             <el-table ref="multipleTable" :data="tableData3" tooltip-effect="dark" style="width: 100%" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="50">
               </el-table-column>
-              <el-table-column label="常用语" prop="common_language" width="1100">
+              <el-table-column label="常用语" prop="content">
               </el-table-column>
               <el-table-column label="频率" prop="frequency">
+                <template slot-scope='scope'>
+                  <p>{{ Math.floor(Math.random()*10+9) }}</p>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope='scope'>
+                  <el-button size="mini" class="tabbut" type="primary" @click="handleEdit(scope.$index,scope.row)" icon="el-icon-edit-outline">修改</el-button>
+                </template>
               </el-table-column>
             </el-table>
+            <!-- 修改常用语对话框 -->
+            <el-dialog title="修改常用语" :visible.sync="updateCLFV" center width="30%">
+              <el-form :model="updateCLF" ref="updateCLF" :rules="rules2">
+                <el-form-item label="常用语" prop="content">
+                  <el-input v-model="updateCLF.content" auto-complete="off"></el-input>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="updateCLFV = false">取 消</el-button>
+                <el-button type="primary" @click="updateclfun('updateCLF')">确 定</el-button>
+              </div>
+            </el-dialog>
           </el-main>
         </el-container>
       </el-tab-pane>
@@ -125,51 +64,42 @@ export default {
       activeName: 'second',
       tableData3: [
         {
-          common_language: 'cl1',
-          frequency: '1'
-        },
-        {
-          common_language: 'cl2',
-          frequency: '1'
-        },
-        {
-          common_language: 'cl3',
-          frequency: '1'
-        },
-        {
-          common_language: 'cl4',
-          frequency: '1'
-        },
-        {
-          common_language: 'test',
-          frequency: '1'
-        },
-        {
-          common_language: 'know',
-          frequency: '1'
-        },
-        {
-          common_language: 'john',
-          frequency: '1'
+          shortcut_language_id: 1,
+          content: 'hehehe',
+          frequency: 35
         }
       ],
       // 标签页2相关属性
-      init_tab2_url: '',
-      delete_CL_url: '',
-      insert_CL_url: '',
+      init_tab2_url: '/customerService/showFastReply',
+      delete_CL_url: '/customerService/deleteFastReply',
+      insert_CL_url: '/customerService/addFastReply',
+      update_CL_url: '/customerService/modifyFastReply',
       insertCLFV: false,
+      updateCLFV: false,
       initCLF: {
         cs_id: JSON.parse(localStorage.getItem('cs_id'))
       },
       insertCLF: {
-        question: '',
+        content: '',
         cs_id: JSON.parse(localStorage.getItem('cs_id'))
+      },
+      updateCLF: {
+        content: '',
+        shortcut_language_id: ''
       },
       // 记录被选中行
       multipleSelection: [],
       // 记录被选中行id
-      delete_CL_form: {
-        ids: []
+      ids: [],
+      rules1: {
+        content: [
+          { required: true, message: '常用语不能为空', trigger: 'blur' }
+        ]
+      },
+      rules2: {
+        content: [
+          { required: true, message: '常用语不能为空', trigger: 'blur' }
+        ]
       }
     }
   },
@@ -184,6 +114,7 @@ export default {
     // 标签页 2 函数
     // 初始化第二个标签页函数
     inittab2() {
+      localStorage.setItem('cs_id', '1000')
       var params = new URLSearchParams()
       let _this = this
       params.append('data', JSON.stringify(this.initCLF))
@@ -193,6 +124,52 @@ export default {
         data: params
       }).then(res => {
         _this.tableData3 = res.data
+        localStorage.setItem('cl', JSON.stringify(_this.tableData3))
+      })
+    },
+    // 点击表格修改按键
+    handleEdit(index, row) {
+      //index:行数
+      //row:具体信息
+      console.log(index, row)
+      console.log(row.content)
+      this.updateCLFV = true
+      this.update_line = index
+      this.updateCLF.content = row.content
+    },
+    // 点击对话框修改按键
+    updateclfun(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.updateCLFV = false
+          this.tableData3[this.update_line].content = this.updateCLF.content
+          this.updateCLF.shortcut_language_id = this.tableData3[
+            this.update_line
+          ].shortcut_language_id
+          var params = new URLSearchParams()
+          let _this = this
+          params.append('data', JSON.stringify(this.updateCLF))
+          this.$axios({
+            method: 'post',
+            url: this.rootUrl + _this.update_CL_url,
+            data: params
+          }).then(res => {
+            if (res.data === 'ModifySuccess') {
+              this.$message({
+                message: '修改成功',
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: JSON.stringify(res.data),
+                type: 'error'
+              })
+            }
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
       })
     },
     // 多选按钮相关
@@ -208,49 +185,68 @@ export default {
     handleSelectionChange(val) {
       this.multipleSelection = val
       this.multipleSelection.map(item => {
-        this.delete_CL_form.ids.push(item.common_language)
+        this.multipleSelection.push(item.shortcut_language_id)
       })
       var x
-      for (x in this.delete_CL_form.ids) {
-        console.log(this.delete_CL_form.ids[x])
+      this.ids = []
+      for (x in this.multipleSelection) {
+        console.log('test:' + this.multipleSelection[x])
       }
     },
     // 添加一个常用语
-    insertCLFfun() {
-      this.insertCLFV = false
-      var params = new URLSearchParams()
-      let _this = this
-      params.append('data', JSON.stringify(this.insertCLF))
-      this.$axios({
-        method: 'post',
-        url: this.rootUrl + _this.insert_CL_url,
-        data: params
+    insertCLFfun(formName) {
+      this.$refs[formName].validate(valid => {
+        if (valid) {
+          this.insertCLFV = false
+          var params = new URLSearchParams()
+          let _this = this
+          params.append('data', JSON.stringify(this.insertCLF))
+          this.$axios({
+            method: 'post',
+            url: this.rootUrl + _this.insert_CL_url,
+            data: params
+          }).then(res => {
+            if (res.data === 'AddSuccess') {
+              this.$message({
+                message: '添加成功',
+                type: 'success'
+              })
+            } else {
+              this.$message({
+                message: JSON.stringify(res.data),
+                type: 'error'
+              })
+            }
+          })
+          setTimeout(() => {
+            this.inittab2()
+          }, 500)
+        } else {
+          console.log('error submit!!')
+          return false
+        }
       })
-        .then(res => {
-          if (res.data === 'success') {
-            alert('success')
-          } else {
-            this.$message({
-              message: JSON.stringify(res.data),
-              type: 'error'
-            })
-          }
-        })
-        .then(_this.init())
     },
     // 删除常用语
     deleteCL() {
-      this.tableData3
+      this.ids = this.multipleSelection
+      var x
+      for (x in this.ids) {
+        console.log('delete: ' + this.ids[x])
+      }
       var params = new URLSearchParams()
       let _this = this
-      params.append('data', JSON.stringify(this.delete_CL_form))
+      params.append('data', JSON.stringify(this.ids))
       this.$axios({
         method: 'post',
         url: this.rootUrl + _this.delete_CL_url,
         data: params
       }).then(res => {
-        if (res.data === 'success') {
-          alert('success')
+        if (res.data === 'DeleteSuccess') {
+          this.$message({
+            message: '删除成功',
+            type: 'success'
+          })
         } else {
           this.$message({
             message: JSON.stringify(res.data),
@@ -258,6 +254,9 @@ export default {
           })
         }
       })
+      setTimeout(() => {
+        this.inittab2()
+      }, 500)
     }
   }
 }

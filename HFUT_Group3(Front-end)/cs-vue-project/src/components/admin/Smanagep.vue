@@ -4,9 +4,9 @@
     <el-card class="box-card">
       <h3>历史会话列表</h3>
       <el-table :data="chat_past" border style="width: 100%">
-        <el-table-column prop="customer" label="用户名" width="180">
+        <el-table-column prop="customer_id" label="用户名" width="180">
         </el-table-column>
-        <el-table-column prop="cs" label="客服名" width="180">
+        <el-table-column prop="cs_id" label="客服名" width="180">
         </el-table-column>
         <el-table-column prop="start_time" label="开始时间">
         </el-table-column>
@@ -38,18 +38,11 @@ export default {
       },
       chat_past: [
         {
-          customer: '1',
-          cs: '2',
+          customer_id: '1',
+          cs_id: '2',
           start_time: '2017-04-06',
           end_time: '2017-04-07',
           score: '5'
-        },
-        {
-          customer: '10',
-          cs: '20',
-          start_time: '2017-04-06',
-          end_time: '2017-04-07',
-          score: '4.7'
         }
       ]
     }
