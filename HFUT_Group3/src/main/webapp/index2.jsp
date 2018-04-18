@@ -61,7 +61,11 @@
 		<div id="ChatBox" class="am-g am-g-fixed">
 			<div class="am-u-lg-12"
 				style="height: 400px; border: 1px solid #999; overflow-y: scroll;">
+				<a id="viewHistoryFlag" onclick="showHistoryMessage()"
+					style="display: none;">查看历史消息</a><br>
+
 				<ul id="chatContent" class="am-comments-list am-comments-list-flip">
+
 					<li id="msgtmp" class="am-comment" style="display: none;"><a
 						href=""> <img class="am-comment-avatar"
 							src="assets/images/other.jpg" alt="" />
@@ -89,6 +93,16 @@
 
 	</div>
 	<script type="text/javascript">
+		var object = {};
+		object.temp = {
+			nickname : "kefu1",
+			senderId : "1000",
+			receiverId : "2000",
+			companyName : "pentaKill",
+			companyId : "1",
+			socket : ""
+		}
+
 		$(function() {
 			//实例化编辑器
 			var um = UM
@@ -104,12 +118,12 @@
 										'link unlink | emotion image video  | map' ]
 							});
 
-			var nickname = "kefu1";
+			/* var nickname = "kefu1";
 			var senderId = "1000";
 			var receiverId = "2000";
 			var companyName = "pentaKill";
-			var companyId = "1";
-			var socket = new WebSocket(
+			var companyId = "1"; */
+			socket = new WebSocket(
 					"ws://${pageContext.request.getServerName()}:${pageContext.request.getServerPort()}${pageContext.request.contextPath}/serve");
 			//接收服务器的消息
 			socket.onopen = function() {
@@ -120,16 +134,17 @@
 				//构建一个标准格式的JSON对象
 
 				var obj = JSON.stringify({
-					nickname : nickname,
-					senderId : senderId,
-					receiverId : receiverId,
+					nickname : object.temp.nickname,
+					senderId : object.temp.senderId,
+					receiverId : object.temp.receiverId,
 					content : txt,
-					companyName : companyName,
-					companyId : companyId
+					companyName : object.temp.companyName,
+					companyId : object.temp.companyId
 				});
 				// 发送消息
 				socket.send(obj);
 			}
+
 			socket.onmessage = function(ev) {
 				var obj = eval('(' + ev.data + ')');
 				addMessage(obj);
@@ -153,12 +168,12 @@
 									//构建一个标准格式的JSON对象
 
 									var obj = JSON.stringify({
-										nickname : nickname,
-										senderId : senderId,
-										receiverId : receiverId,
+										nickname : object.temp.nickname,
+										senderId : object.temp.senderId,
+										receiverId : object.temp.receiverId,
 										content : txt,
-										companyName : companyName,
-										companyId : companyId
+										companyName : object.temp.companyName,
+										companyId : object.temp.companyId
 									});
 									// 发送消息
 									socket.send(obj);
@@ -174,20 +189,38 @@
 
 		//人名nickname，时间date，是否自己isSelf，内容content
 		function addMessage(msg) {
+			if (msg.historyMessageFlag) {
+				$("#viewHistoryFlag").show();
+			} else {
+				var box = $("#msgtmp").clone(); //复制一份模板，取名为box
+				box.show(); //设置box状态为显示
+				box.appendTo("#chatContent"); //把box追加到聊天面板中
+				box.find('[ff="nickname"]').html(msg.nickname); //在box中设置昵称
+				box.find('[ff="msgdate"]').html(msg.date); //在box中设置时间
+				box.find('[ff="content"]').html(msg.content); //在box中设置内容
+				box.addClass(msg.isSelf ? 'am-comment-flip' : ''); //右侧显示
+				box.addClass(msg.isSelf ? 'am-comment-warning'
+						: 'am-comment-success');//颜色
+				box.css((msg.isSelf ? 'margin-left' : 'margin-right'), "20%");//外边距
 
-			var box = $("#msgtmp").clone(); //复制一份模板，取名为box
-			box.show(); //设置box状态为显示
-			box.appendTo("#chatContent"); //把box追加到聊天面板中
-			box.find('[ff="nickname"]').html(msg.nickname); //在box中设置昵称
-			box.find('[ff="msgdate"]').html(msg.date); //在box中设置时间
-			box.find('[ff="content"]').html(msg.content); //在box中设置内容
-			box.addClass(msg.isSelf ? 'am-comment-flip' : ''); //右侧显示
-			box.addClass(msg.isSelf ? 'am-comment-warning'
-					: 'am-comment-success');//颜色
-			box.css((msg.isSelf ? 'margin-left' : 'margin-right'), "20%");//外边距
+				$("#ChatBox div:eq(0)").scrollTop(999999); //滚动条移动至最底部
+			}
 
-			$("#ChatBox div:eq(0)").scrollTop(999999); //滚动条移动至最底部
+		}
 
+		//显示历史消息
+		function showHistoryMessage() {
+			$("#viewHistoryFlag").hide();
+			var obj = JSON.stringify({
+				nickname : object.temp.nickname,
+				senderId : object.temp.senderId,
+				receiverId : object.temp.receiverId,
+				content : "csViewsHistoryMessage.action",
+				companyName : object.temp.companyName,
+				companyId : object.temp.companyId
+			});
+			// 发送消息
+			socket.send(obj);
 		}
 	</script>
 

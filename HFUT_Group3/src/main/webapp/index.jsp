@@ -90,7 +90,7 @@
 	</div>
 	<script type="text/javascript">
 		$(function() {
-			var robotFlag = true;//标明机器人服务是否开启，如果处于人工服务状态则将其变为false
+			var robotFlag = false;//标明机器人服务是否开启，如果处于人工服务状态则将其变为false
 
 			//实例化编辑器
 			var um = UM
