@@ -16,6 +16,7 @@ import com.pentaKill.domain.CsEvaluateBean;
 import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceStatusBean;
 import com.pentaKill.domain.ListCSInfoBean;
+import com.pentaKill.domain.WaitingQueueCustomerInfo;
 import com.pentaKill.domain.CustomerServiceLoginBean;
 import com.pentaKill.domain.CustomerServiceRegisterBean;
 import com.pentaKill.exception.LoginException;
@@ -167,6 +168,17 @@ public class CustomerServiceService {
     public int getTime(int cs_id) {
         int count = customerServiceMapper.getTime(cs_id);
         return count;
+    }
+    
+    public List<Integer> getWaitingQueue(int cs_id){
+        List<Integer> list = new LinkedList<Integer>();
+        list = customerServiceMapper.getWaitingQueue(cs_id);
+        return list;
+    }
+    
+    public WaitingQueueCustomerInfo getCustomerInfo(int customer_id){
+        WaitingQueueCustomerInfo info = customerServiceMapper.getCustomerInfo(customer_id);
+        return info;
     }
 
 }

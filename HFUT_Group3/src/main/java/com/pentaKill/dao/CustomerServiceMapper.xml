@@ -141,4 +141,23 @@
         cs_id = #{0}
     </select>
 
+    <!-- 客户排队列表客服ID -->
+    <select id="getWaitingQueue" parameterType="int" resultType="Integer">
+        select
+        customer_id from customer_waiting_team
+        where
+        cs_id = #{0}
+    </select>
+
+
+    <!-- 查看客户排队列表中客户的具体信息 -->
+    <select id="getCustomerInfo" parameterType="int"
+        resultType="waitingQueueCustomerInfo">
+        select
+        customer_id,customer_nickname,customer_img from
+        customerInfo
+        where
+        customer_id = #{0}
+    </select>
+
 </mapper>

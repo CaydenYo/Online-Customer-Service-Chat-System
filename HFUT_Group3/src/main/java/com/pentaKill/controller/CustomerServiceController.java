@@ -24,6 +24,7 @@ import com.pentaKill.domain.Company;
 import com.pentaKill.domain.CustomerService;
 import com.pentaKill.domain.CustomerServiceLoginBean;
 import com.pentaKill.domain.FastReplyBean;
+import com.pentaKill.domain.WaitingQueueCustomerInfo;
 import com.pentaKill.exception.LoginException;
 import com.pentaKill.service.CompanyService;
 import com.pentaKill.service.CustomerServiceService;
@@ -51,9 +52,9 @@ public class CustomerServiceController {
 
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        String cs_email = json.getString("cs_email");
-        String cs_pwd = json.getString("cs_pwd");
-        CustomerServiceLoginBean customerServiceLoginBean = new CustomerServiceLoginBean(cs_email, cs_pwd);
+        String csEmail = json.getString("cs_email");
+        String csPwd = json.getString("cs_pwd");
+        CustomerServiceLoginBean customerServiceLoginBean = new CustomerServiceLoginBean(csEmail, csPwd);
         CustomerService customerService = new CustomerService();
         try {
             customerService = customerSvcService.csLogin(customerServiceLoginBean);
@@ -80,9 +81,9 @@ public class CustomerServiceController {
 
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        String cs_email = json.getString("cs_email");
+        String csEmail = json.getString("cs_email");
 
-        CustomerService customerService = customerSvcService.selectByEmail(cs_email);
+        CustomerService customerService = customerSvcService.selectByEmail(csEmail);
         return gson.toJson(customerService);
     }
 
@@ -93,16 +94,16 @@ public class CustomerServiceController {
 
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        String cs_img = json.getString("cs_img");
-        String cs_name = json.getString("cs_name");
-        String cs_nickName = json.getString("cs_nickName");
-        String cs_pwd = json.getString("cs_pwd");
-        String cs_email = json.getString("cs_email");
+        String csImg = json.getString("cs_img");
+        String csName = json.getString("cs_name");
+        String csNickName = json.getString("cs_nickName");
+        String csPwd = json.getString("cs_pwd");
+        String csEmail = json.getString("cs_email");
 
         CustomerService customerService = new CustomerService();
         // 要先拿出来，其他数据不能动
-        customerService = customerSvcService.selectByEmail(cs_email);
-        customerSvcService.setProfile(cs_pwd, cs_img, cs_nickName, cs_name, customerService);
+        customerService = customerSvcService.selectByEmail(csEmail);
+        customerSvcService.setProfile(csPwd, csImg, csNickName, csName, customerService);
         return gson.toJson("success");
     }
 
@@ -113,23 +114,23 @@ public class CustomerServiceController {
 
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        int cs_waiting_number = json.getInt("cs_waiting_number");
-        int cs_operating_number = json.getInt("cs_operating_number");
-        int company_id = json.getInt("company_id");
-        String cs_email = json.getString("cs_email");
+        int csWaitingNumber = json.getInt("cs_waiting_number");
+        int csOperatingNumber = json.getInt("cs_operating_number");
+        int companyId = json.getInt("company_id");
+        String csEmail = json.getString("cs_email");
 
-        Company company = companyService.findCompany(company_id);
+        Company company = companyService.findCompany(companyId);
         int minimum = company.getMininum_operating_num();
         // 设置的人数小于公司最小人数
-        if (cs_operating_number < minimum) {
+        if (csOperatingNumber < minimum) {
             String str = gson.toJson(minimum);
             return str;
         }
 
         CustomerService customerService = new CustomerService();
         // 要先拿出来，其他数据不能动
-        customerService = customerSvcService.selectByEmail(cs_email);
-        customerSvcService.setNumber(cs_operating_number, cs_waiting_number, customerService);
+        customerService = customerSvcService.selectByEmail(csEmail);
+        customerSvcService.setNumber(csOperatingNumber, csWaitingNumber, customerService);
         return gson.toJson("success");
     }
 
@@ -140,13 +141,13 @@ public class CustomerServiceController {
 
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        int cs_status = json.getInt("cs_status");
-        String cs_email = json.getString("cs_email");
+        int csStatus = json.getInt("cs_status");
+        String csEmail = json.getString("cs_email");
 
         CustomerService customerService = new CustomerService();
         // 要先拿出来，其他数据不能动
-        customerService = customerSvcService.selectByEmail(cs_email);
-        customerSvcService.setStatus(cs_status, customerService);
+        customerService = customerSvcService.selectByEmail(csEmail);
+        customerSvcService.setStatus(csStatus, customerService);
         return gson.toJson("success");
     }
 
@@ -157,9 +158,9 @@ public class CustomerServiceController {
 
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        int cs_id = json.getInt("cs_id");
+        int csId = json.getInt("cs_id");
 
-        List<FastReplyBean> fastReplyList = fastReplyService.showFastReplyService(cs_id);
+        List<FastReplyBean> fastReplyList = fastReplyService.showFastReplyService(csId);
         // for(FastReplyBean i:fastReplyList){
         // System.out.println(i);
         // }
@@ -173,9 +174,9 @@ public class CustomerServiceController {
 
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        int shortcut_language_id = json.getInt("shortcut_language_id");
+        int shortcutLanguageId = json.getInt("shortcut_language_id");
 
-        fastReplyService.deleteFastReplyService(shortcut_language_id);
+        fastReplyService.deleteFastReplyService(shortcutLanguageId);
         return gson.toJson("DeleteSuccess");
     }
 
@@ -200,9 +201,9 @@ public class CustomerServiceController {
 
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        int shortcut_language_id = json.getInt("shortcut_language_id");
+        int shortcutLanguageId = json.getInt("shortcut_language_id");
         String content = json.getString("content");
-        fastReplyService.modifyFastReplyService(shortcut_language_id, content);
+        fastReplyService.modifyFastReplyService(shortcutLanguageId, content);
 
         return gson.toJson("ModifySuccess");
     }
@@ -214,11 +215,11 @@ public class CustomerServiceController {
 
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        int cs_id = json.getInt("cs_id");
+        int csId = json.getInt("cs_id");
         String content = json.getString("content");
         FastReplyBean fastReplyBean = new FastReplyBean();
         fastReplyBean.setContent(content);
-        fastReplyBean.setCs_id(cs_id);
+        fastReplyBean.setCs_id(csId);
         fastReplyService.addFastReplyService(fastReplyBean);
         return gson.toJson("AddSuccess");
     }
@@ -228,18 +229,35 @@ public class CustomerServiceController {
     public String showTimeAndScore(HttpServletRequest request, HttpServletResponse response) {
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        int cs_id = json.getInt("cs_id");
-        int cs_countToday = customerSvcService.getCountToday(cs_id);
-        int cs_count = customerSvcService.getCount(cs_id);
-        int cs_score = customerSvcService.getScore(cs_id);
-        int cs_time = customerSvcService.getTime(cs_id);
+        int csId = json.getInt("cs_id");
+        int csCountToday = customerSvcService.getCountToday(csId);
+        int csCount = customerSvcService.getCount(csId);
+        int csScore = customerSvcService.getScore(csId);
+        int csTime = customerSvcService.getTime(csId);
         List<Integer> list = new LinkedList<Integer>();
-        list.add(cs_count);
-        list.add(cs_time);
-        list.add(cs_score);
-        list.add(cs_countToday);
+        list.add(csCount);
+        list.add(csTime);
+        list.add(csScore);
+        list.add(csCountToday);
         Gson gson = new Gson();
         return gson.toJson(list);
     }
-
+    
+    //客服查看排队列表
+    @RequestMapping(value = "/customerService/showWaitingQueue", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String showWaitingQueue(HttpServletRequest request, HttpServletResponse response){
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        int csId =  json.getInt("cs_id");
+        List<Integer> list = new LinkedList<Integer>();
+        list = customerSvcService.getWaitingQueue(csId);
+        List<WaitingQueueCustomerInfo> customerInfo = new LinkedList<WaitingQueueCustomerInfo>();
+        WaitingQueueCustomerInfo info;
+        for(Integer i : list){
+            info = customerSvcService.getCustomerInfo(i.intValue());
+            customerInfo.add(info);
+        }
+        return null;
+    }
 }
