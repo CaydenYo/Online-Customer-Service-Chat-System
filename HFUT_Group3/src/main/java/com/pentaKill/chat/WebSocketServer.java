@@ -180,21 +180,39 @@ public class WebSocketServer {
             } else {
                 // 客服第一次进来
                 // 添加一次请关闭，因为暂时还没有会话关闭
-                System.out.println("开启新的会话");
-                try {
-                    ConversationBean cb = new ConversationBean(Integer.parseInt(receiverId), Integer.parseInt(senderId),
-                            null, null, -1);
-                    conversationService.insertConversationService(cb);
+                /*
+                 * System.out.println("开启新的会话"); try { ConversationBean cb = new
+                 * ConversationBean(Integer.parseInt(receiverId),
+                 * Integer.parseInt(senderId), null, null, -1);
+                 * conversationService.insertConversationService(cb);
+                 * 
+                 * // 功能1//customer_waiting_team中包含该csId和customerId的记录remove掉
+                 * conversationService.deleteCustomerWaitingTeam(Integer.
+                 * parseInt(senderId), Integer.valueOf(receiverId)); //
+                 * 功能2//客服管理人员查看等待人数要-1
+                 * conversationService.decreaseCsManageToolWaitingPeople(Integer
+                 * .parseInt(companyId)); } catch (Throwable e) {
+                 * e.printStackTrace(); }
+                 */
 
-                    // 功能1//customer_waiting_team中包含该csId和customerId的记录remove掉
-                    conversationService.deleteCustomerWaitingTeam(Integer.parseInt(senderId),
-                            Integer.valueOf(receiverId));
-                    // 功能2//客服管理人员查看等待人数要-1
-                    conversationService.decreaseCsManageToolWaitingPeople(Integer.parseInt(companyId));
-                } catch (Throwable e) {
-                    e.printStackTrace();
+                // 发送问候信息
+                // 查看历史消息的标志
+                boolean historyMessageFlag = csViewsHistoryMessageService
+                        .historyMessageFlagService(Integer.parseInt(receiverId));
+
+                // 消息只发给自己
+                for (String key : userMap.keySet()) {
+                    webSocketServer = (WebSocketServer) connectedUser.get(key);
+                    if (nickname.equalsIgnoreCase(userMap.get(key))) {
+                        // 新建一个json对象返回答案
+
+                        JSONObject joTemp = new JSONObject();
+                        joTemp.put("historyMessageFlag", historyMessageFlag);
+                        synchronized (webSocketServer) {
+                            webSocketServer.session.getAsyncRemote().sendText(joTemp.toString());
+                        }
+                    }
                 }
-
             }
 
             userMap.put(session.getId(), nickname);
@@ -204,13 +222,10 @@ public class WebSocketServer {
         } else if (content.equals("csViewsHistoryMessage.action")) {
             // 当客服点击查看历史信息时，就会发送这个信息"csViewsHistoryMessage.action"
             // 从后台取出所有客服与这个客户的聊天记录，然后发送到前台
-            List<NewChatLogBean> ans = csViewsHistoryMessageService.getChatlogService(Integer.parseInt(receiverId),
-                    Integer.parseInt(senderId));
+            List<NewChatLogBean> chatlogList = csViewsHistoryMessageService
+                    .getChatlogService(Integer.parseInt(receiverId), Integer.parseInt(senderId));
 
             Gson gson = new Gson();
-
-            // 需要一个新的js函数来接收
-            String temp = gson.toJson(ans);
 
             // 聊天记录消息只发给自己
             for (String key : userMap.keySet()) {
@@ -218,9 +233,27 @@ public class WebSocketServer {
                 if (nickname.equalsIgnoreCase(userMap.get(key))) {
                     // json.put("isSelf", true);
                     // 判断是不是客服发的直接用fromCustomer属性判断
-                    synchronized (webSocketServer) {
-                        webSocketServer.session.getAsyncRemote().sendText(temp);
+                    for (int index = 0; index < chatlogList.size(); index++) {
+                        JSONObject joTemp = new JSONObject();
+                        // joTemp.put("historyMessageFlag", historyMessageFlag);
+                        joTemp.put("nickname", chatlogList.get(index).getSender_nickname());
+                        joTemp.put("date", chatlogList.get(index).getTime());
+                        joTemp.put("content", chatlogList.get(index).getContent());
+                        if (chatlogList.get(index).getFrom_customer() == 0) {
+                            joTemp.put("isSelf", false);
+                        } else {
+                            joTemp.put("isSelf", true);
+                        }
+                        synchronized (webSocketServer) {
+                            try {
+                                webSocketServer.session.getBasicRemote().sendText(joTemp.toString());
+                            } catch (Throwable e) {
+                                e.printStackTrace();
+                            }
+
+                        }
                     }
+
                     // 还要根据receiverId找到对应的nickname
                 }
             }
@@ -392,7 +425,6 @@ public class WebSocketServer {
                     json.put("isSelf", false);
                     synchronized (webSocketServer) {
                         webSocketServer.session.getAsyncRemote().sendText(json.toString());
-
                     }
                 }
 
