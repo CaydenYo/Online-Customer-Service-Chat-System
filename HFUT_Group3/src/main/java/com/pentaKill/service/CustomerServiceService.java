@@ -180,5 +180,9 @@ public class CustomerServiceService {
         WaitingQueueCustomerInfo info = customerServiceMapper.getCustomerInfo(customer_id);
         return info;
     }
+    
+    public void deleteWaitingCustomer(int customer_id){
+        customerServiceMapper.deleteWaitingCustomer(customer_id);
+    }
 
 }

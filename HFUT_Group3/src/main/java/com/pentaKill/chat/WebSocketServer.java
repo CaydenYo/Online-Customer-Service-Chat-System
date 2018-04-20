@@ -126,6 +126,7 @@ public class WebSocketServer {
                     // 按照正常的客户第一次连进来进行处理
                     int csId;
                     boolean listEmpty = false;
+                    System.out.println("in yukang's secret hole");
                     // 可以继续添加客服的老顾客
                     List<ChooseCustomerServiceBean> properLastList = new LinkedList<ChooseCustomerServiceBean>();
                     // 新客服且有空列表
@@ -145,10 +146,13 @@ public class WebSocketServer {
                         if (properLastList.isEmpty()) {
                             listEmpty = true;
                         }
+                    }else{
+                        listEmpty = true;
                     }
-
+                    System.out.println("到这里了");
                     int distributionType = conversationService.getDistributionType(companyName);
-
+                    
+                    System.out.println(listEmpty);
                     if (listEmpty) {
                         // 功能1//找到所有在线的客服，找到所有在线客服中未满排队上限数的客服
                         csList = conversationService.selectCustomerServiceByStatus();
@@ -156,6 +160,7 @@ public class WebSocketServer {
                         // （2）空闲优先算法选择最多空闲的客服
                         // 2.1 负载分配
                         ChooseCustomerServiceBean temp = csList.get(0);
+                        System.out.println(temp);
                         if (distributionType == 0) {
                             for (ChooseCustomerServiceBean ccsb : csList) {
                                 if ((ccsb.getCs_waiting_number()
@@ -168,14 +173,20 @@ public class WebSocketServer {
                             // 2.2轮流分配
 
                         }
+                        System.out.println("到这里饿了A");
                         csId = temp.getCs_id();
+                        System.out.println(csId);
                     } else {
                         csId = properLastList.get(properLastList.size() - 1).getCs_id();
                     }
                     // 功能3//将该客服的customerId和被选择csId放进到客服等待列表customer_waiting_team中(已写service和mapper)
                     conversationService.inserCustomerWaitingTeam(Integer.parseInt(senderId), csId);
+                    System.out.println("插入排队列表");
                     // 功能4 //客服管理人员查看等待人数要+1
                     conversationService.increaseCsManageToolWaitingPeople(Integer.valueOf(companyId));
+                    // 功能5 //客服的等待人数+1
+                    //未实现
+                    
                 }
             } else {
                 // 客服第一次进来
@@ -371,64 +382,69 @@ public class WebSocketServer {
             return;
 
         } else {
-            // 每次会话都要存入数据库
-            int customerId = initvalue;
-            int csId = initvalue;
-            int fromCustomer = initvalue;
-            int conversationId = initvalue;
-            int contentType = initvalue;
-            String reciverNickname;
-            // 判断发送者是客服还是用户
-            if (Integer.parseInt(senderId) < 2000) {
-                fromCustomer = 1;
-                csId = Integer.parseInt(senderId);
-                customerId = Integer.parseInt(receiverId);
-                // nickname为客户的nickname
+            try{
+                // 每次会话都要存入数据库
+                int customerId = initvalue;
+                int csId = initvalue;
+                int fromCustomer = initvalue;
+                int conversationId = initvalue;
+                int contentType = initvalue;
+                String reciverNickname;
+                // 判断发送者是客服还是用户
+                if (Integer.parseInt(senderId) < 2000) {
+                    fromCustomer = 1;
+                    csId = Integer.parseInt(senderId);
+                    customerId = Integer.parseInt(receiverId);
+                    // nickname为客户的nickname
 
-                reciverNickname = conversationService.getCustomerNicknameByCustomerId(Integer.valueOf(receiverId));
-            } else {
-                customerId = Integer.parseInt(senderId);
-                csId = Integer.parseInt(receiverId);
-                // nickname为客服的nickname
+                    reciverNickname = conversationService.getCustomerNicknameByCustomerId(Integer.valueOf(receiverId));
+                } else {
+                    customerId = Integer.parseInt(senderId);
+                    csId = Integer.parseInt(receiverId);
+                    // nickname为客服的nickname
 
-                reciverNickname = conversationService.getCsNicknameByCsId(Integer.valueOf(receiverId));
+                    reciverNickname = conversationService.getCsNicknameByCsId(Integer.valueOf(receiverId));
 
-                // System.out.println(reciverNickname);
+                    // System.out.println(reciverNickname);
 
-            }
-
-            FindConversationBean fcb = new FindConversationBean(customerId, csId);
-            conversationId = conversationService.findConversationIdService(fcb);
-
-            ChatLogBean clb = new ChatLogBean(conversationId, Integer.parseInt(receiverId), Integer.parseInt(senderId),
-                    fromCustomer, null, contentType, content);
-            // System.out.println(clb);
-            try {
-                conversationService.insertChatLogService(clb);
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-
-            // 发送信息到前台
-            json.put("date", df.format(new Date()));
-            // System.out.println(userMap);
-
-            for (String key : userMap.keySet()) {
-                webSocketServer = (WebSocketServer) connectedUser.get(key);
-                if (nickname.equalsIgnoreCase(userMap.get(key))) {
-                    json.put("isSelf", true);
-                    synchronized (webSocketServer) {
-                        webSocketServer.session.getAsyncRemote().sendText(json.toString());
-                    }
-                    // 还要根据receiverId找到对应的nickname
-                } else if (reciverNickname.equals(userMap.get(key))) {
-                    json.put("isSelf", false);
-                    synchronized (webSocketServer) {
-                        webSocketServer.session.getAsyncRemote().sendText(json.toString());
-                    }
                 }
 
+                FindConversationBean fcb = new FindConversationBean(customerId, csId);
+                conversationId = conversationService.findConversationIdService(fcb);
+
+                ChatLogBean clb = new ChatLogBean(conversationId, Integer.parseInt(receiverId), Integer.parseInt(senderId),
+                        fromCustomer, null, contentType, content);
+                // System.out.println(clb);
+                try {
+                    conversationService.insertChatLogService(clb);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+
+                // 发送信息到前台
+                json.put("date", df.format(new Date()));
+                // System.out.println(userMap);
+
+                for (String key : userMap.keySet()) {
+                    webSocketServer = (WebSocketServer) connectedUser.get(key);
+                    if (nickname.equalsIgnoreCase(userMap.get(key))) {
+                        json.put("isSelf", true);
+                        synchronized (webSocketServer) {
+                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
+                        }
+                        // 还要根据receiverId找到对应的nickname
+                    } else if (reciverNickname.equals(userMap.get(key))) {
+                        json.put("isSelf", false);
+                        synchronized (webSocketServer) {
+                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
+                        }
+                    }
+
+                }
+            }catch (Throwable e){
+                e.printStackTrace();
             }
+     
         }
     }
 
