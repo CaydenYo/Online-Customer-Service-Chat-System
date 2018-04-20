@@ -13,18 +13,14 @@ export default {
   name: 'uesrtext',
   data () {
     return {
-      content:'',
+      content: '',
       websocket: null
   }
 },
 created() {
     this.initWebSocket()
 },
-computed: {
-    editor() {
-      return this.$refs.QuillEditor.quill
-  }
-},
+computed: mapState(['sessions', 'currentSessionId']),
 methods: {
     addMessage(e) {
         if(e.ctrlKey && e.keyCode === 13 && this.content.length) {
@@ -52,7 +48,11 @@ methods: {
     },
     websocketonmessage(e) {
         var receiverMsg = JSON.parse(e.data)
-        this.$store.commit('addMessage', receiverMsg);
+        alert(receiverMsg.userItemId)
+        this.$store.commit('addMessage', {
+          msg: receiverMsg,
+          itemId: receiverMsg.userItemId
+        });
     },
     websocketsend(e) {
         var obj = JSON.stringify({
@@ -61,7 +61,8 @@ methods: {
             receiverId: "2000",
             companyName: "pentaKill",
             companyId: "1",
-            content: this.content
+            content: this.content,
+            userItemId: this.currentSessionId
         })
         this.websocket.send(obj)
         this.content = '';
@@ -81,7 +82,7 @@ methods: {
   bottom: 0;
   right: 0;
   width: 100%;
-  height: 20%;
+  height: 100%;
   border-top: solid 1px #DDD;
   > textarea {
     width: 100%;

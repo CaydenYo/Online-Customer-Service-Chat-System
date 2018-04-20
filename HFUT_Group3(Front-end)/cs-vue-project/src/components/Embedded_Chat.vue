@@ -3,11 +3,9 @@
         <div id="embedded_chat">
             <div class="sidebar">
                 <card></card>
-                <list></list>
             </div>
             <div class="main">
                 <message></message>
-                <usertext></usertext>
             </div>
         </div>
     </div>
@@ -15,7 +13,6 @@
 
 <script>
 import card from './embedded_chat/card.vue'
-import list from './embedded_chat/list.vue'
 import message from './embedded_chat/message.vue'
 import usertext from './embedded_chat/usertext.vue'
 
@@ -31,7 +28,6 @@ mounted:function() {
 },
 components:{
     card,
-    list,
     message,
     usertext
 }
@@ -63,6 +59,7 @@ components:{
     position: relative;
     overflow: hidden;
     background-color: #eee;
+    height: 100%;
 }
 }
 </style>
