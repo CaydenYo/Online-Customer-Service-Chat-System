@@ -159,5 +159,10 @@
         where
         customer_id = #{0}
     </select>
+    
+    <!-- 在排队列表中消除该用户 -->
+    <delete id="deleteWaitingCustomer" parameterType="int">
+        delete from customer_waiting_team where knowledge_id=#{0}
+    </delete>
 
 </mapper>

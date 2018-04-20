@@ -48,4 +48,6 @@ public interface CustomerServiceMapper {
     public List<Integer> getWaitingQueue(int cs_id);
     
     public WaitingQueueCustomerInfo getCustomerInfo(int customer_id);
+    
+    public void deleteWaitingCustomer(int customer_id);
 }

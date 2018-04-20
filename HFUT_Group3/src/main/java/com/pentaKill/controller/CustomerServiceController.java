@@ -260,4 +260,15 @@ public class CustomerServiceController {
         }
         return null;
     }
+    
+    //客服点击客服将改变客户的状态
+    @RequestMapping(value = "/customerService/deleteWaitingQueue", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String changeWaitingQueue(HttpServletRequest request, HttpServletResponse response){
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        int customerId =  json.getInt("customer_id");
+        customerSvcService.deleteWaitingCustomer(customerId);
+        return null;
+    }
 }

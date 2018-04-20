@@ -4,64 +4,47 @@
     "http://mybatis.org/dtd/mybatis-3.dtd">
 <mapper namespace="com.pentaKill.dao.CSViewsCustomerInfoMapper">
 
-        <resultMap
-        type="MVSConversationBean"
-        id="codp_map">
-        <result
-            column="conversation.conversation_id"
-            property="conversation_id" />
-        <result
-            column="conversation.customer_id"
-            property="customer_id" />
-        <result
-            column="customerInfo.customer_nickname"
-            property="customer_nickname" />
-        <result
-            column="conversation.cs_id"
-            property="cs_id" />
-        <result
-            column="customerServiceInfo.cs_nickName"
-            property="cs_nickName" />
-        <result
-            column="conversation.start_time"
-            property="start_time" />
-        <result
-            column="conversation.end_time"
-            property="end_time" />
-        <result
-            column="conversation.score"
-            property="score" />
+    <resultMap type="CSViewsCustomerInfoBean" id="CSViewsCustomerInfoBean">
+        <result column="customerInfo.customer_age" property="customer_age" />
+        <result column="customerInfo.customer_address" property="customer_address" />
+        <result column="customerInfo.customer_sex" property="customer_sex" />
+        <result column="customerInfo.customer_nickname" property="customer_nickname" />
+        <result column="customerInfo.customer_img" property="customer_img" />
+        <result column="customerInfo.customer_email" property="customer_email" />
+        <result column="max(conversation.end_time)" property="current_time" />
     </resultMap>
 
-	<!-- 寻找客服是否能够查看用户信息的标志 -->
-	<select id="searchCustomerInfoFlagMapper" parameterType="int"
-		resultType="int">
-		select customer_info_flag from companyInfo
-		where company_id
-		= #{0}
-	</select>
+    <!-- 寻找客服是否能够查看用户信息的标志 -->
+    <select id="searchCustomerInfoFlagMapper" parameterType="int"
+        resultType="int">
+        select customer_info_flag from companyInfo
+        where
+        company_id
+        = #{0}
+    </select>
 
 
-	<!-- 寻找客服所在公司 -->
-	<select id="searchCompanyIdMapper" parameterType="int"
-		resultType="int">
-		select company_id from customerServiceInfo
-		where cs_id =
-		#{0}
-	</select>
+    <!-- 寻找客服所在公司 -->
+    <select id="searchCompanyIdMapper" parameterType="int"
+        resultType="int">
+        select company_id from customerServiceInfo
+        where cs_id
+        =
+        #{0}
+    </select>
 
 
-	<!-- 寻找客服信息 -->
-	<select id="searchCustomerInfoMapper" parameterType="int"
-		resultType="CustomerInfoBean">
-		select * from customerInfo
-		where customer_id = #{0}
-	</select>
-    
-    <!-- 查找最近聊天时间及客户信息  -->
+    <!-- 寻找客服信息 -->
+    <select id="searchCustomerInfoMapper" parameterType="int"
+        resultType="CustomerInfoBean">
+        select * from customerInfo
+        where customer_id = #{0}
+    </select>
+
+    <!-- 查找最近聊天时间及客户信息 -->
     <select id="searchCurrentTime" parameterType="int"
-        resultType="CSViewsCustomerInfoMapper">
-    select customerInfo.customer_name,
+        resultType="CSViewsCustomerInfoBean">
+        select customerInfo.customer_name,
         customerInfo.customer_age,
         customerInfo.customer_address,
         customerInfo.customer_sex,
@@ -69,10 +52,13 @@
         customerInfo.customer_img,
         customerInfo.customer_email,
         max(conversation.end_time)
-        from customerInfo inner join conversation
-        on customerInfo.customer_id = conversation.customer_id
+        from
+        customerInfo inner join conversation
+        on customerInfo.customer_id
+        = conversation.customer_id
         where conversation.cs_id = #{0}
-        group by customerInfo.customer_id
+        group
+        by customerInfo.customer_id
     </select>
-        
+
 </mapper>
