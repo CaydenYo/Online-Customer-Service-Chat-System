@@ -12,7 +12,7 @@
                 <el-main>
                   <div id="list">
                     <ul>
-                      <li v-for="item in sessions" :class="{ active: item.id === currentSessionId }" v-on:click="changeCurrentSessionId(item.id)">
+                      <li v-for="item in sessions" :class="{ active: item.id === currentSessionId }" v-if="item.serving" v-on:click="changeCurrentSessionId(item.id)">
                         <!--   :class="[item.id === currentSessionId ? 'active':'']" -->
                         <img class="avatar" :src="item.user.img">
                         <p class="name">{{item.user.name}}</p>
@@ -27,7 +27,7 @@
                 <el-main>
                   <div id="list">
                     <ul>
-                      <li v-for="item in sessions" :class="{ active: item.id === currentSessionId }" v-on:click="changeCurrentSessionId(item.id)">
+                      <li v-for="(item, index) in sessions" v-if="item.waiting" v-on:click="changeToServing(item.id)">
                         <!--   :class="[item.id === currentSessionId ? 'active':'']" -->
                         <img class="avatar" :src="item.user.img">
                         <p class="name">{{item.user.name}}</p>
@@ -50,17 +50,20 @@
       <el-col :span="5">
         <div class="grid-content">
           <el-tabs type="border-card" v-model="activeName">
-            <el-tab-pane label="用户名片" name="first">
+            <el-tab-pane label="用户资料"  name="first">
               <img src="../../../static/images/c_def.jpg" alt="" class="show_head_img">
               <div>
                 <div>
-                  <span>网名&nbsp;&nbsp;&nbsp;&nbsp;{{ customer_nickname }}</span>
+                  <span>名称：{{ customer_nickname }}</span>
                 </div>
                 <div>
-                  <span>年龄&nbsp;&nbsp;&nbsp;&nbsp;{{ customer_age }}</span>
+                  <span>年龄：{{ customer_age }}</span>
                 </div>
                 <div>
-                  <span>电邮&nbsp;&nbsp;&nbsp;&nbsp;{{ customer_email }}</span>
+                  <span>电子邮件：{{ customer_email }}</span>
+                </div>
+                <div>
+                  <span>住址：{{ customer_address }}</span>
                 </div>
               </div>
             </el-tab-pane>
@@ -72,17 +75,18 @@
         <div class="grid-content">
           <el-tabs type="border-card">
             <el-tab-pane label="常用语">
-              <div v-for="o in cs_dialog_show" :key="o" class="text item">
-                {{ o.content }}
+              <div v-for="o in 4" :key="o" class="text item">
+                {{'常用语 ' + o }}
               </div>
             </el-tab-pane>
-            <el-tab-pane label="聊天记录">聊天记录</el-tab-pane>
+            <el-tab-pane label="聊天记录">配置管理</el-tab-pane>
           </el-tabs>
         </div>
       </el-col>
     </el-row>
   </div>
 </template>
+
 
 <script>
 import { mapState } from 'vuex'
@@ -98,7 +102,7 @@ export default {
       customer_age: 15,
       customer_sex: 1,
       customer_email: '123@qq.com',
-      cs_dialog_show:JSON.parse(localStorage.getItem('cl'))
+      customer_address: '上海市普陀区金沙江路 1518 弄'
     }
   },
   components: {
@@ -109,6 +113,10 @@ export default {
   methods: {
     changeCurrentSessionId: function(id) {
       this.$store.commit('changeCurrentSessionId', id)
+    },
+    changeToServing: function(id) {
+      alert(id)
+      this.$store.commit('changeToServing', id)
     },
     addItem: function(){
       this.$store.commit('addItem')
