@@ -60,6 +60,7 @@ public class WebSocketServer {
         connectedUser.put(session.getId(), this);
         userMap.put("0", "yukang");
         userMap.put("1", "kefu1");
+        userMap.put("2", "kefu2");
         // System.out.println(connectedUser);
         // System.out.println(userMap);
         // System.out.println(session);
@@ -79,6 +80,7 @@ public class WebSocketServer {
         String companyId = json.getString("companyId");
         // 当进行会话转接时需要此变量
         String oldCsId = null;
+        System.out.println(json);
 
         if (firstTime) {
 
@@ -146,12 +148,12 @@ public class WebSocketServer {
                         if (properLastList.isEmpty()) {
                             listEmpty = true;
                         }
-                    }else{
+                    } else {
                         listEmpty = true;
                     }
                     System.out.println("到这里了");
                     int distributionType = conversationService.getDistributionType(companyName);
-                    
+
                     System.out.println(listEmpty);
                     if (listEmpty) {
                         // 功能1//找到所有在线的客服，找到所有在线客服中未满排队上限数的客服
@@ -185,8 +187,8 @@ public class WebSocketServer {
                     // 功能4 //客服管理人员查看等待人数要+1
                     conversationService.increaseCsManageToolWaitingPeople(Integer.valueOf(companyId));
                     // 功能5 //客服的等待人数+1
-                    //未实现
-                    
+                    // 未实现
+
                 }
             } else {
                 // 客服第一次进来
@@ -390,8 +392,46 @@ public class WebSocketServer {
             }
             return;
 
+        } else if (content.indexOf("closeSession.action", 0) != -1) {
+            // 关闭会话
+            // 1.客服发送来的请求
+            // 2.用户发来的请求
+            // 删除userMap
+            // 删除connectedMap
+            // 修改数据库
+            try {
+                int receiverInInt = Integer.parseInt(receiverId);
+                int senderIdInt = Integer.parseInt(senderId);
+                int customerId = initvalue;
+                int csId = initvalue;
+                if (receiverInInt < 2000) {
+                    csId = receiverInInt;
+                    customerId = senderIdInt;
+                } else {
+                    csId = senderIdInt;
+                    customerId = receiverInInt;
+                }
+                String customerNickname = conversationService.getCustomerNicknameByCustomerId(customerId);
+                String keyword = null;
+                for (String key : userMap.keySet()) {
+
+                    if (customerNickname.equalsIgnoreCase(userMap.get(key))) {
+                        keyword = key;
+                    }
+                }
+                connectedUser.remove(keyword);
+                userMap.remove(keyword);
+                // 关闭原有会话
+                Timestamp endTime = new Timestamp(System.currentTimeMillis());
+
+                ConversationBean cb = new ConversationBean(customerId, csId, null, endTime, -1);
+                sessionTransferService.closeConversationService(cb);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+
         } else {
-            try{
+            try {
                 // 每次会话都要存入数据库
                 int customerId = initvalue;
                 int csId = initvalue;
@@ -421,8 +461,8 @@ public class WebSocketServer {
                 FindConversationBean fcb = new FindConversationBean(customerId, csId);
                 conversationId = conversationService.findConversationIdService(fcb);
 
-                ChatLogBean clb = new ChatLogBean(conversationId, Integer.parseInt(receiverId), Integer.parseInt(senderId),
-                        fromCustomer, null, contentType, content);
+                ChatLogBean clb = new ChatLogBean(conversationId, Integer.parseInt(receiverId),
+                        Integer.parseInt(senderId), fromCustomer, null, contentType, content);
                 // System.out.println(clb);
                 try {
                     conversationService.insertChatLogService(clb);
@@ -450,10 +490,10 @@ public class WebSocketServer {
                     }
 
                 }
-            }catch (Throwable e){
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
-     
+
         }
     }
 
@@ -472,12 +512,12 @@ public class WebSocketServer {
         // 关闭会话后，要更新会话的结束时间
         userMap.remove(session.getId());
         connectedUser.remove(session.getId());
-
+        // System.out.println("有会话关闭了");
     }
 
     @OnError
     public void onError(Throwable t) {
-
+        t.printStackTrace();
     }
 
 }

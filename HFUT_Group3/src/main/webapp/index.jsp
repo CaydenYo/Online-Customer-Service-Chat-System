@@ -119,6 +119,32 @@
 				addMessage(obj);
 			}
 
+			/* Function.prototype.before = function(beforeFn) {
+				  var self = this;
+				  return function() {
+				    beforeFn();
+				    self.apply(this, arguments);
+				  }
+			};
+				
+			socket.onclose = function (){}	
+			socket.onclose = socket.onclose.before(function() {
+				var obj = JSON.stringify({
+				    nickname : nickname,
+				     senderId : senderId,
+				     receiverId : receiverId,
+				     content : "closeSession.action",
+				     companyName : companyName,
+				     companyId : companyId
+			    });
+				    // 发送消息
+			    socket.send(obj); 	  
+			}); */
+			socket.onclose = function() {
+
+				alert("关闭");
+			}
+
 			$("#send")
 					.click(
 							function() {
