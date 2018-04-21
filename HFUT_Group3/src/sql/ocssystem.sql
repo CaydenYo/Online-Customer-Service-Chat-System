@@ -135,9 +135,9 @@ CREATE TABLE `cs_shortcut_language` (
 FOREIGN KEY (`cs_id`) REFERENCES `customerServiceInfo` (`cs_id`)
 )DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
-insert into cs_shortcut_language(cs_id,content)values(1,'请您稍等');
-insert into cs_shortcut_language(cs_id,content)values(1,'感谢您的评价');
-insert into cs_shortcut_language(cs_id,content)values(1,'这是我的荣幸');
+insert into cs_shortcut_language(cs_id,content)values(1000,'请您稍等');
+insert into cs_shortcut_language(cs_id,content)values(1000,'感谢您的评价');
+insert into cs_shortcut_language(cs_id,content)values(1000,'这是我的荣幸');
 
 --9客服管理人员查看总信息表
 DROP TABLE IF EXISTS `cs_management_tool`;

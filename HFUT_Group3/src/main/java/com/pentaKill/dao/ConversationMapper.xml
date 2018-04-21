@@ -23,7 +23,7 @@
         keyProperty="chatLog_id">
         insert into
         chatLog(conversation_id,receiver_id,sender_id,from_customer,content_type,content)
-        values(#{conversation_id},"src/main/java/com/pentaKill/dao/CSViewsCustomerInfoMapper.xml"#{receiver_id},#{sender_id},#{from_customer},#{content_type},#{content})
+        values(#{conversation_id},#{receiver_id},#{sender_id},#{from_customer},#{content_type},#{content})
     </insert>
 
     <!-- 寻找聊天记录的会话号 -->
