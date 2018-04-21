@@ -1,5 +1,7 @@
 package com.pentaKill.dao;
 
+import java.util.List;
+
 import com.pentaKill.domain.Company;
 import com.pentaKill.domain.CustomerService;
 
@@ -9,7 +11,7 @@ public interface CompanyMapper {
 
     public void updateCompany(Company company);
 
-    public CustomerService selectCustomerService(int company_id, int min_num);
+    public List<CustomerService> selectCustomerService(int company_id);
 
     public void updateCustomerService(int min_num, int company_id);
 
