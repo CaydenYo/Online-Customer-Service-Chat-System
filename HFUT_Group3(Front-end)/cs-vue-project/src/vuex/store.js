@@ -7,59 +7,7 @@ const now = new Date();
 
 const store = new Vuex.Store({
 	state: {
-		sessions: [{
-			id: 1,
-			serving: true,
-			waiting: false,
-			robot: false,
-			user: {
-				name: '示例介绍',
-				img: './src/assets/images/2.png'
-			},
-			messages: [{
-				content: '测试',
-				date: now
-			}]
-		}, {
-			id: 2,
-			serving: true,
-			waiting: false,
-			robot: false,
-			user: {
-				name: 'webpack',
-				img: 'assets/images/3.jpg'
-			},
-			messages: [{
-				content: 'Hi，我是webpack2哦',
-				date: now
-			}]
-		},{
-			id: 3,
-			serving: false,
-			waiting: true,
-			robot: false,
-			user: {
-				name: 'webpack',
-				img: 'assets/images/3.jpg'
-			},
-			messages: [{
-				content: 'Hi，我是webpack3哦',
-				date: now
-			}]
-		},{
-			id: 4,
-			serving: false,
-			waiting: true,
-			robot: false,
-			user: {
-				name: 'yukang',
-				img: 'assets/images/3.jpg'
-			},
-			messages: [{
-				content: 'Hi，我是yukang哦',
-				date: now
-			}]
-		}],
+		sessions: [],
 		robotChatting: [],
 		currentSessionId: 1,
 		filterKey: ''
@@ -68,9 +16,59 @@ const store = new Vuex.Store({
 
 	},
 	mutations: {
+		//客服人员功能
 		changeCurrentSessionId(state, id) {
 			state.currentSessionId = id;
 		},
+		clearWaitings(state) {
+			for(var i = 0;i < state.sessions.length;i++){
+				if (state.sessions[i].waiting == true) {
+					state.sessions.splice(i, 1)
+				}
+			}
+		},
+		addToWaitings(state, payload) {
+			state.sessions.push({
+				id: state.sessions.length + 1,
+				serving: false,
+				waiting: true,
+				robot: false,
+				user: {
+					customer_id: payload.customer_id,
+					name: payload.customer_nickname,
+					img: payload.customer_img
+				},
+				messages: []
+			})
+		},
+		addItem(state) {
+			state.sessions.push({
+				id: state.sessions.length + 1,
+				user: {
+					name: '测试',
+					img: './src/assets/images/2.png'
+				},
+				messages: [{
+					content: 'hi!!!我是第' + (state.sessions.length + 1) + '个!!',
+					date: new Date(),
+					self: true
+				}]
+			})
+		},
+		changeToServing(state, id){
+			state.sessions[id - 1].waiting = false;
+			state.sessions[id - 1].serving = true;
+			alert(JSON.stringify(state.sessions[id - 1]))
+		},
+		addMessage(state, payload) {
+			alert("往store中加信息"+payload.itemId)
+			state.sessions[payload.itemId - 1].messages.push({
+				content: payload.msg.content,
+				date: payload.msg.date,
+				self: payload.msg.isSelf
+			})
+		},
+		//客户功能
 		addToRobotChatting(state, payload) {
 			state.sessions.push({
 				id: state.sessions.length + 1,
@@ -92,32 +90,14 @@ const store = new Vuex.Store({
 				self: msg.isSelf
 			})
 		},
-		addMessage(state, payload) {
-			alert(payload.itemId)
-			state.sessions[payload.itemId - 1].messages.push({
-				content: payload.msg.content,
-				date: payload.msg.date,
-				self: !payload.msg.isSelf
-			})
-		},
-		addItem(state) {
+		addClientMessage(state, payload) {
+			alert(JSON.stringify(payload))
 			state.sessions.push({
-				id: state.sessions.length + 1,
-				user: {
-					name: '测试',
-					img: './src/assets/images/2.png'
-				},
-				messages: [{
-					content: 'hi!!!我是第' + (state.sessions.length + 1) + '个!!',
-					date: new Date(),
-					self: true
-				}]
+				content: payload.content,
+				date: payload.date,
+				self: payload.isSelf,
+				img: payload.img
 			})
-		},
-		changeToServing(state, id){
-			state.sessions[id - 1].waiting = false;
-			state.sessions[id - 1].serving = true;
-			alert(JSON.stringify(state.sessions[id - 1]))
 		},
 		INIT_DATA(state) {
 			let data = localStorage.getItem('vue-chat-session');

@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="5">
         <div class="grid-content">
-          <el-tabs type="border-card">
+          <el-tabs type="border-card" @tab-click="addToWaitings">
             <el-tab-pane label="当前会话">
               <el-container class="dialogue">
                 <el-header>
@@ -16,6 +16,7 @@
                         <!--   :class="[item.id === currentSessionId ? 'active':'']" -->
                         <img class="avatar" :src="item.user.img">
                         <p class="name">{{item.user.name}}</p>
+                        <el-button icon="el-icon-phone-outline" @click="switchVisible = true" circle></el-button>
                       </li>
                     </ul>
                   </div>
@@ -38,53 +39,65 @@
                 </el-main>
               </el-container>
             </el-tab-pane>
+            <el-tab-pane label="待转接列表"></el-tab-pane>
           </el-tabs>     
         </div>
-      </el-col>
-      <el-col :span="9">
-        <div class="grid-content bg-purple-light">
-          <message></message>
-          <usertext></usertext>
-        </div>
-      </el-col>
-      <el-col :span="5">
-        <div class="grid-content">
-          <el-tabs type="border-card" v-model="activeName">
-            <el-tab-pane label="用户资料"  name="first">
-              <img src="../../../static/images/c_def.jpg" alt="" class="show_head_img">
+        <el-dialog
+        title="提示"
+        :visible.sync="switchVisible"
+        RepeatColumns="1"
+        width="30%">
+        <el-radio-group v-model="radio2">
+          <el-radio :label="3">备选项</el-radio>
+          <el-radio :label="6">备选项</el-radio>
+          <el-radio :label="9">备选项</el-radio>
+        </el-radio-group>
+      </el-dialog>
+    </el-col>
+    <el-col :span="9">
+      <div class="grid-content bg-purple-light">
+        <message></message>
+        <usertext></usertext>
+      </div>
+    </el-col>
+    <el-col :span="5">
+      <div class="grid-content">
+        <el-tabs type="border-card" v-model="activeName">
+          <el-tab-pane label="用户资料"  name="first">
+            <img src="../../../static/images/c_def.jpg" alt="" class="show_head_img">
+            <div>
               <div>
-                <div>
-                  <span>名称：{{ customer_nickname }}</span>
-                </div>
-                <div>
-                  <span>年龄：{{ customer_age }}</span>
-                </div>
-                <div>
-                  <span>电子邮件：{{ customer_email }}</span>
-                </div>
-                <div>
-                  <span>住址：{{ customer_address }}</span>
-                </div>
+                <span>名称：{{ customer_nickname }}</span>
               </div>
-            </el-tab-pane>
-            <!-- <el-tab-pane label="知识库">配置管理</el-tab-pane> -->
-          </el-tabs>
-        </div>
-      </el-col>
-      <el-col :span="5">
-        <div class="grid-content">
-          <el-tabs type="border-card">
-            <el-tab-pane label="常用语">
-              <div v-for="o in 4" :key="o" class="text item">
-                {{'常用语 ' + o }}
+              <div>
+                <span>年龄：{{ customer_age }}</span>
               </div>
-            </el-tab-pane>
-            <el-tab-pane label="聊天记录">配置管理</el-tab-pane>
-          </el-tabs>
-        </div>
-      </el-col>
-    </el-row>
-  </div>
+              <div>
+                <span>电子邮件：{{ customer_email }}</span>
+              </div>
+              <div>
+                <span>住址：{{ customer_address }}</span>
+              </div>
+            </div>
+          </el-tab-pane>
+          <!-- <el-tab-pane label="知识库">配置管理</el-tab-pane> -->
+        </el-tabs>
+      </div>
+    </el-col>
+    <el-col :span="5">
+      <div class="grid-content">
+        <el-tabs type="border-card">
+          <el-tab-pane label="常用语">
+            <div v-for="o in 4" :key="o" class="text item">
+              {{'常用语 ' + o }}
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="聊天记录">配置管理</el-tab-pane>
+        </el-tabs>
+      </div>
+    </el-col>
+  </el-row>
+</div>
 </template>
 
 
@@ -97,12 +110,18 @@ export default {
   name: 'list',
   data() {
     return {
+      showWaitingQueueUrl: '/customerService/showWaitingQueue',
+      switchVisible: false,
       activeName: 'first',
+      radio2: 3,
       customer_nickname: 'test',
       customer_age: 15,
       customer_sex: 1,
       customer_email: '123@qq.com',
-      customer_address: '上海市普陀区金沙江路 1518 弄'
+      customer_address: '上海市普陀区金沙江路 1518 弄',
+      CS_id: {
+        cs_id: 1000
+      }
     }
   },
   components: {
@@ -111,7 +130,26 @@ export default {
   },
   computed: mapState(['sessions', 'currentSessionId']),
   methods: {
+    addToWaitings: function(event) {
+      alert('进来了')
+      this.$store.commit('clearWaitings')
+      alert('已清空等待列表')
+      let _this = this
+      var params = new URLSearchParams();
+      params.append('data', JSON.stringify(this.CS_id));
+      this.$axios({
+        method: 'post',
+        url: this.rootUrl + _this.showWaitingQueueUrl,
+        data: params
+      }).then((res)=>{
+        var waitingList = res.data;
+        for(var i=0;i < waitingList.length;i++){
+          this.$store.commit('addToWaitings', waitingList[i])
+        }
+      })
+    },
     changeCurrentSessionId: function(id) {
+      alert("目前的sessionId为" + id)
       this.$store.commit('changeCurrentSessionId', id)
     },
     changeToServing: function(id) {

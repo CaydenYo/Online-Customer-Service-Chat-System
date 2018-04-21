@@ -12,13 +12,13 @@
                 </div>
             </li>
         </ul>
-        <ul v-if="robotFlag==false && currentSessionId==item.id" v-for="item in sessions">
-            <li v-for="entry in item.messages">
+        <ul v-if="robotFlag==false">
+            <li v-for="entry in sessions">
                 <p class="time">
                     <span>{{entry.date}}</span>
                 </p>
                 <div class="main" :class="{self:entry.self}">
-                    <img class="avatar" :src="entry.self ? img : item.user.img" alt="">
+                    <img class="avatar" :src="entry.self ? img : entry.img" alt="">
                     <p class="text" v-html="entry.content"></p>
                 </div>
             </li>
@@ -40,11 +40,12 @@ export default {
   data () {
     return {
       img: '../src/assets/images/1.jpg',
-      robotFlag: true,
+      robotFlag: false,
       userItemId: null,
       content:'',
       websocket: null,
-      name: 'yukang'
+      name: 'yukang',
+      receiverId: null
   }
 },
 filters:{
@@ -87,7 +88,7 @@ methods: {
         }
     },
     initWebSocket() {
-        const wsurl = 'ws://localhost:8080/HFUT_Group3/serve'
+        const wsurl = 'ws://localhost:8080/OCSSystem/serve'
         this.websocket = new WebSocket(wsurl);
         this.websocket.onmessage = this.websocketonmessage;
         this.websocket.onclose = this.websocketclose;
@@ -96,9 +97,9 @@ methods: {
         // alert("已执行")
     },
     websocketonmessage(e) {
+        alert("客户接收到信息了！！！！")
         var receiverMsg = JSON.parse(e.data)
-        alert(JSON.stringify(receiverMsg))
-          if(this.robotFlag === true){
+          if(this.robotFlag == true){
             if(receiverMsg.content instanceof Array) {
               var html = "";
               html += "<p>" + "您好我是机器人小机，请问您想问的是以下问题吗？" + "</p>";
@@ -116,29 +117,28 @@ methods: {
             else{
               this.$store.commit('addRobotMessage', receiverMsg)
             }
-          }
-          else {
-            if(this.userItemId === null){
-              this.userItemId = receiverMsg.userItemId
-              alert(this.userItemId)
+          } else {
+            if(this.receiverId == null) {
+              this.receiverId = receiverMsg.senderId
+              alert("客户的receiverId"+this.receiverId)
             }
-            this.$store.commit('addMessage', {
-              msg: receiverMsg,
-              itemId: this.userItemId
-            });    
+            if(this.userItemId == null) {
+              this.userItemId = receiverMsg.userItemId
+            }
+            this.$store.commit('addClientMessage', receiverMsg);  
     }
   },
     websocketsend(e) {
-        if(this.robotFlag === true) {
+        if(this.robotFlag == true) {
           this.content = "robotAnwser" + this.content
           alert(this.content)
         }
         var obj = JSON.stringify({
             nickname: "yukang",
             senderId: "2000",
-            receiverId: "1000",
-            companyName: "pentaKill",
-            companyId: "1",
+            receiverId: this.receiverId,
+            companyName: "CISCO",
+            companyId: "2",
             content: this.content,
             userItemId: this.userItemId
         })

@@ -41,26 +41,29 @@ methods: {
         }
     },
     initWebSocket() {
-        const wsurl = 'ws://localhost:8080/HFUT_Group3/serve'
+        const wsurl = 'ws://localhost:8080/OCSSystem/serve'
         this.websocket = new WebSocket(wsurl);
         this.websocket.onmessage = this.websocketonmessage;
         this.websocket.onclose = this.websocketclose;
     },
     websocketonmessage(e) {
         var receiverMsg = JSON.parse(e.data)
-        alert(receiverMsg.userItemId)
-        this.$store.commit('addMessage', {
+        alert('客户在服务列表中的id'+receiverMsg.userItemId)
+        if(receiverMsg.receiverId !== null){
+          this.$store.commit('addMessage', {
           msg: receiverMsg,
           itemId: receiverMsg.userItemId
         });
+      }
     },
     websocketsend(e) {
+        alert("客服要发送的客户id"+this.sessions[this.currentSessionId - 1].user.customer_id)
         var obj = JSON.stringify({
             nickname: "kefu1",
             senderId: "1000",
-            receiverId: "2000",
-            companyName: "pentaKill",
-            companyId: "1",
+            receiverId: this.sessions[this.currentSessionId - 1].user.customer_id,
+            companyName: "CISCO",
+            companyId: "2",
             content: this.content,
             userItemId: this.currentSessionId
         })

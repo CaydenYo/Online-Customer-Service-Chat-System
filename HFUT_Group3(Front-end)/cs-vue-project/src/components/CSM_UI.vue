@@ -70,7 +70,7 @@ class="info-input"></el-input>
 export default {
   data() {
     return {
-      login_url: '/Login',
+      login_url: '/csmLogin',
       register_url: '/Register',
       activeName: 'first',
       dialogLoginVisible: false,
