@@ -150,6 +150,10 @@
 				addMessage(obj);
 			}
 
+			socket.onclose = function() {
+
+			}
+
 			$("#send")
 					.click(
 							function() {
