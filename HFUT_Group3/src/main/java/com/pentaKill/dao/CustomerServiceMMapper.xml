@@ -7,7 +7,7 @@
 
 
 	<select id="selectBy" parameterType="csManager" resultType="csManager">
-		select * from customerServiceInfo where
+		select * from csManagerInfo where
 		csm_email=#{csm_email} and
 		csm_pwd=#{csm_pwd};
 	</select>

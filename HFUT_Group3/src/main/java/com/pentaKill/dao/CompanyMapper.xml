@@ -29,10 +29,7 @@
     <select id="selectCustomerService" resultType="customerService">
         select * from
         customerServiceInfo where
-        company_id=#{0} and
-        cs_operating_number
-        &lt;
-        #{1};
+        company_id=#{0};
     </select>
 
 

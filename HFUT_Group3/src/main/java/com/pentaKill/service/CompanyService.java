@@ -35,12 +35,6 @@ public class CompanyService {
         companyMapper.updateCompany(company);
     }
 
-    public CustomerService selectCustomerService(Company company) {
-        int company_id = company.getCompany_id();
-        int min_num = company.getMininum_operating_num();
-        return companyMapper.selectCustomerService(company_id, min_num);
-    }
-
     public void updateCustomerService(int min_num, int company_id) {
         companyMapper.updateCustomerService(min_num, company_id);
     }

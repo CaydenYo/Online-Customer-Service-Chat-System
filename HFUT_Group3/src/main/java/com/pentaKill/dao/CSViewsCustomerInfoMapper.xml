@@ -43,7 +43,7 @@
 
     <!-- 查找最近聊天时间及客户信息 -->
     <select id="searchCurrentTime" parameterType="int"
-        resultType="CSViewsCustomerInfoBean">
+        resultMap="CSViewsCustomerInfoBean">
         select customerInfo.customer_name,
         customerInfo.customer_age,
         customerInfo.customer_address,

@@ -32,15 +32,10 @@ public class CustomerServiceMService {
     }
 
     public void csmRegister(CSManager csManager) throws RegisterException {
-        try {
-            csManager = customerServiceMMapper.selectBy(csManager);
-            if (csManager == null)
+
+            if (customerServiceMMapper.selectBy(csManager) == null)
                 customerServiceMMapper.insert(csManager);
             else
                 throw new RegisterException("用户名已存在");
-        } catch (Exception e) {
-            throw new RegisterException(e);
-        }
-
     }
 }
