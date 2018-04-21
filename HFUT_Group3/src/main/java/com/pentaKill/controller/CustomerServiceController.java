@@ -258,7 +258,9 @@ public class CustomerServiceController {
             info = customerSvcService.getCustomerInfo(i.intValue());
             customerInfo.add(info);
         }
-        return null;
+        System.out.println(customerInfo.toString());
+        Gson gson = new Gson();
+        return gson.toJson(customerInfo);
     }
     
     //客服点击客服将改变客户的状态

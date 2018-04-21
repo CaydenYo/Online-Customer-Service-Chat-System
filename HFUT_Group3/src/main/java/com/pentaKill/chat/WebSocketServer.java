@@ -191,20 +191,21 @@ public class WebSocketServer {
             } else {
                 // 客服第一次进来
                 // 添加一次请关闭，因为暂时还没有会话关闭
-                /*
-                 * System.out.println("开启新的会话"); try { ConversationBean cb = new
-                 * ConversationBean(Integer.parseInt(receiverId),
-                 * Integer.parseInt(senderId), null, null, -1);
-                 * conversationService.insertConversationService(cb);
-                 * 
-                 * // 功能1//customer_waiting_team中包含该csId和customerId的记录remove掉
-                 * conversationService.deleteCustomerWaitingTeam(Integer.
-                 * parseInt(senderId), Integer.valueOf(receiverId)); //
-                 * 功能2//客服管理人员查看等待人数要-1
-                 * conversationService.decreaseCsManageToolWaitingPeople(Integer
-                 * .parseInt(companyId)); } catch (Throwable e) {
-                 * e.printStackTrace(); }
-                 */
+
+                System.out.println("开启新的会话");
+                try {
+                    ConversationBean cb = new ConversationBean(Integer.parseInt(receiverId), Integer.parseInt(senderId),
+                            null, null, -1);
+                    conversationService.insertConversationService(cb);
+
+                    // 功能1//customer_waiting_team中包含该csId和customerId的记录remove掉
+                    conversationService.deleteCustomerWaitingTeam(Integer.parseInt(senderId),
+                            Integer.valueOf(receiverId)); //
+                    // 功能2//客服管理人员查看等待人数要-1
+                    conversationService.decreaseCsManageToolWaitingPeople(Integer.parseInt(companyId));
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
 
                 // 发送问候信息
                 // 查看历史消息的标志
