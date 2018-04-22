@@ -51,7 +51,7 @@ public class WebSocketServer {
     private final int initvalue = 0;
     private static List<FirstTime> firstTimeList = new LinkedList<FirstTime>();
 
-    //private boolean firstTime = true;
+    private boolean firstTime = true;
     // private String nickname;
     private static HashMap<String, Object> connectedUser = new HashMap<String, Object>();
     private static HashMap<String, String> userMap = new HashMap<String, String>();
@@ -104,6 +104,21 @@ public class WebSocketServer {
             // 用户回复数字，查询对应问题的答案，发送回前端
             if (Integer.parseInt(senderId) >= 2000) {
                 // System.out.println("第一次进入，客户"+senderId);
+
+                for (String key : userMap.keySet()) {
+                    webSocketServer = (WebSocketServer) connectedUser.get(key);
+                    // System.out.println(webSocketServer.session);
+                    if (nickname.equalsIgnoreCase(userMap.get(key))) {
+                        json.put("date", df.format(new Date()));
+                        json.put("isSelf", true);
+                        // System.out.println("发送人"+nickname+" "+key);
+                        synchronized (webSocketServer) {
+                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
+                        }
+                        // 还要根据receiverId找到对应的nickname
+                    }
+                }
+
                 int robotFlag = robotChatService.getRobotFlagService(Integer.parseInt(companyId));
                 if (robotFlag == 1) {
                     // 查询本公司机器人对应的全部问题
@@ -197,6 +212,7 @@ public class WebSocketServer {
                     // 功能4 //客服管理人员查看等待人数要+1
                     conversationService.increaseCsManageToolWaitingPeople(Integer.valueOf(companyId));
                     // 功能5 //客服的等待人数+1
+                    // 未实现
 
                 }
             } else {
@@ -216,15 +232,13 @@ public class WebSocketServer {
                 } catch (Throwable e) {
                     e.printStackTrace();
                 }
-                
+
                 // 发送问候信息
-                // 查看历史消息的标志
-                // 无用代码（前端并没有用到）
-                /*boolean historyMessageFlag = csViewsHistoryMessageService
+                // 查看历史消息的标志;
+                boolean historyMessageFlag = csViewsHistoryMessageService
                         .historyMessageFlagService(Integer.parseInt(receiverId));
-                */
+
                 // 消息只发给自己
-                /*
                 for (String key : userMap.keySet()) {
                     webSocketServer = (WebSocketServer) connectedUser.get(key);
                     if (nickname.equalsIgnoreCase(userMap.get(key))) {
@@ -237,31 +251,6 @@ public class WebSocketServer {
                         }
                     }
                 }
-                */
-                
-                String reciverNickname;
-                reciverNickname = conversationService.getCustomerNicknameByCustomerId(Integer.valueOf(receiverId));
-                // 发送信息到前台
-                json.put("date", df.format(new Date()));
-
-                for (String key : userMap.keySet()) {
-                    webSocketServer = (WebSocketServer) connectedUser.get(key);
-                    if (nickname.equalsIgnoreCase(userMap.get(key))) {
-                        json.put("isSelf", true);
-                        synchronized (webSocketServer) {
-                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
-                        }
-                        // 还要根据receiverId找到对应的nickname
-                    } else if (reciverNickname.equals(userMap.get(key))) {
-                        json.put("isSelf", false);
-                        synchronized (webSocketServer) {
-                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
-                        }
-                    }
-
-                }
-                    
-                
             }
 
             userMap.put(session.getId(), nickname);
@@ -461,6 +450,19 @@ public class WebSocketServer {
                     customerId = receiverInInt;
                 }
                 String customerNickname = conversationService.getCustomerNicknameByCustomerId(customerId);
+
+                for (String key : userMap.keySet()) {
+                    webSocketServer = (WebSocketServer) connectedUser.get(key);
+                    if (customerNickname.equalsIgnoreCase(userMap.get(key))) {
+                        json.put("content", "csEvaluate");
+                        synchronized (webSocketServer) {
+                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
+                        }
+
+                    }
+                    break;
+                }
+
                 String keyword = null;
                 for (String key : userMap.keySet()) {
 
