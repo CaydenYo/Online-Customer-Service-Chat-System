@@ -127,7 +127,7 @@
     </select>
 
     <!-- 平均分 -->
-    <select id="getScore" parameterType="int" resultType="int">
+    <select id="getScore" parameterType="int" resultType="double">
         select
         avg(score) from conversation
         where cs_id = #{0}
