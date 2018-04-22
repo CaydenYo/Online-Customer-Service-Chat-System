@@ -30,6 +30,7 @@ import com.pentaKill.service.CSViewsHistoryMessageService;
 import com.pentaKill.service.ConversationService;
 import com.pentaKill.service.RobotChatService;
 import com.pentaKill.service.SessionTransferService;
+import com.pentaKill.utils.FirstTime;
 import com.pentaKill.utils.SpringInit;
 
 import net.sf.json.JSONArray;
@@ -48,6 +49,10 @@ public class WebSocketServer {
             .getBean("SessionTransferService");
 
     private final int initvalue = 0;
+    
+    //增加客服firstTime结构
+    private static List<FirstTime> firstTimeList = new LinkedList<FirstTime>();
+    
     private boolean firstTime = true;
     // private String nickname;
     private static HashMap<String, Object> connectedUser = new HashMap<String, Object>();
@@ -65,7 +70,8 @@ public class WebSocketServer {
         // System.out.println(userMap);
         // System.out.println(session);
     }
-
+    
+    
     @OnMessage
     public void onMessage(String message, Session session) {
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -80,9 +86,12 @@ public class WebSocketServer {
         String companyId = json.getString("companyId");
         // 当进行会话转接时需要此变量
         String oldCsId = null;
-        System.out.println(json);
 
-        if (firstTime) {
+        
+        FirstTime tempFirstTime = new FirstTime(senderId,receiverId);
+        
+        if (firstTimeList.contains(tempFirstTime)){
+
 
             // 下面机器人这段改放哪里？
 
@@ -230,8 +239,12 @@ public class WebSocketServer {
             }
 
             userMap.put(session.getId(), nickname);
-
-            firstTime = false;
+            
+            firstTimeList.add(tempFirstTime);
+            FirstTime tempCustomerFirstTime = new FirstTime(receiverId,null);
+            firstTimeList.remove(tempCustomerFirstTime);
+            firstTimeList.add(new FirstTime(receiverId,senderId));
+            //firstTime = false;
 
         } else if (content.equals("csViewsHistoryMessage.action")) {
             // 当客服点击查看历史信息时，就会发送这个信息"csViewsHistoryMessage.action"
@@ -328,8 +341,9 @@ public class WebSocketServer {
                 // 会话转接请求
                 // 约定前端发来这个，表示某个客服接受了转接请求
                 userMap.put(session.getId(), nickname);
-
-                firstTime = false;
+                
+                firstTimeList.remove(tempFirstTime);
+                //firstTime = false;
 
                 oldCsId = json.getString("oldCsId");
                 // 修改数据库的状态
@@ -353,10 +367,18 @@ public class WebSocketServer {
                 ConversationBean oldCb = new ConversationBean(Integer.parseInt(receiverId), oldCsIdInt, null, endTime,
                         -1);
                 sessionTransferService.closeConversationService(oldCb);
+                
+                
+                
+                //更改
                 // 增加新的会话
-                ConversationBean cb = new ConversationBean(Integer.parseInt(receiverId), csId, null, null, -1);
-                conversationService.insertConversationService(cb);
+                //ConversationBean cb = new ConversationBean(Integer.parseInt(receiverId), csId, null, null, -1);
+                //conversationService.insertConversationService(cb);
 
+                
+                
+                
+                
                 // 客户的nickname
                 String reciverNickname = conversationService
                         .getCustomerNicknameByCustomerId(Integer.valueOf(receiverId));
