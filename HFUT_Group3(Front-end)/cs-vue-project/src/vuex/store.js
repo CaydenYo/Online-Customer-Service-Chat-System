@@ -88,8 +88,14 @@ const store = new Vuex.Store({
 			})
 			}
 		},
-		finishedChangeCS(state,payload) {
+		closeConversation(state, payload) {
 			state.sessions.splice(payload - 1, 1)
+		},
+		finishedChangeCS(state, payload) {
+			state.sessions.splice(payload - 1, 1)
+		},
+		clearMessages(state, payload) {
+			state.sessions[payload - 1].messages.splice(0, state.sessions[payload - 1].messages.length)
 		},
 		//客户功能
 		addToRobotChatting(state, payload) {
