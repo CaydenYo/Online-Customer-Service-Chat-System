@@ -5,20 +5,20 @@
 
 <mapper namespace="com.pentaKill.dao.CustomerWaitingMapper">
 
-	<select id="selectCustomerIdByCsId" parameterType="int"
-		resultType="Integer">
-		select customer_id
-		from customer_waiting_team
-		where cs_id =
-		#{0}
-	</select>
+    <select id="selectCustomerIdByCsId" parameterType="int"
+        resultType="Integer">
+        select customer_id
+        from customer_waiting_team
+        where cs_id =
+        #{0}
+    </select>
 
-	<select id="selectCustomerByCsId" parameterType="int"
-		resultType="WaitingCustomerBean">
-		select customer_id,customer_nickname,customer_img
-		from
-		customerServiceInfo,customerInfo
-		where customer_id = #{0}
-	</select>
+    <select id="selectCustomerByCsId" parameterType="int"
+        resultType="WaitingCustomerBean">
+        select customer_id,customer_nickname,customer_img
+        from
+        customerInfo
+        where customer_id = #{0}
+    </select>
 
 </mapper>
