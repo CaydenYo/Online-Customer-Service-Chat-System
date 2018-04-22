@@ -150,7 +150,7 @@ export default {
       customer_email: '123@qq.com',
       customer_address: '上海市普陀区金沙江路 1518 弄',
       CS_id: {
-        cs_id: 1000
+        cs_id: 1001
       },
       content: '',
       websocket: null,
@@ -208,8 +208,8 @@ export default {
     websocketsend(e) {
       alert("客服要发送的客户id"+this.sessions[this.currentSessionId - 1].user.customer_id)
       var obj = JSON.stringify({
-        nickname: "kefu1",
-        senderId: "1000",
+        nickname: "kefu2",
+        senderId: "1001",
         receiverId: this.sessions[this.currentSessionId - 1].user.customer_id,
         companyName: "CISCO",
         companyId: "2",
@@ -257,8 +257,8 @@ export default {
     changeCS(index, rows) {
       alert(rows[index].cs_name + " " + rows[index].cs_id + " " + this.sessions[this.currentSessionId - 1].user.customer_id)
       var obj = JSON.stringify({
-        nickname: 'kefu1',
-        senderId: "1000",
+        nickname: 'kefu2',
+        senderId: "1001",
         receiverId: this.sessions[this.currentSessionId - 1].user.customer_id,
         companyName: "CISCO",
         companyId: "2",
@@ -277,8 +277,8 @@ export default {
     lookForHistory: function(event) {
       alert("查看历史消息中……")
         var obj = JSON.stringify({
-        nickname: "kefu1",
-        senderId: "1000",
+        nickname: "kefu2",
+        senderId: "1001",
         receiverId: this.sessions[this.currentSessionId - 1].user.customer_id,
         companyName: "CISCO",
         companyId: "2",
@@ -291,8 +291,8 @@ export default {
     closeConversation: function(event) {
       alert("关闭会话")
       var obj = JSON.stringify({
-        nickname: "kefu1",
-        senderId: "1000",
+        nickname: "kefu2",
+        senderId: "1001",
         receiverId: this.sessions[this.currentSessionId - 1].user.customer_id,
         companyName: "CISCO",
         companyId: "2",
