@@ -41,7 +41,7 @@ public interface CustomerServiceMapper {
 
     public int getCount(int cs_id);
 
-    public int getScore(int cs_id);
+    public double getScore(int cs_id);
 
     public int getTime(int cs_id);
     

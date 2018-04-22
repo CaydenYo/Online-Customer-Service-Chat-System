@@ -80,12 +80,11 @@ public class CustomerServiceService {
             try {
                 StringBuffer sbd = new StringBuffer();
                 sbd.append("<br/>欢迎！请确认此邮件地址以激活您的账号。<br/>");
-                sbd.append("<font color='red'><a href='http://localhost:8080/OCSSystem/regconf.do?code="
-                        + code + "' target='_blank'");
+                sbd.append("<font color='red'><a href='http://localhost:8080/OCSSystem/regconf.do?code=" + code
+                        + "' target='_blank'");
                 sbd.append(">立即激活</a></font><br/>");
                 sbd.append("或者点击下面链接:<br/>");
-                sbd.append("http://localhost:8080/OCSSystem/regconf.do?code=" + code
-                        + "<br/>");
+                sbd.append("http://localhost:8080/OCSSystem/regconf.do?code=" + code + "<br/>");
                 sbd.append("这是一封自动发送的邮件；如果您并未要求但收到这封信件，您不需要进行任何操作。");
 
                 EmailUtil.sendTo(sbd.toString(), customerServiceRegisterBean.getCs_email());
@@ -122,34 +121,41 @@ public class CustomerServiceService {
         customerServiceMapper.modifyUser(customerService);
     }
 
-    public void setProfile(String cs_pwd, String cs_img, String cs_nickName, String cs_name, CustomerService customerService) {
-        customerService.setCs_pwd(cs_pwd);
+    public void setImg(String cs_img, CustomerService customerService) {
         customerService.setCs_img(cs_img);
+        customerServiceMapper.modifyUser(customerService);
+    }
+
+    public void setPwd(String cs_pwd, CustomerService customerService) {
+        customerService.setCs_pwd(cs_pwd);
+        customerServiceMapper.modifyUser(customerService);
+    }
+
+    public void setName(String cs_nickName, CustomerService customerService) {
         customerService.setCs_nickName(cs_nickName);
-        customerService.setCs_name(cs_name);
         customerServiceMapper.modifyUser(customerService);
     }
 
     public void insertNewEvaluateService(CsEvaluateBean csb) {
         customerServiceMapper.insertNewEvaluateMapper(csb);
     }
-    
-    public List<ListCSInfoBean> getCSInfoList(int company_id){
+
+    public List<ListCSInfoBean> getCSInfoList(int company_id) {
         List<ListCSInfoBean> list = new LinkedList<ListCSInfoBean>();
         list = customerServiceMapper.getCSInfoList(company_id);
         return list;
     }
-    
-    public int countServiceNum(int company_id){
+
+    public int countServiceNum(int company_id) {
         int num = customerServiceMapper.countServiceNum(company_id);
         return num;
     }
-    
-    public int countOnlineServiceNum(int company_id){
+
+    public int countOnlineServiceNum(int company_id) {
         int num = customerServiceMapper.countOnlineServiceNum(company_id);
         return num;
     }
-    
+
     public int getCountToday(int cs_id) {
         int count = customerServiceMapper.getCountToday(cs_id);
         return count;
@@ -161,27 +167,28 @@ public class CustomerServiceService {
     }
 
     public int getScore(int cs_id) {
-        int count = customerServiceMapper.getScore(cs_id);
-        return count;
+        double count = customerServiceMapper.getScore(cs_id);
+        int score = (int) Math.round(count * 10);
+        return score;
     }
 
     public int getTime(int cs_id) {
         int count = customerServiceMapper.getTime(cs_id);
         return count;
     }
-    
-    public List<Integer> getWaitingQueue(int cs_id){
+
+    public List<Integer> getWaitingQueue(int cs_id) {
         List<Integer> list = new LinkedList<Integer>();
         list = customerServiceMapper.getWaitingQueue(cs_id);
         return list;
     }
-    
-    public WaitingQueueCustomerInfo getCustomerInfo(int customer_id){
+
+    public WaitingQueueCustomerInfo getCustomerInfo(int customer_id) {
         WaitingQueueCustomerInfo info = customerServiceMapper.getCustomerInfo(customer_id);
         return info;
     }
-    
-    public void deleteWaitingCustomer(int customer_id){
+
+    public void deleteWaitingCustomer(int customer_id) {
         customerServiceMapper.deleteWaitingCustomer(customer_id);
     }
 

@@ -59,7 +59,7 @@ public class CustomerServiceController {
         try {
             customerService = customerSvcService.csLogin(customerServiceLoginBean);
             if (customerService != null) {// 如果验证成功，则跳转进首页
-                if (customerService.getCs_status() == 0) {
+                if (customerService.getCs_register_status() == 0) {
                     return gson.toJson("客服账号未激活");
                 } else {
                     // 登陆后状态为工作
@@ -87,23 +87,54 @@ public class CustomerServiceController {
         return gson.toJson(customerService);
     }
 
-    @RequestMapping(value = "/customerService/setProfile", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @RequestMapping(value = "/customerService/setName", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String setProfile(HttpServletRequest request, HttpServletResponse response) {
+    public String setName(HttpServletRequest request, HttpServletResponse response) {
         Gson gson = new Gson();
 
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        String csImg = json.getString("cs_img");
-        String csName = json.getString("cs_name");
         String csNickName = json.getString("cs_nickName");
+        String csEmail = json.getString("cs_email");
+
+        CustomerService customerService = new CustomerService();
+        // 要先拿出来，其他数据不能动
+        customerService = customerSvcService.selectByEmail(csEmail);
+        customerSvcService.setName(csNickName, customerService);
+        return gson.toJson("success");
+    }
+
+    @RequestMapping(value = "/customerService/setPwd", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String setPwd(HttpServletRequest request, HttpServletResponse response) {
+        Gson gson = new Gson();
+
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
         String csPwd = json.getString("cs_pwd");
         String csEmail = json.getString("cs_email");
 
         CustomerService customerService = new CustomerService();
         // 要先拿出来，其他数据不能动
         customerService = customerSvcService.selectByEmail(csEmail);
-        customerSvcService.setProfile(csPwd, csImg, csNickName, csName, customerService);
+        customerSvcService.setPwd(csPwd, customerService);
+        return gson.toJson("success");
+    }
+
+    @RequestMapping(value = "/customerService/setImg", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String setImg(HttpServletRequest request, HttpServletResponse response) {
+        Gson gson = new Gson();
+
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        String csImg = json.getString("cs_img");
+        String csEmail = json.getString("cs_email");
+
+        CustomerService customerService = new CustomerService();
+        // 要先拿出来，其他数据不能动
+        customerService = customerSvcService.selectByEmail(csEmail);
+        customerSvcService.setImg(csImg, customerService);
         return gson.toJson("success");
     }
 
@@ -234,6 +265,10 @@ public class CustomerServiceController {
         int csCount = customerSvcService.getCount(csId);
         int csScore = customerSvcService.getScore(csId);
         int csTime = customerSvcService.getTime(csId);
+        System.out.println(csCountToday);
+        System.out.println(csCount);
+        System.out.println(csScore);
+        System.out.println(csTime);
         List<Integer> list = new LinkedList<Integer>();
         list.add(csCount);
         list.add(csTime);
@@ -242,19 +277,19 @@ public class CustomerServiceController {
         Gson gson = new Gson();
         return gson.toJson(list);
     }
-    
-    //客服查看排队列表
+
+    // 客服查看排队列表
     @RequestMapping(value = "/customerService/showWaitingQueue", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String showWaitingQueue(HttpServletRequest request, HttpServletResponse response){
+    public String showWaitingQueue(HttpServletRequest request, HttpServletResponse response) {
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        int csId =  json.getInt("cs_id");
+        int csId = json.getInt("cs_id");
         List<Integer> list = new LinkedList<Integer>();
         list = customerSvcService.getWaitingQueue(csId);
         List<WaitingQueueCustomerInfo> customerInfo = new LinkedList<WaitingQueueCustomerInfo>();
         WaitingQueueCustomerInfo info;
-        for(Integer i : list){
+        for (Integer i : list) {
             info = customerSvcService.getCustomerInfo(i.intValue());
             customerInfo.add(info);
         }
@@ -262,14 +297,14 @@ public class CustomerServiceController {
         Gson gson = new Gson();
         return gson.toJson(customerInfo);
     }
-    
-    //客服点击客服将改变客户的状态
+
+    // 客服点击客服将改变客户的状态
     @RequestMapping(value = "/customerService/deleteWaitingQueue", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String changeWaitingQueue(HttpServletRequest request, HttpServletResponse response){
+    public String changeWaitingQueue(HttpServletRequest request, HttpServletResponse response) {
         String data = request.getParameter("data");
         JSONObject json = JSONObject.fromObject(data);
-        int customerId =  json.getInt("customer_id");
+        int customerId = json.getInt("customer_id");
         customerSvcService.deleteWaitingCustomer(customerId);
         return null;
     }
