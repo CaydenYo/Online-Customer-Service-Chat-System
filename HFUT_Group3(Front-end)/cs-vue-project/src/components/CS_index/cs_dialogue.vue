@@ -275,6 +275,7 @@ export default {
     },
     //查看历史消息
     lookForHistory: function(event) {
+      this.$store.commit('clearMessages', this.currentSessionId)
       alert("查看历史消息中……")
         var obj = JSON.stringify({
         nickname: "kefu1",
