@@ -58,15 +58,38 @@ const store = new Vuex.Store({
 		changeToServing(state, id){
 			state.sessions[id - 1].waiting = false;
 			state.sessions[id - 1].serving = true;
-			alert(JSON.stringify(state.sessions[id - 1]))
 		},
 		addMessage(state, payload) {
-			alert("往store中加信息"+payload.itemId)
-			state.sessions[payload.itemId - 1].messages.push({
+			alert("往store中加信息: "+ JSON.stringify(payload))
+			if(payload.msg.isTransfer == true) {
+				state.sessions.push({
+					id: state.sessions.length + 1,
+					serving: true,
+					waiting: false,
+					robot: false,
+					user: {
+						customer_id: payload.msg.receiverId,
+						name: payload.msg.servedClient.name,
+						img: payload.msg.servedClient.img
+					},
+					messages: [{
+						content: payload.msg.content,
+						date: payload.msg.date,
+						self: payload.msg.isSelf
+					}]
+				})
+				alert("已完成会话转接插入且session长度为"+state.sessions.length)
+			}else{
+				alert('客户的itemId'+payload.itemId)
+				state.sessions[payload.itemId - 1].messages.push({
 				content: payload.msg.content,
 				date: payload.msg.date,
 				self: payload.msg.isSelf
 			})
+			}
+		},
+		finishedChangeCS(state,payload) {
+			state.sessions.splice(payload - 1, 1)
 		},
 		//客户功能
 		addToRobotChatting(state, payload) {
@@ -91,7 +114,6 @@ const store = new Vuex.Store({
 			})
 		},
 		addClientMessage(state, payload) {
-			alert(JSON.stringify(payload))
 			state.sessions.push({
 				content: payload.content,
 				date: payload.date,

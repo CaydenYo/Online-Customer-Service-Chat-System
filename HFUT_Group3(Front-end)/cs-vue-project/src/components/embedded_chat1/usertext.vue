@@ -1,7 +1,7 @@
 <template>
   <div id="uesrtext">
     <textarea placeholder="按 Ctrl + Enter 发送" v-model="content" v-on:keyup="addMessage"></textarea>
-  </div>
+</div>
 </template>
 
 <script>
@@ -13,8 +13,11 @@ export default {
   name: 'uesrtext',
   data () {
     return {
-      content: '',
-      websocket: null
+      robotFlag: true,
+      userItemId: null,
+      content:'',
+      websocket: null,
+      name: 'yukang'
   }
 },
 created() {
@@ -41,31 +44,57 @@ methods: {
         }
     },
     initWebSocket() {
-        const wsurl = 'ws://localhost:8080/OCSSystem/serve'
+        const wsurl = 'ws://localhost:8080/HFUT_Group3/serve'
         this.websocket = new WebSocket(wsurl);
         this.websocket.onmessage = this.websocketonmessage;
         this.websocket.onclose = this.websocketclose;
+        // alert("准备执行加入等待队列")
+        // this.$store.commit('addToRobotChatting',this.name)
+        // alert("已执行")
     },
     websocketonmessage(e) {
         var receiverMsg = JSON.parse(e.data)
-        alert('客户在服务列表中的id'+receiverMsg.userItemId)
-        if(receiverMsg.receiverId !== null){
+        alert(JSON.stringify(receiverMsg))
+        // if(receiverMsg.content instanceof Array) {
+        //   alert("进来了")
+        //   var html = "";
+        //   html += "<p>" + "您好我是机器人小机，请问您想问的是以下问题吗？" + "</p>";
+        //   var result = receiverMsg.content;
+        //   html += "<ol>";
+        //   for(var i = 0;i < result.length;i++) {
+        //     var obj = result[i];
+        //     var question = obj.question;
+        //     html += "<li>" + question + "</li>";
+        //   }
+        //   html += "</ol>";
+        //   receiverMsg.content = html;
+        //   alert(receiverMsg.content)
+        //   this.$store.commit('addRobotMessage', {
+        //     msg: receiverMsg
+        //   })
+        // }else {
+          if(this.userItemId === null){
+          this.userItemId = receiverMsg.userItemId
+          alert(this.userItemId)
+        }
           this.$store.commit('addMessage', {
           msg: receiverMsg,
-          itemId: receiverMsg.userItemId
+          itemId: this.userItemId
         });
-      }
+        
     },
     websocketsend(e) {
-        alert("客服要发送的客户id"+this.sessions[this.currentSessionId - 1].user.customer_id)
+        if(this.robotFlag === true){
+          this.content = "robotAnwser" + this.content
+        }
         var obj = JSON.stringify({
-            nickname: "kefu1",
-            senderId: "1000",
-            receiverId: this.sessions[this.currentSessionId - 1].user.customer_id,
-            companyName: "CISCO",
-            companyId: "2",
+            nickname: "yukang",
+            senderId: "2000",
+            receiverId: "1000",
+            companyName: "pentaKill",
+            companyId: "1",
             content: this.content,
-            userItemId: this.currentSessionId
+            userItemId: this.userItemId
         })
         this.websocket.send(obj)
         this.content = '';

@@ -45,7 +45,7 @@ export default {
       userItemId: null,
       content:'',
       websocket: null,
-      name: 'yukang',
+      name: 'yefei',
       receiverId: null
   }
 },
@@ -73,8 +73,8 @@ methods: {
     askForArtificialServices: function(event) {
       alert("开始转接人工服务。。。")
       var obj = JSON.stringify({
-            nickname: "yukang",
-            senderId: "2000",
+            nickname: "yefei",
+            senderId: "2001",
             receiverId: this.receiverId,
             companyName: "CISCO",
             companyId: "2",
@@ -144,8 +144,8 @@ methods: {
           this.content = "robotAnwser" + this.content
         }
         var obj = JSON.stringify({
-            nickname: "yukang",
-            senderId: "2000",
+            nickname: "yefei",
+            senderId: "2001",
             receiverId: this.receiverId,
             companyName: "CISCO",
             companyId: "2",
