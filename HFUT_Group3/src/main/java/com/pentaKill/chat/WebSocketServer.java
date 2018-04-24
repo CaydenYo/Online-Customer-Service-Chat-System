@@ -104,6 +104,10 @@ public class WebSocketServer {
             // 用户回复数字，查询对应问题的答案，发送回前端
             if (Integer.parseInt(senderId) >= 2000) {
                 // System.out.println("第一次进入，客户"+senderId);
+                
+                //存放客户的userMap
+                userMap.put(session.getId(), nickname);
+                firstTimeList.add(tempFirstTime);
 
                 for (String key : userMap.keySet()) {
                     webSocketServer = (WebSocketServer) connectedUser.get(key);
@@ -212,9 +216,11 @@ public class WebSocketServer {
                     // 功能4 //客服管理人员查看等待人数要+1
                     conversationService.increaseCsManageToolWaitingPeople(Integer.valueOf(companyId));
                     // 功能5 //客服的等待人数+1
-                    // 未实现
+                    sessionTransferService.addCsWaitedNumService(csId);
 
                 }
+                
+                
             } else {
                 // System.out.println("第一次进入，客服"+senderId);
                 // 客服第一次进来
@@ -237,7 +243,16 @@ public class WebSocketServer {
                 // 查看历史消息的标志;
                 boolean historyMessageFlag = csViewsHistoryMessageService
                         .historyMessageFlagService(Integer.parseInt(receiverId));
-
+                
+                userMap.put(session.getId(), nickname);
+                firstTimeList.add(tempFirstTime);
+                FirstTime tempCustomerFirstTime = new FirstTime(receiverId, null);
+                firstTimeList.remove(tempCustomerFirstTime);
+                firstTimeList.add(new FirstTime(receiverId, senderId));
+                //客服等待人数减少，操作人数加一
+                sessionTransferService.addCsOperatedNumService(Integer.parseInt(senderId));
+                sessionTransferService.decreaseCsWaitedNumService(Integer.parseInt(senderId));
+                
                 // 消息只发给自己
                 for (String key : userMap.keySet()) {
                     webSocketServer = (WebSocketServer) connectedUser.get(key);
@@ -251,14 +266,9 @@ public class WebSocketServer {
                         }
                     }
                 }
+                
             }
 
-            userMap.put(session.getId(), nickname);
-            firstTimeList.add(tempFirstTime);
-            FirstTime tempCustomerFirstTime = new FirstTime(receiverId, null);
-            firstTimeList.remove(tempCustomerFirstTime);
-            firstTimeList.add(new FirstTime(receiverId, senderId));
-            // firstTime = false;
 
         } else if (content.equals("csViewsHistoryMessage.action")) {
             // System.out.println("查看历史消息"+senderId);

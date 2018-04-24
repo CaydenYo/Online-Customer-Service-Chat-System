@@ -9,4 +9,7 @@ public interface SessionTransferMapper {
 
     public void closeConversationMapper(ConversationBean cb);
 
+    public void addCsWaitedNumService(int cs_id);
+
+    public void decreaseCsWaitedNumService(int cs_id);
 }

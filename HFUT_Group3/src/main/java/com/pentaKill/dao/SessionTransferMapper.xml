@@ -4,34 +4,48 @@
     "http://mybatis.org/dtd/mybatis-3.dtd">
 <mapper namespace="com.pentaKill.dao.SessionTransferMapper">
 
-    <!-- 根据客服id减少等待人数 -->
-    <update
-        id="decreaseCsOperatedNumMapper"
-        parameterType="int">
-        update customerServiceInfo set cs_waited_number=
+    <!-- 根据客服id减少正在服务人数 -->
+    <update id="decreaseCsOperatedNumMapper" parameterType="int">
+        update customerServiceInfo set cs_operated_number=
         cs_operated_number-1
         where cs_id=#{0}
 
     </update>
 
     <!-- 根据客服id增加正在服务人数 -->
-    <update
-        id="addCsOperatedNumMapper"
-        parameterType="int">
-        update customerServiceInfo set cs_operated_number=
+    <update id="addCsOperatedNumMapper" parameterType="int">
+        update
+        customerServiceInfo set cs_operated_number=
         cs_operated_number+1
         where cs_id=#{0}
 
     </update>
 
     <!-- 关闭会话 -->
-    <update
-        id="closeConversationMapper"
-        parameterType="ConversationBean">
-        update conversation set end_time=#{end_time}
+    <update id="closeConversationMapper" parameterType="ConversationBean">
+        update
+        conversation set end_time=#{end_time}
         where
-        cs_id=#{cs_id} and customer_id=#{customer_id} and
+        cs_id=#{cs_id} and
+        customer_id=#{customer_id} and
         start_time=end_time
 
+    </update>
+
+    <!-- 根据客服id增加正在等待人数 -->
+    <update id="addCsWaitedNumService" parameterType="int">
+        update
+        customerServiceInfo set cs_waited_number=
+        cs_waited_number+1
+        where cs_id=#{0}
+
+    </update>
+
+    <!-- 根据客服id减少服正在等待人数 -->
+    <update id="decreaseCsWaitedNumService" parameterType="int">
+        update
+        customerServiceInfo set cs_waited_number=
+        cs_waited_number-1
+        where cs_id=#{0}
     </update>
 </mapper>
