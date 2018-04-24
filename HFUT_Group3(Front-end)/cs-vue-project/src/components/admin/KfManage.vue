@@ -29,6 +29,10 @@
         <el-table-column prop="cs_email" label="电邮">
         </el-table-column>
         <el-table-column prop="cs_score" label="评分">
+          <template slot-scope='scope'>
+            <el-rate disabled show-score text-color="#ff9900" score-template="{value}" v-model="scope.row.cs_score" :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
+            </el-rate>
+          </template>
         </el-table-column>
         <el-table-column prop="cs_status" label="状态">
           <template slot-scope='scope'>
@@ -50,12 +54,12 @@ export default {
       kfgl_url: '/ListCSInfoList',
       tjkf_url: '/reg',
       csmanage: {
-        company_id: JSON.parse(localStorage.getItem('company_id'))
+        company_id: JSON.parse(sessionStorage.getItem('company_id'))
       },
       insertcs: {
         cs_email: '',
         cs_workId: '',
-        company_id: JSON.parse(localStorage.getItem('company_id'))
+        company_id: JSON.parse(sessionStorage.getItem('company_id'))
       },
       tableData3: [],
       rules1: {

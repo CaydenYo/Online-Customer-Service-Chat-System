@@ -3,10 +3,8 @@
     <el-card class="box_card">
       <div class="show_head">
         <img src="../../../static/images/cs_def.png" alt="" class="show_head_img">
-        <div class="show_head_text">
-          小张
-        </div>
-        <el-rate v-model="value5" disabled show-score text-color="#ff9900" score-template="{value}">
+        <div class="show_head_text">{{ cs_nickName }}</div>
+        <el-rate v-model="avg_eva" disabled show-score text-color="#ff9900" score-template="{value}">
         </el-rate>
       </div>
     </el-card>
@@ -50,12 +48,37 @@ export default {
   name: 'allActive',
   data: function() {
     return {
+      cs_nickName: sessionStorage.getItem('cs_nickName'),
       total_dialog: 46,
       total_server_time: 50,
       avg_eva: 4.8,
       today_chat: 5,
       cs_score: 3.5,
-      value5: 3.7
+      init_css_url: '/customerService/showTimeAndScore',
+      init_css: {
+        cs_id: sessionStorage.getItem('cs_id')
+      }
+    }
+  },
+  mounted() {
+    this.init()
+  },
+  methods: {
+    init() {
+      var params = new URLSearchParams()
+      let _this = this
+      params.append('data', JSON.stringify(this.init_css))
+      this.$axios({
+        method: 'post',
+        url: this.rootUrl + _this.init_css_url,
+        data: params
+      }).then(res => {
+        var result = res.data
+        _this.total_dialog = result[0]
+        _this.total_server_time = result[1]
+        _this.avg_eva = result[2] / 10
+        _this.today_chat = result[3]
+      })
     }
   }
 }

@@ -32,6 +32,7 @@
         </el-col>
       </el-row>
     </div>
+
     <div class="card2">
       <el-card class="box-card">
         <h3>在线客服列表</h3>
@@ -45,6 +46,10 @@
           <el-table-column prop="cs_operated_number" label="正在服务人数">
           </el-table-column>
           <el-table-column prop="cs_score" label="评分">
+            <template slot-scope='scope'>
+            <el-rate disabled show-score text-color="#ff9900" score-template="{value}" v-model="scope.row.cs_score" :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
+            </el-rate>
+          </template>
           </el-table-column>
         </el-table>
       </el-card>
@@ -64,7 +69,7 @@ export default {
       index_url: '/listNumbers',
       query_ocs_url: '/listCsStatus',
       index_post: {
-        company_id: JSON.parse(localStorage.getItem('company_id'))
+        company_id: JSON.parse(sessionStorage.getItem('company_id'))
       },
       tableData3: []
     }

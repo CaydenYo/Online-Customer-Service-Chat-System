@@ -67,7 +67,7 @@
 export default {
   data() {
     return {
-      company_id: JSON.parse(localStorage.getItem('company_id')),
+      company_id: JSON.parse(sessionStorage.getItem('company_id')),
       activeIndex: 'index'
     }
   }
