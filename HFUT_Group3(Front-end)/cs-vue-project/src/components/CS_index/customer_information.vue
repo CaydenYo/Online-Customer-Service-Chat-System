@@ -10,10 +10,10 @@
       </el-header>
       <el-main>
         <el-table :data="table_data_show">
-          <el-table-column prop="start_time" label="日期" width="140">
+          <el-table-column prop="start_time" label="日期" width="200">
             <template slot-scope="scope">
               <i class="el-icon-time"></i>
-              <span style="margin-left: 10px">{{ '2018-0'+Math.floor(Math.random()*3+1)+'-0'+Math.floor(Math.random()*8+1) }}</span>
+              <span style="margin-left: 10px">{{ scope.row.current_time }}</span>
             </template>
           </el-table-column>
           <el-table-column prop="customer_name" label="姓名" width="120">
@@ -50,73 +50,13 @@
 <script>
 export default {
   data() {
-    const item = {
-      customer_id: '',
-      customer_name: '游凯佳',
-      customer_nickname: 'test',
-      customer_age: 15,
-      customer_sex: 1,
-      customer_email: '123@qq.com',
-      customer_address: '上海市普陀区金沙江路 1518 弄'
-    }
     return {
       search_user_input: '',
-      search_user_url: '',
+      search_user_url: '/csViewsAllCustomerInfo.action',
       search_user_from: {
-        cs_id: ''
+        cs_id: sessionStorage.getItem('cs_id')
       },
-      table_data_begin: [
-        {
-          customer_id: '',
-          start_time: '2016-05-02',
-          customer_name: '游凯佳',
-          customer_nickname: 'test',
-          customer_age: 15,
-          customer_sex: 1,
-          customer_email: '123@qq.com',
-          customer_address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          customer_id: '',
-          start_time: '2016-05-02',
-          customer_name: 'test',
-          customer_nickname: 'test',
-          customer_age: 15,
-          customer_sex: 1,
-          customer_email: '123@qq.com',
-          customer_address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          customer_id: '',
-          start_time: '2016-05-02',
-          customer_name: '1234',
-          customer_nickname: 'test',
-          customer_age: 15,
-          customer_sex: 1,
-          customer_email: '123@qq.com',
-          customer_address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          customer_id: '',
-          start_time: '2016-05-02',
-          customer_name: '56',
-          customer_nickname: 'test',
-          customer_age: 15,
-          customer_sex: 1,
-          customer_email: '123@qq.com',
-          customer_address: '上海市普陀区金沙江路 1518 弄'
-        },
-        {
-          customer_id: '',
-          start_time: '2016-05-02',
-          customer_name: '67',
-          customer_nickname: 'test',
-          customer_age: 15,
-          customer_sex: 1,
-          customer_email: '123@qq.com',
-          customer_address: '上海市普陀区金沙江路 1518 弄'
-        }
-      ],
+      table_data_begin: [],
       table_data_show: [],
       flag: false
     }
@@ -147,7 +87,6 @@ export default {
     // 页面加载完成查看该客服服务的用户
     init() {
       console.log('页面加载完成')
-      this.table_data_show = this.table_data_begin
       var params = new URLSearchParams()
       let _this = this
       params.append('data', JSON.stringify(this.search_user_from))
@@ -156,7 +95,15 @@ export default {
         url: this.rootUrl + _this.search_user_url,
         data: params
       }).then(res => {
-        _this.tableData = res.data
+        if (res.data === 'fail') {
+          this.$message({
+            message: '管理员已关闭查看功能',
+            type: 'warning'
+          })
+        } else {
+          _this.table_data_begin = res.data
+          _this.table_data_show = _this.table_data_begin
+        }
       })
     },
     // 表格删除键按下

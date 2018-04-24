@@ -77,11 +77,11 @@ export default {
       insertCLFV: false,
       updateCLFV: false,
       initCLF: {
-        cs_id: JSON.parse(localStorage.getItem('cs_id'))
+        cs_id: JSON.parse(sessionStorage.getItem('cs_id'))
       },
       insertCLF: {
         content: '',
-        cs_id: JSON.parse(localStorage.getItem('cs_id'))
+        cs_id: JSON.parse(sessionStorage.getItem('cs_id'))
       },
       updateCLF: {
         content: '',
@@ -114,7 +114,7 @@ export default {
     // 标签页 2 函数
     // 初始化第二个标签页函数
     inittab2() {
-      localStorage.setItem('cs_id', '1000')
+      sessionStorage.setItem('cs_id', 1000)
       var params = new URLSearchParams()
       let _this = this
       params.append('data', JSON.stringify(this.initCLF))
@@ -124,7 +124,7 @@ export default {
         data: params
       }).then(res => {
         _this.tableData3 = res.data
-        localStorage.setItem('cl', JSON.stringify(_this.tableData3))
+        sessionStorage.setItem('cl', JSON.stringify(_this.tableData3))
       })
     },
     // 点击表格修改按键
@@ -155,14 +155,10 @@ export default {
             data: params
           }).then(res => {
             if (res.data === 'ModifySuccess') {
+              sessionStorage.setItem('cl', JSON.stringify(_this.tableData3))
               this.$message({
                 message: '修改成功',
                 type: 'success'
-              })
-            } else {
-              this.$message({
-                message: JSON.stringify(res.data),
-                type: 'error'
               })
             }
           })
@@ -207,6 +203,7 @@ export default {
             data: params
           }).then(res => {
             if (res.data === 'AddSuccess') {
+              sessionStorage.setItem('cl', JSON.stringify(_this.tableData3))
               this.$message({
                 message: '添加成功',
                 type: 'success'
@@ -241,20 +238,13 @@ export default {
         method: 'post',
         url: this.rootUrl + _this.delete_CL_url,
         data: params
-      }).then(res => {
-        if (res.data === 'DeleteSuccess') {
-          this.$message({
-            message: '删除成功',
-            type: 'success'
-          })
-        } else {
-          this.$message({
-            message: JSON.stringify(res.data),
-            type: 'error'
-          })
-        }
       })
       setTimeout(() => {
+        sessionStorage.setItem('cl', JSON.stringify(_this.tableData3))
+        this.$message({
+          message: '删除成功',
+          type: 'warning'
+        })
         this.inittab2()
       }, 500)
     }

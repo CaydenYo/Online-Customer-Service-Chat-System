@@ -61,21 +61,21 @@ export default {
       update_know_url: '/updateKnowledge',
       delete_know_url: '/deleteKnowledge',
       zsk: {
-        company_id: JSON.parse(localStorage.getItem('company_id'))
+        company_id: JSON.parse(sessionStorage.getItem('company_id'))
       },
       insertkn: {
-        company_id: JSON.parse(localStorage.getItem('company_id')),
+        company_id: JSON.parse(sessionStorage.getItem('company_id')),
         question: '',
         answer: ''
       },
       updatekn: {
-        company_id: JSON.parse(localStorage.getItem('company_id')),
+        company_id: JSON.parse(sessionStorage.getItem('company_id')),
         knowledge_id: '',
         question: '',
         answer: ''
       },
       deletekn: {
-        company_id: JSON.parse(localStorage.getItem('company_id')),
+        company_id: JSON.parse(sessionStorage.getItem('company_id')),
         knowledge_id: ''
       },
       know: [

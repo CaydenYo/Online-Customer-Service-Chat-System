@@ -36,27 +36,27 @@
 export default {
   data() {
     return {
-      company_id: JSON.parse(localStorage.getItem('company_id')),
+      company_id: sessionStorage.getItem('company_id'),
       form1_url: '/setAccessType',
       form1: {
-        company_id: JSON.parse(localStorage.getItem('company_id')),
+        company_id: sessionStorage.getItem('company_id'),
         access_type: ''
       },
       form2_url: '/setRobotStatus',
       form2: {
-        company_id: JSON.parse(localStorage.getItem('company_id')),
+        company_id: sessionStorage.getItem('company_id'),
         robot_flag: ''
       },
       form3_url: '/setCompanyInfo',
       form3: {
-        company_id: JSON.parse(localStorage.getItem('company_id')),
+        company_id: sessionStorage.getItem('company_id'),
         distribution_type: '',
         customer_info_flag: '',
         mininum_operating_num: ''
       },
       index_url: '/initializeSetting',
       index_post: {
-        company_id: JSON.parse(localStorage.getItem('company_id'))
+        company_id: sessionStorage.getItem('company_id')
       }
     }
   },
@@ -130,7 +130,6 @@ export default {
             type: 'success'
           })
         } else {
-          console.log(JSON.parse(localStorage.getItem('company_id')))
           this.$message({
             message: JSON.stringify(res.data),
             type: 'error'
@@ -154,10 +153,9 @@ export default {
             type: 'success'
           })
         } else {
-          console.log(JSON.parse(localStorage.getItem('company_id')))
           this.$message({
             message: JSON.stringify(res.data),
-            type: 'error'
+            type: 'warning'
           })
         }
       })
