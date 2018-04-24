@@ -86,7 +86,7 @@
     <!-- 插入评价信息 -->
     <insert id="insertNewEvaluateMapper" parameterType="CsEvaluateBean"
         useGeneratedKeys="true" keyProperty="cse_id">
-        insert into cs_evaluate
+        insert into cs_evaluate(cs_id,evaluate_time,cs_score,content)
         values(#{cs_id},#{evaluate_time},#{cs_score},#{content})
     </insert>
 
@@ -162,7 +162,7 @@
     
     <!-- 在排队列表中消除该用户 -->
     <delete id="deleteWaitingCustomer" parameterType="int">
-        delete from customer_waiting_team where knowledge_id=#{0}
+        delete from customer_waiting_team where customer_id=#{0}
     </delete>
 
 </mapper>

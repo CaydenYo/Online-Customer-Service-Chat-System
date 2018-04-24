@@ -73,7 +73,7 @@ public class CustomerServiceService {
         customerService.setCs_workId(customerServiceRegisterBean.getCs_workId());
         customerService.setCs_name("pentaKill_" + email);
         customerService.setCs_nickName("pentaKill_" + email);
-        customerService.setCs_pwd("pentaKill_" + email);
+        customerService.setCs_pwd(customerServiceRegisterBean.getCs_workId());
         customerService.setCs_img("pentaKill_" + email);
         if (customerServiceMapper.selectByEmail(email) == null) {
             customerServiceMapper.create(customerService);

@@ -17,10 +17,13 @@ import com.pentaKill.util.EmailUtilTest;
 @RunWith(Suite.class)
 
 @Suite.SuiteClasses({CompanyServiceTest.class, ConversationServiceTest.class,
-    CSViewsCustomerInfoServiceTest.class,
+    CSViewsCustomerInfoServiceTest.class,CSViewsHistoryMessageServiceTest.class,
     CustomerLoginServiceTest.class,CustomerRegisterServiceTest.class,
     CustomerServiceMServiceTest.class,EmailUtilTest.class,
-    SessionTransferServiceTest.class,RobotChatServiceTest.class,})
+    SessionTransferServiceTest.class,RobotChatServiceTest.class,
+    CustomerServiceServiceTest.class,CustomerWaitingServiceTest.class,
+    FastReplyServiceTest.class,ManagerViewsSessionServiceTest.class,
+    RobotServiceTest.class})
 /**
  * @author Hyc
  *
