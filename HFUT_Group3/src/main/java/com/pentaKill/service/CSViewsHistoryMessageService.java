@@ -23,7 +23,7 @@ public class CSViewsHistoryMessageService {
 
     public boolean historyMessageFlagService(int customer_id) {
         List<GetCoversationIdBean> temp = csViewsHistoryMessageMapper.getCLConversationIdMapper(customer_id);
-        if (temp == null) {
+        if (temp.isEmpty()) {
             return false;
         } else {
             return true;
