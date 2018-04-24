@@ -25,4 +25,12 @@ public class SessionTransferService {
     public void closeConversationService(ConversationBean cb) {
         sessionTransferMapper.closeConversationMapper(cb);
     }
+    
+    public void addCsWaitedNumService(int cs_id){
+        sessionTransferMapper.addCsWaitedNumService(cs_id);
+    }
+    
+    public void decreaseCsWaitedNumService(int cs_id){
+        sessionTransferMapper.decreaseCsWaitedNumService(cs_id);
+    }
 }
