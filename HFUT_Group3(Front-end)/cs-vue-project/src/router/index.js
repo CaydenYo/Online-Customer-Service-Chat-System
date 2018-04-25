@@ -20,6 +20,7 @@ import cs_statics from '@/components/CS_index/cs_statics'
 import cs_settings from '@/components/CS_index/cs_settings'
 import common_language from '@/components/CS_index/common_language'
 import customer_information from '@/components/CS_index/customer_information'
+import chat from '@/components/xfchat/chat'
 
 
 Vue.use(Router)
@@ -32,8 +33,8 @@ export default new Router({
     },
     {
       path: '/',
-      name: 'CS_UI',
-      component: CS_UI
+      name: 'cs_dialogue',
+      component: cs_dialogue
     },
     {
       path: '/show_embedded_cs',

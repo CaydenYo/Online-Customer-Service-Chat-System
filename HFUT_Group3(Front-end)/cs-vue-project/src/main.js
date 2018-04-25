@@ -8,12 +8,11 @@ import store from './vuex/store.js'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
-import MintUI from 'mint-ui'
-import  'mint-ui/lib/style.css'
+import './assets/css/iconfont.css'
 import VueQuillEditor from 'vue-quill-editor'
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
-Vue.use(MintUI)
+
 Vue.use(Vuex)
 Vue.use(VueQuillEditor)
 Vue.prototype.$axios = axios

@@ -25,9 +25,43 @@
             </li>
         </ul>
     </div>
-    <div id="uesrtext">
-      <textarea placeholder="按 Ctrl + Enter 发送" v-model="content" v-on:keyup="addMessage"></textarea>
+    <div>
+      <el-popover
+      ref="popover"
+      placement="top-start"
+      trigger="click">
+        <div class="emoji-box">
+          <div v-for="temp in emojiTemp" class="emoji">
+            <a class="emoji-link" href="javascript:void(0)" v-on:click="addEmoji(temp)">{{temp}}</a>
+          </div>
+        <span class="pop-arrow arrow"></span>
+        </div>
+      </el-popover>
+      <i class="icon iconfont icon-face" v-popover:popover></i>
     </div>
+    <div id="uesrtext">
+      <textarea id="user-text-area" placeholder="按 Ctrl + Enter 发送" v-model="content" v-on:keyup="addMessage"></textarea>
+    </div>
+    <el-dialog
+    title="请给客服评价"
+    :visible.sync="rateVisible"
+    width="30%"
+    :before-close="handleClose">
+      <el-rate
+      v-model="ratingStar"
+      :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
+      </el-rate>
+      <el-input
+        type="textarea"
+        :rows="4"
+        placeholder="请输入给客服的评价"
+        v-model="assessment">
+      </el-input>
+      <span slot="footer" class="dialog-footer">
+      <el-button @click="rateVisible = false">取 消</el-button>
+      <el-button type="primary" @click="finishedRating">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -40,13 +74,179 @@ export default {
   name: 'message',
   data () {
     return {
+      ratingUrl: '/csEvaluate.action',
+      rateVisible: false,
+      ratingStar: null,
+      assessment: '',
       img: '../src/assets/images/1.jpg',
       robotFlag: false,
       userItemId: null,
       content:'',
       websocket: null,
       name: 'yukang',
-      receiverId: null
+      receiverId: null,
+      senderId: '2000',
+      emojiTemp: [
+        "😀",
+        "😁",
+        "😂",
+        "😃",
+        "😄",
+        "😅",
+        "😆",
+        "😇",
+        "😈",
+        "😉",
+        "😊",
+        "😋",
+        "😌",
+        "😀",
+        "😁",
+        "😂",
+        "😃",
+        "😄",
+        "😅",
+        "😆",
+        "😇",
+        "😈",
+        "😉",
+        "😊",
+        "😋",
+        "😌",
+        "😍",
+        "😎",
+        "😏",
+        "😐",
+        "😑",
+        "😒",
+        "😓",
+        "😔",
+        "😕",
+        "😖",
+        "😗",
+        "😘",
+        "😙",
+        "😚",
+        "😛",
+        "😜",
+        "😝",
+        "😞",
+        "😟",
+        "😠",
+        "😡",
+        "😢",
+        "😣",
+        "😤",
+        "😥",
+        "😦",
+        "😧",
+        "😨",
+        "😩",
+        "😪",
+        "😫",
+        "😬",
+        "😭",
+        "😮",
+        "😯",
+        "😰",
+        "😱",
+        "😲",
+        "😳",
+        "😴",
+        "😵",
+        "😶",
+        "😷",
+        "😸",
+        "😹",
+        "😺",
+        "😻",
+        "😼",
+        "😽",
+        "😾",
+        "😿",
+        "🙀",
+        "🙅",
+        "🙆",
+        "🙇",
+        "🙈",
+        "🙉",
+        "🙊",
+        "🙋",
+        "🙌",
+        "🙍",
+        "🙎",
+        "🙏",
+        "🚀",
+        "🚁",
+        "🚂",
+        "🚃",
+        "🚄",
+        "🚅",
+        "🚆",
+        "🚇",
+        "🚈",
+        "🚉",
+        "🚊",
+        "🚋",
+        "🚌",
+        "🚍",
+        "🚎",
+        "🚏",
+        "🚐",
+        "🚑",
+        "🚒",
+        "🚓",
+        "🚔",
+        "🚕",
+        "🚖",
+        "🚗",
+        "🚘",
+        "🚙",
+        "🚚",
+        "🚛",
+        "🚜",
+        "🚝",
+        "🚞",
+        "🚟",
+        "🚠",
+        "🚡",
+        "🚢",
+        "🚣",
+        "🚤",
+        "🚥",
+        "🚦",
+        "🚧",
+        "🚨",
+        "🚩",
+        "🚪",
+        "🚫",
+        "🚬",
+        "🚭",
+        "🚮",
+        "🚯",
+        "🚰",
+        "🚱",
+        "🚲",
+        "🚳",
+        "🚴",
+        "🚵",
+        "🚶",
+        "🚷",
+        "🚸",
+        "🚹",
+        "🚺",
+        "🚻",
+        "🚼",
+        "🚽",
+        "🚾",
+        "🚿",
+        "🛀",
+        "🛁",
+        "🛂",
+        "🛃",
+        "🛄",
+        "🛅",
+    ]
   }
 },
 filters:{
@@ -70,11 +270,30 @@ created() {
 },
 computed: mapState(['sessions', 'currentSessionId', 'robotChatting']),
 methods: {
+    //完成评价
+    finishedRating: function(event) {
+      this.rateVisible = false
+      let _this = this
+      var params = new URLSearchParams();
+      params.append('data', JSON.stringify({
+        cs_id: this.receiverId,
+        cs_score: this.ratingStar,
+        content: this.assessment
+      }));
+      this.$axios({
+        method: 'post',
+        url: this.rootUrl + _this.ratingUrl,
+        data: params
+      })
+    },
+    addEmoji(temp) {
+        this.content += temp
+    },
     askForArtificialServices: function(event) {
       alert("开始转接人工服务。。。")
       var obj = JSON.stringify({
             nickname: "yukang",
-            senderId: "2000",
+            senderId: this.senderId,
             receiverId: this.receiverId,
             companyName: "CISCO",
             companyId: "2",
@@ -132,20 +351,26 @@ methods: {
             else{
               this.$store.commit('addRobotMessage', receiverMsg)
             }
-          } else {
-              this.receiverId = receiverMsg.senderId
+          } else if(receiverMsg.content == "csEvaluate") {
+            this.rateVisible = true
+          }else {
+              if(this.senderId == receiverMsg.senderId) {
+                this.receiverId = receiverMsg.receiverId
+              }else {
+                this.receiverId = receiverMsg.senderId
+              }
               alert("客户的receiverId"+this.receiverId)
               this.userItemId = receiverMsg.userItemId
             this.$store.commit('addClientMessage', receiverMsg);  
-    }
-  },
+          }
+    },
     websocketsend(e) {
         if(this.robotFlag == true) {
           this.content = "robotAnwser" + this.content
         }
         var obj = JSON.stringify({
             nickname: "yukang",
-            senderId: "2000",
+            senderId: this.senderId,
             receiverId: this.receiverId,
             companyName: "CISCO",
             companyId: "2",
@@ -166,9 +391,19 @@ methods: {
 </script>
 
 <style lang="scss" scoped>
+.emoji-box {
+  max-height: 200px;
+  max-width:200px;
+}
 .message-frame {
   height: 100%;
   width: 100%;
+}
+.emoji-link {
+  text-decoration:none;
+}
+.emoji {
+  float: left;
 }
 #uesrtext {
   bottom: 0;
