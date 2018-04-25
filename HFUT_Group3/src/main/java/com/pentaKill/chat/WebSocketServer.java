@@ -241,9 +241,9 @@ public class WebSocketServer {
 
                 // 发送问候信息
                 // 查看历史消息的标志;
-                boolean historyMessageFlag = csViewsHistoryMessageService
+               /* boolean historyMessageFlag = csViewsHistoryMessageService
                         .historyMessageFlagService(Integer.parseInt(receiverId));
-                
+                */
                 userMap.put(session.getId(), nickname);
                 firstTimeList.add(tempFirstTime);
                 FirstTime tempCustomerFirstTime = new FirstTime(receiverId, null);
@@ -253,7 +253,7 @@ public class WebSocketServer {
                 sessionTransferService.addCsOperatedNumService(Integer.parseInt(senderId));
                 sessionTransferService.decreaseCsWaitedNumService(Integer.parseInt(senderId));
                 
-                // 消息只发给自己
+               /* // 消息只发给自己
                 for (String key : userMap.keySet()) {
                     webSocketServer = (WebSocketServer) connectedUser.get(key);
                     if (nickname.equalsIgnoreCase(userMap.get(key))) {
@@ -265,8 +265,28 @@ public class WebSocketServer {
                             webSocketServer.session.getAsyncRemote().sendText(joTemp.toString());
                         }
                     }
+                }*/
+                String reciverNickname = conversationService.getCustomerNicknameByCustomerId(Integer.valueOf(receiverId));
+                json.put("date", df.format(new Date()));
+                for (String key : userMap.keySet()) {
+                    webSocketServer = (WebSocketServer) connectedUser.get(key);
+                    // System.out.println(webSocketServer.session);
+                    if (nickname.equalsIgnoreCase(userMap.get(key))) {
+                        json.put("isSelf", true);
+                        // System.out.println("发送人"+nickname+" "+key);
+                        synchronized (webSocketServer) {
+                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
+                        }
+                        // 还要根据receiverId找到对应的nickname
+                    } else if (reciverNickname.equals(userMap.get(key))) {
+                        json.put("isSelf", false);
+                        // System.out.println("接收人"+reciverNickname+" "+key);
+                        synchronized (webSocketServer) {
+                            webSocketServer.session.getAsyncRemote().sendText(json.toString());
+                        }
+                    }
+
                 }
-                
             }
 
 
