@@ -6,27 +6,39 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.pentaKill.domain.CustomerInfoBean;
+import com.pentaKill.domain.CustomerLoginBean;
 import com.pentaKill.service.CustomerLoginService;
+
+import net.sf.json.JSONObject;
 
 @Controller
 public class CustomerLoginController {
-    @Resource
-    HttpServletRequest req;
+
     @Resource
     CustomerLoginService customerLoginService;
 
-    @RequestMapping(value = "/login.action", method = RequestMethod.POST)
-    public String login() {
-        String customer_name = req.getParameter("customer_name");
-        String customer_pwd = req.getParameter("customer_pwd");
+    @Resource
+    HttpServletRequest req;
 
-        CustomerInfoBean clb = customerLoginService.customerLoginService(customer_name);
+    @RequestMapping(value = "/login.action", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String login() {
+
+        String data = req.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        String customer_email = json.getString("customer_email");
+        String customer_pwd = json.getString("customer_pwd");
+        
+        CustomerLoginBean clb = customerLoginService.selectCustomerInfo(customer_email);
+        Gson gson = new Gson();
         if (clb != null && clb.getCustomer_pwd().equals(customer_pwd)) {
-            return "index";
+            return gson.toJson(clb);
         } else {
-            return "login";
+            return gson.toJson("error");
         }
 
     }
