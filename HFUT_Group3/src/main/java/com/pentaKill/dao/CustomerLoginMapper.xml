@@ -10,4 +10,11 @@
 		select * from customerInfo
 		where customer_name = #{0}
 	</select>
+    
+    <select id="selectCustomerInfo" parameterType="String"
+        resultType="CustomerLoginBean">
+        select * from customerInfo
+        where customer_email = #{0}
+    </select>
+    
 </mapper>
