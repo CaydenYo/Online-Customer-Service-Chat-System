@@ -63,13 +63,16 @@ public class CustomerServiceMController {
             return gson.toJson("registerfail");
         }
     }
-
-    @RequestMapping(value = "/regconf.do")
-    public ModelAndView  regconf(ModelAndView mv, HttpServletRequest request) {
-        String csCode = request.getParameter("code");  
+    
+    @RequestMapping(value = "/regconf.do", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
+    @ResponseBody
+    public String  regconf(HttpServletRequest request, HttpServletResponse response) {
+        String data = request.getParameter("data");
+        JSONObject json = JSONObject.fromObject(data);
+        String csCode = json.getString("code"); 
         customerServiceService.regconf(csCode);
-        mv.setViewName("/index");  
-        return mv;  
+        Gson gson = new Gson();
+        return gson.toJson("success");
     }
     
     //显示客服在线信息
