@@ -1,8 +1,10 @@
 package com.pentaKill.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -16,7 +18,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.pentaKill.dao.CustomerServiceMapper;
@@ -123,19 +127,33 @@ public class CustomerServiceController {
 
     @RequestMapping(value = "/customerService/setImg", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)
     @ResponseBody
-    public String setImg(HttpServletRequest request, HttpServletResponse response) {
+    public String setImg(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IllegalStateException, IOException {
         Gson gson = new Gson();
+        //System.out.println("aaa");
+        //String t=Thread.currentThread().getContextClassLoader().getResource("").getPath();
+        //System.out.println("t---"+t);
+        //String filePath1 = "D:\\jisuanke0425\\HFUT_Group3\\HFUT_Group3\\src\\main\\webapp\\image";
+        String filePath2 = "F:\\vuejquerytest\\vuejquery\\static";
 
-        String data = request.getParameter("data");
-        JSONObject json = JSONObject.fromObject(data);
-        String csImg = json.getString("cs_img");
-        String csEmail = json.getString("cs_email");
+        String NameAndEmail = file.getOriginalFilename();
+        
+        //System.out.println(NameAndEmail);
+        String[] list = NameAndEmail.split(" ");
+        //String newFilename = UUID.randomUUID()+originalFilename;
+        //System.out.println(newFilename);
+        list[0]=UUID.randomUUID()+list[0];
+        //File targetFile = new File(filePath1,list[0]);
+        File targetFile2 = new File(filePath2,list[0]);
+        //file.transferTo(targetFile);
+        file.transferTo(targetFile2);
 
         CustomerService customerService = new CustomerService();
         // 要先拿出来，其他数据不能动
-        customerService = customerSvcService.selectByEmail(csEmail);
-        customerSvcService.setImg(csImg, customerService);
-        return gson.toJson("success");
+        customerService = customerSvcService.selectByEmail(list[1]);
+        
+        customerSvcService.setImg(list[0], customerService);
+        customerService.setCs_img(list[0]);
+        return gson.toJson(customerService);
     }
 
     @RequestMapping(value = "/customerService/setNumber", produces = "text/json;charset=UTF-8", method = RequestMethod.POST)

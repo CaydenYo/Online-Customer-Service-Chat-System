@@ -27,12 +27,10 @@ public class CustomerController {
     public String customerRegiste() {
 
         String customer_name = req.getParameter("customer_name");
-        int customer_sex = -1;
-        if (req.getParameter("customer_sex") == "man") {
+        int customer_sex = 0;
+        if (req.getParameter("customer_sex") == "man") 
             customer_sex = 1;
-        } else {
-            customer_sex = 0;
-        }
+        
         String customer_email = req.getParameter("customer_email");
         String customer_pwd = req.getParameter("customer_pwd");
         String conpass = req.getParameter("conpass");
