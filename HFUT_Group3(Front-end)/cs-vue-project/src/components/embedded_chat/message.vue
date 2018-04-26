@@ -45,8 +45,7 @@
     <el-dialog
     title="请给客服评价"
     :visible.sync="rateVisible"
-    width="30%"
-    :before-close="handleClose">
+    width="30%">
       <el-rate
       v-model="ratingStar"
       :colors="['#99A9BF', '#F7BA2A', '#FF9900']">
@@ -78,14 +77,14 @@ export default {
       rateVisible: false,
       ratingStar: null,
       assessment: '',
-      img: '../src/assets/images/1.jpg',
-      robotFlag: false,
+      nickname: this.$store.state.clientMessage.nickname,
+      customer_id: this.$store.state.clientMessage.senderId,
+      img: this.$store.state.clientMessage.img,
+      robotFlag: true,
       userItemId: null,
       content:'',
       websocket: null,
-      name: 'yukang',
       receiverId: null,
-      senderId: '2000',
       emojiTemp: [
         "😀",
         "😁",
@@ -268,7 +267,7 @@ directives: {
 created() {
     this.initWebSocket()
 },
-computed: mapState(['sessions', 'currentSessionId', 'robotChatting']),
+computed: mapState(['sessions', 'currentSessionId', 'robotChatting', 'clientMessage']),
 methods: {
     //完成评价
     finishedRating: function(event) {
@@ -291,13 +290,15 @@ methods: {
     },
     askForArtificialServices: function(event) {
       alert("开始转接人工服务。。。")
+      alert(this.customer_id+" "+this.nickname+" "+this.img)
+      this.robotFlag = false
       var obj = JSON.stringify({
-            nickname: "yukang",
-            senderId: this.senderId,
+            nickname: this.nickname,
+            senderId: this.customer_id,
             receiverId: this.receiverId,
             companyName: "CISCO",
             companyId: "2",
-            content: this.content,
+            content: "firstTimeSession.action",
             userItemId: this.userItemId
         })
         this.websocket.send(obj)
@@ -322,18 +323,20 @@ methods: {
         }
     },
     initWebSocket() {
+      alert("开始创建websocket")
         const wsurl = 'ws://localhost:8080/OCSSystem/serve'
         this.websocket = new WebSocket(wsurl);
         this.websocket.onmessage = this.websocketonmessage;
         this.websocket.onclose = this.websocketclose;
-        // alert("准备执行加入等待队列")
-        // this.$store.commit('addToRobotChatting',this.name)
-        // alert("已执行")
+        //alert("准备执行加入等待队列")
+        //this.$store.commit('addToRobotChatting',this.name)
+        //alert("已执行")
     },
     websocketonmessage(e) {
         alert("客户接收到信息了！！！！")
         var receiverMsg = JSON.parse(e.data)
           if(this.robotFlag == true){
+            alert()
             if(receiverMsg.content instanceof Array) {
               var html = "";
               html += "<p>" + "您好我是机器人小机，请问您想问的是以下问题吗？" + "</p>";
@@ -354,23 +357,30 @@ methods: {
           } else if(receiverMsg.content == "csEvaluate") {
             this.rateVisible = true
           }else {
-              if(this.senderId == receiverMsg.senderId) {
-                this.receiverId = receiverMsg.receiverId
+              //alert("sessionStorage的senderId的类型是否为int: "+isInteger(this.senderId))
+              //alert("收回来的的senderId的类型是否为int: "+isInteger(receiverMsg.senderId))
+              if(receiverMsg.isSelf) {
+                this.$store.commit('saveClientReveiverId', receiverMsg.receiverId)
+                alert("接收到自己的消息后, receiverId为" + this.$store.state.clientMessage.receiverId)
+                this.receiverId = this.$store.state.clientMessage.receiverId
               }else {
-                this.receiverId = receiverMsg.senderId
+                this.$store.commit('saveClientReveiverId', receiverMsg.senderId)
+                alert("接收到别人的消息后, receiverId为" + this.$store.state.clientMessage.receiverId)
+                this.receiverId = this.$store.state.clientMessage.receiverId
               }
-              alert("客户的receiverId"+this.receiverId)
               this.userItemId = receiverMsg.userItemId
-            this.$store.commit('addClientMessage', receiverMsg);  
+            this.$store.commit('addClientMessage', receiverMsg);
+            alert("客户的receiverId"+this.receiverId)
           }
     },
     websocketsend(e) {
+        alert("客户的receiverId：" + this.receiverId)
         if(this.robotFlag == true) {
           this.content = "robotAnwser" + this.content
         }
         var obj = JSON.stringify({
-            nickname: "yukang",
-            senderId: this.senderId,
+            nickname: this.nickname,
+            senderId: this.customer_id,
             receiverId: this.receiverId,
             companyName: "CISCO",
             companyId: "2",

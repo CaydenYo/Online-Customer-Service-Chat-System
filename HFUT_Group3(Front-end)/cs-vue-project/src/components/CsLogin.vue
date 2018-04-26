@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   data() {
     return {
@@ -54,21 +55,23 @@ export default {
               alert('用户名或者密码错误')
             } else {
               var d = res.data
-              sessionStorage.setItem('company_id', d.company_id)
-              sessionStorage.setItem('cs_pwd', d.cs_pwd)
-              sessionStorage.setItem('cs_workId', d.cs_workId)
-              sessionStorage.setItem('cs_register_status', d.cs_register_status)
-              sessionStorage.setItem('cs_status', d.cs_status)
-              sessionStorage.setItem(
-                'cs_operating_number',
-                d.cs_operating_number
-              )
-              sessionStorage.setItem('cs_waiting_number', d.cs_waiting_number)
-              sessionStorage.setItem('cs_email', d.cs_email)
-              sessionStorage.setItem('cs_nickName', d.cs_nickName)
-              sessionStorage.setItem('cs_id', d.cs_id)
-              sessionStorage.setItem('cs_score', d.cs_score)
-              this.$router.push('/cs_dialogue')
+              this.$store.commit('customerServiceloginSuccess', {
+                senderId: d.cs_id,
+                nickname: d.cs_nickName,
+                company_Id: d.company_id
+              })
+              // sessionStorage.setItem('company_id', d.company_id)
+              // sessionStorage.setItem('cs_pwd', d.cs_pwd)
+              // sessionStorage.setItem('cs_workId', d.cs_workId)
+              // sessionStorage.setItem('cs_register_status', d.cs_register_status)
+              // sessionStorage.setItem('cs_status', d.cs_status)
+              // sessionStorage.setItem('cs_operating_number',d.cs_operating_number)
+              // sessionStorage.setItem('cs_waiting_number', d.cs_waiting_number)
+              // sessionStorage.setItem('cs_email', d.cs_email)
+              // sessionStorage.setItem('cs_nickName', d.cs_nickName)
+              // sessionStorage.setItem('cs_id', d.cs_id)
+              // sessionStorage.setItem('cs_score', d.cs_score)
+              this.$router.push('/CS_UI')
             }
           })
         } else {

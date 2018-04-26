@@ -10,12 +10,49 @@ const store = new Vuex.Store({
 		sessions: [],
 		robotChatting: [],
 		currentSessionId: 1,
-		filterKey: ''
+		filterKey: '',
+		clientMessage: {
+		    senderId: '',
+		    nickname: '',
+		    img: '',
+		    receiverId: ''
+		},
+		customerServiceMessage: {
+			senderId: '',
+			nickname: '',
+			img: '',
+			receiverId: '',
+			company_Id: ''
+		}
 	},
 	getters: {
 
 	},
 	mutations: {
+		//存储用户个人信息
+		clientLoginSuccess(state, payload) {
+			alert("开始储存用户信息：" + JSON.stringify(payload))
+			state.clientMessage.senderId = payload.senderId
+			state.clientMessage.nickname = payload.nickname
+			state.clientMessage.img = payload.img
+			alert("储存用户信息完毕：" + JSON.stringify(state.clientMessage))
+		},
+		//储存用户receiverId
+		saveClientReveiverId(state, payload) {
+			state.clientMessage.receiverId = payload
+		},
+		//存储客服个人信息
+		customerServiceloginSuccess(state, payload) {
+			alert("开始储存客服信息：" + JSON.stringify(payload))
+			state.customerServiceMessage.senderId = payload.senderId
+			state.customerServiceMessage.nickname = payload.nickname
+			state.customerServiceMessage.company_Id = payload.company_Id
+			alert("储存客服信息完毕：" + JSON.stringify(state.customerServiceMessage))
+		},
+		//储存客服receiverId
+		savecustomerServiceReveiverId(state, payload) {
+			state.customerServiceMessage.receiverId = payload
+		},
 		//客服人员功能
 		changeCurrentSessionId(state, id) {
 			state.currentSessionId = id;
@@ -121,6 +158,7 @@ const store = new Vuex.Store({
 		},
 		addClientMessage(state, payload) {
 			state.sessions.push({
+				name: payload.nickname,
 				content: payload.content,
 				date: payload.date,
 				self: payload.isSelf,

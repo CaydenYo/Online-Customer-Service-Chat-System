@@ -15,7 +15,6 @@ import Embedded_Chat from '@/components/Embedded_Chat'
 import Embedded_Chat1 from '@/components/Embedded_Chat1'
 import CS_UI from '@/components/CS_UI'
 import cs_dialogue from '@/components/CS_index/cs_dialogue'
-import cs_dialogue1 from '@/components/CS_index/cs_dialogue1'
 import cs_statics from '@/components/CS_index/cs_statics'
 import cs_settings from '@/components/CS_index/cs_settings'
 import common_language from '@/components/CS_index/common_language'
@@ -33,8 +32,8 @@ export default new Router({
     },
     {
       path: '/',
-      name: 'cs_dialogue',
-      component: cs_dialogue
+      name: 'CsLogin',
+      component: CsLogin
     },
     {
       path: '/show_embedded_cs',
@@ -42,9 +41,9 @@ export default new Router({
       component: Embedded_Chat
     },
     {
-      path: '/show_embedded_cs1',
-      name: 'Embedded_Chat1',
-      component: Embedded_Chat1
+      path: '/chat',
+      name: 'chat',
+      component: chat
     },
     {
       path: '/CS_UI',
@@ -55,17 +54,6 @@ export default new Router({
         path: '/cs_dialogue',
         component: cs_dialogue,
         name: 'cs_dialogue'
-      }]
-    },
-    {
-      path: '/CS_UI',
-      name: 'CS_UI',
-      redirect: '/cs_dialogue1',
-      component: CS_UI,
-      children: [{
-        path: '/cs_dialogue1',
-        component: cs_dialogue1,
-        name: 'cs_dialogue1'
       }]
     },
     {

@@ -24,12 +24,12 @@
         <el-menu-item index="2-4-3">选项3</el-menu-item>
     </el-submenu>
 </el-submenu>
-<el-menu-item index="3" disabled>消息中心</el-menu-item>
-<el-submenu index="4">
-  <template slot="title">账户</template>
-  <el-menu-item index="4-1">登录</el-menu-item>
-  <el-menu-item index="4-2">注册</el-menu-item>
-  <el-menu-item index="4-3">个人信息</el-menu-item>
+<el-submenu index="3">
+  <template v-if="nickname == null" slot="title">账户</template>
+  <template v-if="nickname !== null" slot="title">{{nickname}}</template>
+  <el-menu-item index="3-1">登录</el-menu-item>
+  <el-menu-item index="3-2">注册</el-menu-item>
+  <el-menu-item index="3-3">个人信息</el-menu-item>
 </el-submenu>
 </el-menu>
 </el-header>
@@ -124,12 +124,15 @@ class="info-input"></el-input>
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 export default {
   data (){
     return{
       login_url:'/login.action',
       register_url:'/register.action',
       activeName: 'first',
+      nickname: null,
       dialogLoginVisible:false,
       dialogRegisterVisible:false,
       login_info:{
@@ -166,10 +169,10 @@ methods: {
   handleSelect(key,keypath){
       if(key == '1'){
         this.$router.push({path: '/show_embedded_cs'})
-    }else if(key == '4-1'){
+    }else if(key == '3-1'){
         this.dialogLoginVisible = true;
         this.activeName = 'first';
-    }else if(key == '4-2'){
+    }else if(key == '3-2'){
         this.dialogRegisterVisible = true;
     }
 },
@@ -192,9 +195,19 @@ login : function(event){
                 url:this.rootUrl + _this.login_url,
                 data: params
             }).then((res)=>{
-                if(res.data === "success"){
+                if(res.data.customer_email == this.login_info.customer_email){
                   alert("success")
-                  this.$router.push({path: '/success'})
+                  var d = res.data
+                  alert("登录成功！准备往store中写数据")
+                  this.$store.commit('clientLoginSuccess', {
+                    senderId: d.customer_id,
+                    nickname: d.customer_nickname,
+                    img: d.customer_img
+                  })
+                  alert("储存用户信息结束")
+                  //sessionStorage.setItem('customer_id', d.customer_id)
+                  //sessionStorage.setItem('customer_nickname', d.customer_nickname)
+                  //sessionStorage.setItem('customer_img', d.customer_img)
               }else{
                   this.$message({
                     message:JSON.stringify(res.data),
