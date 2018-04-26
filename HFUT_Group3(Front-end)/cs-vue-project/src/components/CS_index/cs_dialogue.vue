@@ -163,8 +163,11 @@ export default {
       customer_sex: 1,
       customer_email: '123@qq.com',
       customer_address: '上海市普陀区金沙江路 1518 弄',
+      cs_id: this.$store.state.customerServiceMessage.senderId,
+      companyId: this.$store.state.customerServiceMessage.company_Id,
+      nickname: this.$store.state.customerServiceMessage.nickname,
       CS_id: {
-        cs_id: 1000
+        cs_id: this.$store.state.customerServiceMessage.senderId
       },
       content: '',
       websocket: null,
@@ -342,7 +345,7 @@ export default {
   created() {
     this.initWebSocket()
   },
-  computed: mapState(['sessions', 'currentSessionId']),
+  computed: mapState(['sessions', 'currentSessionId', 'customerServiceMessage']),
   methods: {
     addEmoji(temp) {
         this.content += temp
@@ -386,8 +389,8 @@ export default {
     websocketsend(e) {
       alert("客服要发送的客户id"+this.sessions[this.currentSessionId - 1].user.customer_id)
       var obj = JSON.stringify({
-        nickname: "kefu1",
-        senderId: "1000",
+        nickname: this.nickname,
+        senderId: this.cs_id,
         receiverId: this.sessions[this.currentSessionId - 1].user.customer_id,
         companyName: "CISCO",
         companyId: "2",
@@ -405,6 +408,8 @@ export default {
     },
     //排队转接功能
     addToWaitings: function(event) {
+      alert(this.cs_id + " " + this.companyId + " " + this.nickname + " " + this.CS_id.cs_id)
+      alert(this.CS_id.cs_id)
       this.$store.commit('clearWaitings')
       let _this = this
       var params = new URLSearchParams();
@@ -435,8 +440,8 @@ export default {
     changeCS(index, rows) {
       alert(rows[index].cs_name + " " + rows[index].cs_id + " " + this.sessions[this.currentSessionId - 1].user.customer_id)
       var obj = JSON.stringify({
-        nickname: 'kefu1',
-        senderId: "1000",
+        nickname: this.nickname,
+        senderId: this.cs_id,
         receiverId: this.sessions[this.currentSessionId - 1].user.customer_id,
         companyName: "CISCO",
         companyId: "2",
@@ -456,8 +461,8 @@ export default {
       this.$store.commit('clearMessages', this.currentSessionId)
       alert("查看历史消息中……")
         var obj = JSON.stringify({
-        nickname: "kefu1",
-        senderId: "1000",
+        nickname: this.nickname,
+        senderId: this.cs_id,
         receiverId: this.sessions[this.currentSessionId - 1].user.customer_id,
         companyName: "CISCO",
         companyId: "2",
@@ -470,8 +475,8 @@ export default {
     closeConversation: function(event) {
       alert("关闭会话")
       var obj = JSON.stringify({
-        nickname: "kefu1",
-        senderId: "1000",
+        nickname: this.nickname,
+        senderId: this.cs_id,
         receiverId: this.sessions[this.currentSessionId - 1].user.customer_id,
         companyName: "CISCO",
         companyId: "2",

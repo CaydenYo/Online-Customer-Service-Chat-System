@@ -25,6 +25,7 @@
     <transition name="el-zoom-in-bottom">
       <div class="show" v-show="show">
         <div class="header">
+          <el-button type="primary" v-on:click="askForArtificialServices">人工服务</el-button>
           <span>{{cs_nickName}}正在为您服务</span>
           <img src="../../../static/images/close.png" alt="" @click="rate_visible=true">
         </div>
@@ -33,17 +34,27 @@
           <div class="ch
         atlog_body">
             <div class="chatlog_main" ref="chatlog">
-              <ul>
-                <template v-for="item in chat_past_list">
-                  <li>
-                    <div class="wordbody">
-                      <div class="wordhead">{{ item.name }}&nbsp;&nbsp;{{ item.time }}</div>
-                      <div class="wordmain">
-                        <p>{{ item.content }}</p>
-                      </div>
+              <!--机器人-->
+              <ul v-if="robotFlag==true">
+                 <li v-for="entry in robotChatting">
+                   <div class="wordbody">
+                     <div class="wordhead">{{ entry.nickename }}&nbsp;&nbsp;{{entry.date }}</div>
+                     <div class="wordmain">
+                       <p>{{ entry.content }}</p>
+                     </div>
+                   </div>
+                 </li>
+              </ul>
+              <!--客服-->
+              <ul v-if="robotFlag==false">
+                <li v-for="entry in sessions">
+                  <div class="wordbody">
+                    <div class="wordhead">{{ entry.name }}&nbsp;&nbsp;{{ entry.date }}</div>
+                    <div class="wordmain">
+                      <p>{{ entry.content }}</p>
                     </div>
-                  </li>
-                </template>
+                  </div>
+                </li>
               </ul>
             </div>
           </div>
@@ -56,10 +67,22 @@
           <el-button type="success" icon="el-icon-check" circle @click="$refs.chatpicture.click()"></el-button>
           <el-button type="warning" style="float:right" icon="el-icon-star-off" circle @click="submit()"></el-button>
         </div>
+        <el-popover
+        ref="popover"
+        placement="top-start"
+        trigger="click">
+        <div class="emoji-box">
+          <div v-for="temp in emojiTemp" class="emoji">
+            <a class="emoji-link" href="javascript:void(0)" v-on:click="addEmoji(temp)">{{temp}}</a>
+          </div>
+          <span class="pop-arrow arrow"></span>
+        </div>
+        </el-popover>
+      <i class="icon iconfont icon-face" v-popover:popover></i>
         <!-- 功能界面结束 -->
         <!-- 输入框 -->
         <div class="input">
-          <el-input ref="textarea" type="textarea" :rows="5" placeholder="请输入内容" v-model="textarea" @keyup.enter.native="onKeyup">
+          <el-input ref="textarea" type="textarea" :rows="5" placeholder="请输入内容" v-model="content" @keyup.enter.native="addMessage">
           </el-input>
         </div>
         <!-- 输入框结束 -->
@@ -79,11 +102,17 @@
 </template>
 
 <script>
-
+import {mapState} from 'vuex'
 export default {
   data() {
     return {
-      textarea: '',
+      ratingUrl: '/csEvaluate.action',
+      content: '',
+      robotFlag: true,
+      userItemId: null,
+      websocket: null,
+      receiverId: null,
+      senderId: '2000',
       show: true,
       cs_nickName: 'zhangsan',
       rate_visible: false,
@@ -92,59 +121,198 @@ export default {
         cs_score: null,
         content: ''
       },
-      chat_past_list: [
-        {
-          chatLog_id: 1,
-          name: '用户',
-          time: '2015.04.03',
-          content: '这是第1句话'
-        },
-        {
-          chatLog_id: 2,
-          name: '客服',
-          time: '2015.04.03',
-          content: '这是第2句话aaaaaaaaaaaaaaaaaaaa,aaaaaaa,a'
-        },
-        {
-          chatLog_id: 3,
-          name: '用户',
-          time: '2015.04.03',
-          content:
-            '这是第3句话这是第4句话这是第4句话这是第4句话这是第4句话这是第4句话这是第4句话'
-        },
-        {
-          chatLog_id: 4,
-          name: '客服',
-          time: '2015.04.03',
-          content:
-            '这是第4句话这是第4句话这是第4句话这是第4句话这是第4句话这是第4句话'
-        },
-        {
-          chatLog_id: 5,
-          name: '用户',
-          time: '2015.04.03',
-          content: '这是第5句话'
-        },
-        {
-          chatLog_id: 5,
-          name: '客服',
-          time: '2015.04.03',
-          content: '这是第6句话'
-        },
-        {
-          chatLog_id: 7,
-          name: '用户',
-          time: '2015.04.03',
-          content: '这是第7句话'
-        }
-      ]
+      emojiTemp: [
+        "😀",
+        "😁",
+        "😂",
+        "😃",
+        "😄",
+        "😅",
+        "😆",
+        "😇",
+        "😈",
+        "😉",
+        "😊",
+        "😋",
+        "😌",
+        "😀",
+        "😁",
+        "😂",
+        "😃",
+        "😄",
+        "😅",
+        "😆",
+        "😇",
+        "😈",
+        "😉",
+        "😊",
+        "😋",
+        "😌",
+        "😍",
+        "😎",
+        "😏",
+        "😐",
+        "😑",
+        "😒",
+        "😓",
+        "😔",
+        "😕",
+        "😖",
+        "😗",
+        "😘",
+        "😙",
+        "😚",
+        "😛",
+        "😜",
+        "😝",
+        "😞",
+        "😟",
+        "😠",
+        "😡",
+        "😢",
+        "😣",
+        "😤",
+        "😥",
+        "😦",
+        "😧",
+        "😨",
+        "😩",
+        "😪",
+        "😫",
+        "😬",
+        "😭",
+        "😮",
+        "😯",
+        "😰",
+        "😱",
+        "😲",
+        "😳",
+        "😴",
+        "😵",
+        "😶",
+        "😷",
+        "😸",
+        "😹",
+        "😺",
+        "😻",
+        "😼",
+        "😽",
+        "😾",
+        "😿",
+        "🙀",
+        "🙅",
+        "🙆",
+        "🙇",
+        "🙈",
+        "🙉",
+        "🙊",
+        "🙋",
+        "🙌",
+        "🙍",
+        "🙎",
+        "🙏",
+        "🚀",
+        "🚁",
+        "🚂",
+        "🚃",
+        "🚄",
+        "🚅",
+        "🚆",
+        "🚇",
+        "🚈",
+        "🚉",
+        "🚊",
+        "🚋",
+        "🚌",
+        "🚍",
+        "🚎",
+        "🚏",
+        "🚐",
+        "🚑",
+        "🚒",
+        "🚓",
+        "🚔",
+        "🚕",
+        "🚖",
+        "🚗",
+        "🚘",
+        "🚙",
+        "🚚",
+        "🚛",
+        "🚜",
+        "🚝",
+        "🚞",
+        "🚟",
+        "🚠",
+        "🚡",
+        "🚢",
+        "🚣",
+        "🚤",
+        "🚥",
+        "🚦",
+        "🚧",
+        "🚨",
+        "🚩",
+        "🚪",
+        "🚫",
+        "🚬",
+        "🚭",
+        "🚮",
+        "🚯",
+        "🚰",
+        "🚱",
+        "🚲",
+        "🚳",
+        "🚴",
+        "🚵",
+        "🚶",
+        "🚷",
+        "🚸",
+        "🚹",
+        "🚺",
+        "🚻",
+        "🚼",
+        "🚽",
+        "🚾",
+        "🚿",
+        "🛀",
+        "🛁",
+        "🛂",
+        "🛃",
+        "🛄",
+        "🛅",
+    ]
     }
+  },
+  created() {
+    this.initWebSocket()
   },
   mounted() {
     this.downmessage()
     this.show = false
   },
+  computed: mapState(['sessions', 'currentSessionId', 'robotChatting']),
   methods: {
+    addEmoji(temp) {
+        this.content += temp
+    },
+    askForArtificialServices: function(event) {
+      this.robotFlag == false
+      alert("开始转接人工服务。。。")
+      this.robotFlag = false
+      var obj = JSON.stringify({
+            nickname: "yukang",
+            senderId: this.senderId,
+            receiverId: this.receiverId,
+            companyName: "CISCO",
+            companyId: "2",
+            content: firstTimeSession.action,
+            userItemId: this.userItemId
+        })
+        this.websocket.send(obj)
+        this.content = '';
+        alert("已完成转接人工服务函数")
+    },
     downmessage() {
       console.log('已最下面')
       this.$refs.chatlog.scrollTop = this.$refs.chatlog.scrollHeight
@@ -156,37 +324,113 @@ export default {
       console.log('open dialog')
     },
     // 按回车发送信息
-    onKeyup(e) {
-      if (e.keyCode === 13) {
-        this.submit()
-      }
+    addMessage(e) {
+        if(e.keyCode === 13 && this.content.length) {
+            if(this.websocket.readyState === this.websocket.OPEN) {
+                this.websocketsend(this.content)
+            }else if(this.websocket.readyState === this.websocket.CONNECTING) {
+                let that = this;
+                setTimeout(function() {
+                    that.websocketsend(this.content)
+                }, 300)
+            }else {
+                this.initWebSocket();
+                let that = this;
+                setTimeout(function() {
+                    that.websocketsend(this.content)
+                },500)
+            }
+        }
+    },
+    initWebSocket() {
+        alert("开始创建websocket")
+        const wsurl = 'ws://localhost:8080/OCSSystem/serve'
+        this.websocket = new WebSocket(wsurl);
+        this.websocket.onmessage = this.websocketonmessage;
+        this.websocket.onclose = this.websocketclose;
+        // alert("准备执行加入等待队列")
+        // this.$store.commit('addToRobotChatting',this.name)
+        // alert("已执行")
+    },
+    websocketonmessage(e) {
+        alert("客户接收到信息了！！！！")
+        var receiverMsg = JSON.parse(e.data)
+          if(this.robotFlag == true){
+            if(receiverMsg.content instanceof Array) {
+              var html = "";
+              html += "<p>" + "您好我是机器人小机，请问您想问的是以下问题吗？" + "</p>";
+              var result = receiverMsg.content;
+              html += "<ol>";
+              for(var i = 0;i < result.length;i++) {
+                var obj = result[i];
+                var question = obj.question;
+                html += "<li>" + question + "</li>";
+              }
+              html += "</ol>";
+              receiverMsg.content = html;
+              this.$store.commit('addRobotMessage', receiverMsg)
+            }
+            else{
+              this.$store.commit('addRobotMessage', receiverMsg)
+            }
+          } else if(receiverMsg.content == "csEvaluate") {
+            this.rateVisible = true
+          }else {
+              if(this.senderId == receiverMsg.senderId) {
+                this.receiverId = receiverMsg.receiverId
+              }else {
+                this.receiverId = receiverMsg.senderId
+              }
+              alert("客户的receiverId"+this.receiverId)
+              this.userItemId = receiverMsg.userItemId
+            this.$store.commit('addClientMessage', receiverMsg);  
+          }
+    },
+    websocketsend(e) {
+        if(this.robotFlag == true) {
+          this.content = "robotAnwser" + this.content
+        }
+        var obj = JSON.stringify({
+            nickname: "yukang",
+            senderId: this.senderId,
+            receiverId: this.receiverId,
+            companyName: "CISCO",
+            companyId: "2",
+            content: this.content,
+            userItemId: this.userItemId
+        })
+        this.websocket.send(obj)
+        this.content = '';
+    },
+    websocketclose(e) {
+
     },
     // 发送函数
-    submit() {
-      if (this.textarea === '') {
-        this.$message({
-          message: '文字不能为空',
-          type: 'warning'
-        })
-      } else {
-        console.log('长度:' + this.textarea.length)
-        console.log(this.textarea)
-        var d = new Date()
-        var new_message = {
-          chatLog_id: 1,
-          name: '用户',
-          time: d.getHours() + ' : ' + d.getMinutes(),
-          content: this.textarea
-        }
-        this.chat_past_list.push(new_message)
-        setTimeout(
-          () =>
-            (this.$refs.chatlog.scrollTop = this.$refs.chatlog.scrollHeight),
-          50
-        )
-        this.textarea = ''
-      }
-    },
+    // submit() {
+    //   if (this.textarea === '') {
+    //     this.$message({
+    //       message: '文字不能为空',
+    //       type: 'warning'
+    //     })
+    //   } else {
+    //     console.log('长度:' + this.textarea.length)
+    //     console.log(this.textarea)
+    //     var d = new Date()
+    //     var new_message = {
+    //       chatLog_id: 1,
+    //       name: '用户',
+    //       time: d.getHours() + ' : ' + d.getMinutes(),
+    //       content: this.textarea
+    //     }
+    //     this.chat_past_list.push(new_message)
+    //     setTimeout(
+    //       () =>
+    //         (this.$refs.chatlog.scrollTop = this.$refs.chatlog.scrollHeight),
+    //       50
+    //     )
+    //     this.textarea = ''
+    //   }
+    // },
     // 提交评价
     submitRate() {
       if (this.rate_form.cs_score === null || this.rate_form.content === '') {
@@ -204,6 +448,19 @@ export default {
           center: true
         })
         // 提交函数
+        this.rateVisible = false
+        let _this = this
+        var params = new URLSearchParams();
+        params.append('data', JSON.stringify({
+        cs_id: this.receiverId,
+        cs_score: this.rate_form.cs_score,
+        content: this.rate_form.content
+        }));
+        this.$axios({
+          method: 'post',
+          url: this.rootUrl + _this.ratingUrl,
+          data: params
+        })
       }
     },
     onFileSelected(event) {
@@ -216,6 +473,20 @@ export default {
 </script>
 
 <style>
+.emoji-box {
+  max-height: 200px;
+  max-width:200px;
+}
+.message-frame {
+  height: 100%;
+  width: 100%;
+}
+.emoji-link {
+  text-decoration:none;
+}
+.emoji {
+  float: left;
+}
 .div1 {
   position: absolute;
   right: 2%;
