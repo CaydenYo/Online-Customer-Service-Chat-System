@@ -151,6 +151,7 @@ const store = new Vuex.Store({
 		},
 		addRobotMessage(state, msg) {
 			state.robotChatting.push({
+				name: msg.nickname,
 				content: msg.content,
 				date: msg.date,
 				self: msg.isSelf

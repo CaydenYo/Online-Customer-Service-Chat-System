@@ -1,5 +1,6 @@
 <template>
   <div class="user_ui">
+    <xfchat></xfchat>
     <el-container>
 <el-container>
   <el-header class="customer-index">
@@ -125,7 +126,7 @@ class="info-input"></el-input>
 
 <script>
 import {mapState} from 'vuex'
-
+import xfchat from './xfchat/chat'
 export default {
   data (){
     return{
@@ -154,6 +155,9 @@ export default {
     {message: require('../assets/logo.png') },
     ],
 };
+},
+components: {
+  xfchat
 },
 methods: {
     handleClose(done) {
