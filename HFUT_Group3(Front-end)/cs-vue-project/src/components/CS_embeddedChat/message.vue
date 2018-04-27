@@ -1,13 +1,14 @@
 <template>
    <div id="message" v-scroll-bottom="session">
       <ul v-if="currentSessionId === item.id" v-for="item in sessions">
-         <li v-for="entry in item.messages">
+         <li v-for="(entry,index) in item.messages">
             <p class="time">
             <span>{{entry.date}}</span>
             </p>
             <div class="main" :class="{self:entry.self}">
                <img class="avatar" :src="entry.self ? img : item.user.img" alt="">
-               <p class="text" v-html="entry.content"></p>
+               <img v-if="entry.isImg==true" :src="entry.content">
+               <p v-else class="text" v-html="entry.content"></p>
             </div>
          </li>
       </ul>
@@ -21,7 +22,7 @@ export default {
   name: 'message',
   data () {
     return {
-      img: '../../assets/default.png'
+      img: '../../assets/default.png',
   }
 },
 computed:mapState([

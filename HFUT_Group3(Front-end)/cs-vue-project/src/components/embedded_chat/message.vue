@@ -434,9 +434,9 @@ methods: {
   height: 400px;
   overflow-y: scroll;
   ul {
-    list-style-type: none;
     li {
       margin-bottom: 15px;
+      list-style-type: none;
   }
 }
 .time {

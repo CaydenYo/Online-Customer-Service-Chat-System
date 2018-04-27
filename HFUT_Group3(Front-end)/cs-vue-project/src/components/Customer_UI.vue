@@ -201,6 +201,7 @@ login : function(event){
             }).then((res)=>{
                 if(res.data.customer_email == this.login_info.customer_email){
                   alert("success")
+                  _this.dialogLoginVisible = false
                   var d = res.data
                   alert("登录成功！准备往store中写数据")
                   this.$store.commit('clientLoginSuccess', {
@@ -251,6 +252,7 @@ login : function(event){
 }).then((res)=>{
     if(res.data === "success"){
       alert("success")
+      _this.dialogRegisterVisible = false
       this.$router.push({path: '/success'})
   }else{
       this.$message({
