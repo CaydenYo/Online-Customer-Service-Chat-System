@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UpLoadImgController {
 	@RequestMapping("/uploadImg.action")
 	@ResponseBody
-	public String uploadImg(@RequestParam(value = "myfile", required = false) MultipartFile file) throws IOException {
+	public String uploadImg(@RequestParam("file") MultipartFile file) throws IOException {
 		// System.out.println("adasas");
 		String filePath = "D:\\jisuanke\\HFUT_Group3\\HFUT_Group3(Front-end)\\cs-vue-project\\static";
 		String originalFilename = file.getOriginalFilename();
