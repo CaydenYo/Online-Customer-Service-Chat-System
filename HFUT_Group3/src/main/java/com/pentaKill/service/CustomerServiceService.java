@@ -80,11 +80,11 @@ public class CustomerServiceService {
             try {
                 StringBuffer sbd = new StringBuffer();
                 sbd.append("<br/>欢迎！请确认此邮件地址以激活您的账号。<br/>");
-                sbd.append("<font color='red'><a href='http://localhost:8080/OCSSystem/regconf.do?code=" + code
+                sbd.append("<font color='red'><a href='http://127.0.0.1:8085/#/CSMakeSure/regconf.do?code=" + code
                         + "' target='_blank'");
                 sbd.append(">立即激活</a></font><br/>");
                 sbd.append("或者点击下面链接:<br/>");
-                sbd.append("http://localhost:8080/OCSSystem/regconf.do?code=" + code + "<br/>");
+                sbd.append("http://127.0.0.1:8085/#/CSMakeSure/regconf.do?code=" + code + "<br/>");
                 sbd.append("这是一封自动发送的邮件；如果您并未要求但收到这封信件，您不需要进行任何操作。");
 
                 EmailUtil.sendTo(sbd.toString(), customerServiceRegisterBean.getCs_email());

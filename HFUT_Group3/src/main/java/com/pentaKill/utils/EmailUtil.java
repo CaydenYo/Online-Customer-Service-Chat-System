@@ -84,10 +84,14 @@ public class EmailUtil {
         MimeMessage message = new MimeMessage(session);
 
         // 2. From: 发件人
-        message.setFrom(new InternetAddress(sendMail, "LB", "UTF-8"));
+        message.setFrom(new InternetAddress(sendMail, "欢迎激活", "UTF-8"));
 
         // 3. To: 收件人（可以增加多个收件人、抄送、密送）
-        message.setRecipient(MimeMessage.RecipientType.TO, new InternetAddress(receiveMail, "XX用户", "UTF-8"));
+        InternetAddress[] tos = new InternetAddress[2];
+        tos[0] = new InternetAddress(sendMail, "PentaKill用户", "UTF-8");
+        tos[1] = new InternetAddress(receiveMail, "PentaKill用户", "UTF-8");
+        message.setRecipients(MimeMessage.RecipientType.TO, tos);
+        
 
         // 4. Subject: 邮件主题
         message.setSubject("激活您的帐号", "UTF-8");
