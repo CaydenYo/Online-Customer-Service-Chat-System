@@ -125,6 +125,36 @@ const store = new Vuex.Store({
 			})
 			}
 		},
+		addImg(state, payload) {
+			alert("往store中加信息: "+ JSON.stringify(payload))
+			if(payload.msg.isTransfer == true) {
+				state.sessions.push({
+					id: state.sessions.length + 1,
+					serving: true,
+					waiting: false,
+					robot: false,
+					user: {
+						customer_id: payload.msg.receiverId,
+						name: payload.msg.servedClient.name,
+						img: payload.msg.servedClient.img
+					},
+					messages: [{
+						content: payload.msg.content,
+						date: payload.msg.date,
+						self: payload.msg.isSelf,
+					}]
+				})
+				alert("已完成会话转接插入且session长度为"+state.sessions.length)
+			}else{
+				alert('客户的itemId'+payload.itemId)
+				state.sessions[payload.itemId - 1].messages.push({
+				content: payload.msg.content,
+				date: payload.msg.date,
+				self: payload.msg.isSelf,
+				isImg: true
+			})
+			}
+		},
 		closeConversation(state, payload) {
 			state.sessions.splice(payload - 1, 1)
 		},
@@ -150,6 +180,7 @@ const store = new Vuex.Store({
 			alert(JSON.stringify(state.sessions[state.sessions.length - 1]))
 		},
 		addRobotMessage(state, msg) {
+			alert("往机器人信息中添加"+JSON.stringify(msg))
 			state.robotChatting.push({
 				name: msg.nickname,
 				content: msg.content,

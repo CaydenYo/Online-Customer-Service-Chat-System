@@ -99,6 +99,10 @@
         </div>
       </el-popover>
       <i class="icon iconfont icon-face" v-popover:popover></i>
+      <form enctype="multipart/form-data" method="post">
+        <input type="file" @change="getFile($event)">
+        <button @click="submitForm($event)">提交</button>
+       </form>
     </div>
     <div id="uesrtext">
       <textarea placeholder="按 Ctrl + Enter 发送" v-model="content" v-on:keyup="addMessage"></textarea>
@@ -175,6 +179,7 @@ export default {
         cs_name: 'kefu2',
         cs_id: '1001'
       }],
+      file: '',
       emojiTemp: [
         "😀",
         "😁",
@@ -351,6 +356,44 @@ export default {
         this.content += temp
     },
     //客服聊天功能
+    getFile(event) {
+      this.file = event.target.files[0];
+      console.log(this.file);
+    },
+    submitForm(event) {
+      event.preventDefault();
+      let formData = new FormData();
+      formData.append('file', this.file)
+      let config = {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+      this.$axios.post(this.rootUrl + '/uploadImg.action', formData, config).then((res)=>{
+        var obj = JSON.stringify({
+        nickname: this.nickname,
+        senderId: this.cs_id,
+        receiverId: this.sessions[this.currentSessionId - 1].user.customer_id,
+        companyName: "CISCO",
+        companyId: "2",
+        isImg: true,
+        // content: '<img src="./static/' + res.data + '"/>',
+        content: 'E:\\customer_service\\HFUT_Group3\\HFUT_Group3(Front-end)\\cs-vue-project\\static\\' + res.data,
+        userItemId: this.currentSessionId
+      })
+      this.websocket.send(obj)
+      })
+      // let _this = this
+      // var params = new URLSearchParams();
+      // params.append('');
+      // this.$axios({
+      //   method: 'post',
+      //   url: this.rootUrl + '/uploadImg.action',
+      //   data: params
+      // }).then((res)=>{
+
+      // })
+    },
     addMessage(e) {
       if(e.ctrlKey && e.keyCode === 13 && this.content.length) {
         if(this.websocket.readyState === this.websocket.OPEN) {
@@ -380,10 +423,19 @@ export default {
       alert('客服收到的消息'+JSON.stringify(receiverMsg))
       if(receiverMsg.receiverId !== null){
         alert('客户在服务列表中的id'+receiverMsg.userItemId)
-        this.$store.commit('addMessage', {
+        if(receiverMsg.isImg == true){
+          alert("插入图片")
+          this.$store.commit('addImg', {
           msg: receiverMsg,
           itemId: receiverMsg.userItemId
         });
+        }
+        else{
+          this.$store.commit('addMessage', {
+          msg: receiverMsg,
+          itemId: receiverMsg.userItemId
+        });
+        }
       }
     },
     websocketsend(e) {
@@ -402,6 +454,24 @@ export default {
     },
     websocketclose(e) {
 
+    },
+    onFileSelected(event) {
+      console.log(event)
+      this.file = event.target.files[0]
+      console.log('file已赋值')
+      var reader = new FileReader()
+      var that = this
+      reader.readAsDataURL(this.file)
+      reader.onload = function(event) {
+        console.log('this.result:' + this.result)
+        that.filesubmit = this.result
+        that.$notify({
+          type: 'success',
+          title: '成功',
+          message: '您已成功上传图片，请点击发送按钮',
+          showClose: false
+        })
+      }
     },
     onEditorChange({ editor, html, text}) {
       this.content = html;

@@ -123,6 +123,7 @@ methods: {
             }).then((res)=>{
                 if(res.data === "success"){
                   alert("success")
+                  _this.dialogLoginVisible = false
                   this.$router.push({path: '/success'})
               }else{
                   this.$message({
@@ -143,6 +144,7 @@ methods: {
           })
             return;
         }
+        let _this = this
         var params = new URLSearchParams();
         params.append('data',JSON.stringify(this.register_info));
         this.$axios({
@@ -151,6 +153,7 @@ methods: {
             data: params
         }).then((res)=>{
             if(res.data === "success"){
+              this.dialogRegisterVisible = false
               this.$router.push({path: '/success'})
           }else{
               this.$message(JSON.stringify(res.data))

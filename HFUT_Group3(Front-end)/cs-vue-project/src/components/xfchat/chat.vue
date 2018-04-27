@@ -2,7 +2,7 @@
   <div class="chat">
     <!-- 评价 -->
     <transition name="el-zoom-in-top">
-      <div class="rate" v-show="rate_visible">
+      <div class="rate" v-show="rateVisible">
         <div class="rateword1">
           请为客服打分
         </div>
@@ -14,7 +14,7 @@
           <el-input type="text" v-model="rate_form.content"></el-input>
         </div>
         <div>
-          <el-button class="ratebtn" type="primary" @click="submitRate" icon="el-icon-check"></el-button>
+          <el-button class="ratebtn" type="primary" @click="finishedRating" icon="el-icon-check"></el-button>
         </div>
       </div>
     </transition>
@@ -23,21 +23,22 @@
       <div class="show" v-show="show">
         <div class="header">
           <span>{{cs_nickName}}正在为您服务</span>
-          <img src="../../../static/images/close.png" alt="">
+          <img src="../../../static/images/close.png" @click="show = false" alt="">
+          <el-button type="primary" v-on:click="askForArtificialServices">人工服务</el-button>
         </div>
         <!-- 文本 -->
         <div class="message">
           <div v-loading="loading" class="chatlog_body">
             <div class="chatlog_main" ref="chatlog">
-              <ul v-if="robotFlag==false">
-                <template v-for="entry in robotChatting">
-                  <li>
+              <ul v-if="robotFlag==true">
+                <template>
+                  <li v-for="entry in robotChatting">
                     <!-- 机器人 -->
                     <template v-if="entry.self==false">
                       <div class="wordbody">
                         <div class="wordhead"><img class="imgavatar" src="../../../static/images/cs_def.png">&nbsp;&nbsp;{{ entry.name }}&nbsp;&nbsp;{{ entry.date }}</div>
                         <div class="wordmain">
-                          <p v-if="entry.content.length < 100">{{ entry.content }}</p>
+                          <p v-if="entry.content.length < 100" v-html="entry.content"></p>
                           <template v-if="entry.content.length > 100">
                             <a :href="entry.content" download="screenshot.png" title="点我下载"><img class="imgcontent" :src="entry.content" /></a>
                             <p></p>
@@ -50,7 +51,7 @@
                       <div class="wordbody">
                         <div class="wordhead wordheadu">&nbsp;&nbsp;{{ entry.date }}&nbsp;&nbsp;{{ entry.name }}&nbsp;&nbsp;<img class="imgavatar" src="../../../static/images/c_def.jpg"></div>
                         <div class="wordmain wordmainu">
-                          <p class="userp"  v-if="entry.content.length < 100">{{ entry.content }}</p>
+                          <p class="userp"  v-if="entry.content.length < 100" v-html="entry.content"></p>
                           <template v-if="entry.content.length > 100">
                             <a :href="entry.content" download="screenshot.png" title="点我下载"><img class="imgcontent" :src="entry.content" /></a>
                           </template>
@@ -61,30 +62,30 @@
                   </li>
                 </template>
               </ul>
-              <ul v-if="robotFlag==true">
-                <template v-for="entry in sessions">
-                  <li>
-                    <!-- 客服或机器人 -->
-                    <template v-if="item.name === '客服'">
+              <ul v-if="robotFlag==false">
+                <template>
+                  <li  v-for="entry in sessions">
+                    <!-- 机器人 -->
+                    <template v-if="entry.self==false">
                       <div class="wordbody">
-                        <div class="wordhead"><img class="imgavatar" src="../../../static/images/cs_def.png">&nbsp;&nbsp;{{ item.name }}&nbsp;&nbsp;{{ item.time }}</div>
+                        <div class="wordhead"><img class="imgavatar" src="../../../static/images/cs_def.png">&nbsp;&nbsp;{{ entry.name }}&nbsp;&nbsp;{{ entry.date }}</div>
                         <div class="wordmain">
-                          <p v-if="item.content.length < 100">{{ item.content }}</p>
-                          <template v-if="item.content.length > 100">
-                            <a :href="item.content" download="screenshot.png" title="点我下载"><img class="imgcontent" :src="item.content" /></a>
+                          <p v-if="entry.content.length < 100" v-html="entry.content"></p>
+                          <template v-if="entry.content.length > 100">
+                            <a :href="entry.content" download="screenshot.png" title="点我下载"><img class="imgcontent" :src="entry.content" /></a>
                             <p></p>
                           </template>
                         </div>
                       </div>
                     </template>
                     <!-- 用户 -->
-                    <template v-if="item.name === '用户'">
+                    <template v-if="entry.self">
                       <div class="wordbody">
-                        <div class="wordhead wordheadu">&nbsp;&nbsp;{{ item.time }}&nbsp;&nbsp;{{ item.name }}&nbsp;&nbsp;<img class="imgavatar" src="../../../static/images/c_def.jpg"></div>
+                        <div class="wordhead wordheadu">&nbsp;&nbsp;{{ entry.date }}&nbsp;&nbsp;{{ entry.name }}&nbsp;&nbsp;<img class="imgavatar" src="../../../static/images/c_def.jpg"></div>
                         <div class="wordmain wordmainu">
-                          <p class="userp"  v-if="item.content.length < 100">{{ item.content }}</p>
-                          <template v-if="item.content.length > 100">
-                            <a :href="item.content" download="screenshot.png" title="点我下载"><img class="imgcontent" :src="item.content" /></a>
+                          <p class="userp"  v-if="entry.content.length < 100" v-html="entry.content"></p>
+                          <template v-if="entry.content.length > 100">
+                            <a :href="entry.content" download="screenshot.png" title="点我下载"><img class="imgcontent" :src="entry.content" /></a>
                           </template>
                         </div>
                         <div class="clear"></div>
@@ -123,7 +124,7 @@
         <!-- 功能界面结束 -->
         <!-- 输入框 -->
         <div class="input">
-          <el-input ref="textarea" type="textarea" :rows="5" placeholder="请输入内容" v-model="textarea" @keyup.enter.native="onKeyup">
+          <el-input ref="textarea" type="textarea" :rows="5" placeholder="请输入内容" v-model="content" @keyup.enter.native="addMessage">
           </el-input>
         </div>
         <!-- 输入框结束 -->
@@ -143,6 +144,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import html2canvas from 'html2canvas'
 export default {
   data() {
@@ -150,18 +152,16 @@ export default {
       file: null,
       filesubmit: '',
       loading: false,
-      textarea: '',
       show: true,
-      cs_nickName: 'zhangsan',
-      rate_visible: false,
+      cs_nickName: '客服MM',
+      rateVisible: false,
       selectedFile: '',
       rate_form: {
         cs_score: null,
         content: ''
       },
+      hasWebsocket: false,
       ratingUrl: '/csEvaluate.action',
-      rateVisible: false,
-      ratingStar: null,
       assessment: '',
       nickname: this.$store.state.clientMessage.nickname,
       customer_id: this.$store.state.clientMessage.senderId,
@@ -171,52 +171,6 @@ export default {
       content:'',
       websocket: null,
       receiverId: null,
-      chat_past_list: [
-        {
-          chatLog_id: 1,
-          name: '用户',
-          time: '2015.04.03',
-          content: '这是第1句话qqqqqqqqqqqqqqqqqqqqq'
-        },
-        {
-          chatLog_id: 2,
-          name: '客服',
-          time: '2015.04.03',
-          content: '这是第2句话aaaaaaaaaaaaaaaaaaaa,aaaaaaa,a'
-        },
-        {
-          chatLog_id: 3,
-          name: '用户',
-          time: '2015.04.03',
-          content:
-            '这是第3句话这是第4句话这是第4句话这是第4句话这是第4句话这是第4句话这是第4句话'
-        },
-        {
-          chatLog_id: 4,
-          name: '客服',
-          time: '2015.04.03',
-          content:
-            '这是第4句话这是第4句话这是第4句话这是第4句话这是第4句话这是第4句话'
-        },
-        {
-          chatLog_id: 5,
-          name: '用户',
-          time: '2015.04.03',
-          content: '这是第5句话'
-        },
-        {
-          chatLog_id: 5,
-          name: '客服',
-          time: '2015.04.03',
-          content: '这是第6句话'
-        },
-        {
-          chatLog_id: 7,
-          name: '用户',
-          time: '2015.04.03',
-          content: '这是第7句话'
-        }
-      ],
       emojiTemp: [
         "😀",
         "😁",
@@ -384,7 +338,32 @@ export default {
     this.downmessage()
     this.show = false
   },
+  computed: mapState(['sessions', 'currentSessionId', 'robotChatting', 'clientMessage']),
+  directives: {
+    'scroll-bottom' (el) {
+      //console.log(el.scrollTop);
+      setTimeout(function () {
+        el.scrollTop+=9999;
+    },1)
+  }
+},
   methods: {
+    //完成评价
+    finishedRating: function(event) {
+      this.rateVisible = false
+      let _this = this
+      var params = new URLSearchParams();
+      params.append('data', JSON.stringify({
+        cs_id: this.receiverId,
+        cs_score: this.rate_form.cs_score,
+        content: this.rate_form.content,
+      }));
+      this.$axios({
+        method: 'post',
+        url: this.rootUrl + _this.ratingUrl,
+        data: params
+      })
+    },
     addEmoji(temp) {
         this.content += temp
     },
@@ -440,15 +419,125 @@ export default {
     },
     // 展示会话框
     showdialog() {
+      this.nickname=this.$store.state.clientMessage.nickname,
+      this.customer_id=this.$store.state.clientMessage.senderId,
+      this.img=this.$store.state.clientMessage.img,
+      alert(this.customer_id)
+      if (this.customer_id !== "" && !this.hasWebsocket) {
+        this.initWebSocket()
+        this.hasWebsocket = true
+      }
       this.show = !this.show
       this.$refs.chatlog.scrollTop = this.$refs.chatlog.scrollHeight-10
       console.log('open dialog')
     },
-    // 按回车发送信息
-    onKeyup(e) {
-      if (e.keyCode === 13) {
-        this.submit()
-      }
+    askForArtificialServices: function(event) {
+      alert("开始转接人工服务。。。")
+      alert(this.customer_id+" "+this.nickname+" "+this.img)
+      this.robotFlag = false
+      var obj = JSON.stringify({
+            nickname: this.nickname,
+            senderId: this.customer_id,
+            receiverId: this.receiverId,
+            companyName: "CISCO",
+            companyId: "2",
+            content: "firstTimeSession.action",
+            userItemId: this.userItemId
+        })
+        this.websocket.send(obj)
+        this.content = '';
+    },
+    addMessage(e) {
+        if(e.ctrlKey && e.keyCode === 13 && this.content.length) {
+            if(this.websocket.readyState === this.websocket.OPEN) {
+                this.websocketsend(this.content)
+            }else if(this.websocket.readyState === this.websocket.CONNECTING) {
+                let that = this;
+                setTimeout(function() {
+                    that.websocketsend(this.content)
+                }, 300)
+            }else {
+                this.initWebSocket();
+                let that = this;
+                setTimeout(function() {
+                    that.websocketsend(this.content)
+                },500)
+            }
+        }
+    },
+    initWebSocket() {
+      alert("开始创建websocket")
+        const wsurl = 'ws://localhost:8080/OCSSystem/serve'
+        this.websocket = new WebSocket(wsurl);
+        this.websocket.onmessage = this.websocketonmessage;
+        this.websocket.onclose = this.websocketclose;
+        //alert("准备执行加入等待队列")
+        //this.$store.commit('addToRobotChatting',this.name)
+        //alert("已执行")
+    },
+    websocketonmessage(e) {
+        alert("客户接收到信息了！！！！")
+        var receiverMsg = JSON.parse(e.data)
+          if(this.robotFlag == true){
+            alert("进入了机器人！")
+            if(receiverMsg.content instanceof Array) {
+              var html = "";
+              html += "<p>" + "您好我是机器人小机，请问您想问的是以下问题吗？" + "</p>";
+              var result = receiverMsg.content;
+              html += "<ol>";
+              for(var i = 0;i < result.length;i++) {
+                var obj = result[i];
+                var question = obj.question;
+                html += "<li>" + question + "</li>";
+              }
+              html += "</ol>";
+              receiverMsg.content = html;
+              this.$store.commit('addRobotMessage', receiverMsg)
+            }
+            else{
+              this.$store.commit('addRobotMessage', receiverMsg)
+            }
+          } else if(receiverMsg.content == "csEvaluate") {
+            this.rateVisible = true
+          }else {
+              //alert("sessionStorage的senderId的类型是否为int: "+isInteger(this.senderId))
+              //alert("收回来的的senderId的类型是否为int: "+isInteger(receiverMsg.senderId))
+              if(receiverMsg.isSelf) {
+                this.$store.commit('saveClientReveiverId', receiverMsg.receiverId)
+                alert("接收到自己的消息后, receiverId为" + this.$store.state.clientMessage.receiverId)
+                this.receiverId = this.$store.state.clientMessage.receiverId
+              }else {
+                this.$store.commit('saveClientReveiverId', receiverMsg.senderId)
+                alert("接收到别人的消息后, receiverId为" + this.$store.state.clientMessage.receiverId)
+                this.receiverId = this.$store.state.clientMessage.receiverId
+              }
+              this.userItemId = receiverMsg.userItemId
+            this.$store.commit('addClientMessage', receiverMsg);
+            alert("客户的receiverId"+this.receiverId)
+          }
+            setTimeout(
+              () => (this.$refs.chatlog.scrollTop = this.$refs.chatlog.scrollHeight),
+              50)
+    },
+    websocketsend(e) {
+        alert("客户的receiverId：" + this.receiverId)
+        if(this.robotFlag == true) {
+          this.content = "robotAnwser" + this.content
+        }
+        var obj = JSON.stringify({
+            nickname: this.nickname,
+            senderId: this.customer_id,
+            receiverId: this.receiverId,
+            companyName: "CISCO",
+            companyId: "2",
+            content: this.content,
+            userItemId: this.userItemId
+        })
+        this.websocket.send(obj)
+        this.content = '';
+    },
+    websocketclose(e) {
+
     },
     // 发送函数
     submit() {
@@ -484,28 +573,7 @@ export default {
         50
       )
       this.textarea = ''
-
-      // }
     },
-    // 提交评价
-    submitRate() {
-      if (this.rate_form.cs_score === null || this.rate_form.content === '') {
-        this.$message({
-          message: '请填写星级和评价',
-          type: 'warning',
-          center: true
-        })
-      } else {
-        this.rate_visible = false
-        this.show = false
-        this.$message({
-          message: '感谢您的使用',
-          type: 'success',
-          center: true
-        })
-        // 提交函数
-      }
-    }
   }
 }
 </script>
@@ -655,11 +723,11 @@ export default {
   height: 100px;
   background-color: darkgray;
 }
-li {
-  list-style: none;
-}
 ul {
   padding-left: 0px;
+}
+ul > li {
+  list-style: none;
 }
 .rate {
   position: absolute;
