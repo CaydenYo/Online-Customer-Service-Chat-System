@@ -10,7 +10,7 @@
 
 	<form action="/OCSSystem/uploadImg.action"
 		enctype="multipart/form-data" method="post">
-		选择一个文件: <input type="file" name="myfile"> <input type="submit">
+		<input type="file" name="myfile"> <input type="submit">
 	</form>
 </body>
 </html>

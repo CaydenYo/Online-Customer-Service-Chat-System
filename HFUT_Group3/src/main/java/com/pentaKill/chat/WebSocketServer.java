@@ -359,7 +359,7 @@ public class WebSocketServer {
 			// 从后台取出所有客服与这个客户的聊天记录，然后发送到前台
 			List<NewChatLogBean> chatlogList = csViewsHistoryMessageService
 					.getChatlogService(Integer.parseInt(receiverId), Integer.parseInt(senderId));
-
+			System.out.println(chatlogList);
 			Gson gson = new Gson();
 
 			// 聊天记录消息只发给自己
@@ -372,7 +372,7 @@ public class WebSocketServer {
 						JSONObject joTemp = new JSONObject();
 						// joTemp.put("historyMessageFlag", historyMessageFlag);
 						joTemp.put("nickname", chatlogList.get(index).getSender_nickname());
-						joTemp.put("date", chatlogList.get(index).getTime());
+						joTemp.put("date", df.format(chatlogList.get(index).getTime()).toString());
 						joTemp.put("content", chatlogList.get(index).getContent());
 						joTemp.put("userItemId", userItemId);
 						if (chatlogList.get(index).getFrom_customer() == 0) {
