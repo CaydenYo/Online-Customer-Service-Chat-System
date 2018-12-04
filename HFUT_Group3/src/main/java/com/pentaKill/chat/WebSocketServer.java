@@ -400,7 +400,7 @@ public class WebSocketServer {
 			// System.out.println("第一次进入机器人答案"+senderId);
 			int ansNum = initvalue;
 			try {
-				ansNum = Integer.parseInt(content.substring(14, 15));
+				ansNum = Integer.parseInt(content.substring(11));
 
 				for (String key : userMap.keySet()) {
 					webSocketServer = (WebSocketServer) connectedUser.get(key);
